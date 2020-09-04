@@ -1,6 +1,6 @@
 # `markdown-it-figure-references`
 
-> TODO: description
+> Figure referencing for [markdown-it](https://github.com/markdown-it/markdown-it).
 
 ## Usage
 
