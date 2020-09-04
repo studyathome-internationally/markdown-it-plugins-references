@@ -9,7 +9,7 @@ const md = require("markdown-it")()
   .use(require("markdown-it-figure-references"), opts);
 ```
 
-See a [demo as JSFiddle](https://wzrd.in/standalone/markdown-it-figure-references@latest).
+See a [demo as JSFiddle](https://jsfiddle.net/h3aocxry/8/).
 
 The `opts` object can contain:
 
