@@ -7,6 +7,11 @@ const figure_references = (md, opts) => {
   md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
   md.renderer.rules.figure_reference_list_item = figure_reference_list_item_renderer(opts);
   md.renderer.rules.figure_reference_list_close = figure_reference_list_close_renderer(opts);
+
+  if (opts.wrapImage) {
+    const defaultImageRenderer = md.renderer.rules.image;
+    md.renderer.rules.image = figure_wrapper_renderer(opts, defaultImageRenderer);
+  }
 };
 
 function figure_reference_rule(opts) {
@@ -59,7 +64,7 @@ function figure_reference_rule(opts) {
 
 function figure_reference_list_rule(opts) {
   return (state) => {
-    if (!state.env.figures || !opts.list.enable) return;
+    if (!state.env.figures || !opts.list) return;
     const tokens = state.tokens;
     const figures = [];
     tokens
@@ -72,7 +77,7 @@ function figure_reference_list_rule(opts) {
         }
       });
 
-    let token = new state.Token("figure_reference_list_open", opts.list.tag, 1);
+    let token = new state.Token("figure_reference_list_open", opts.listTag, 1);
     token.block = true;
     tokens.push(token);
 
@@ -84,7 +89,7 @@ function figure_reference_list_rule(opts) {
       tokens.push(token);
     }
 
-    token = new state.Token("figure_reference_list_close", opts.list.tag, -1);
+    token = new state.Token("figure_reference_list_close", opts.listTag, -1);
     token.block = true;
     tokens.push(token);
   };
@@ -95,7 +100,7 @@ function figure_reference_list_open_renderer(opts) {
     const token = tokens[idx];
     return (
       `<h2 id="list-of-figures"><a href="#list-of-figures" class="header-anchor">#</a>` +
-      opts.list.title +
+      opts.listTitle +
       `</h2>\n` +
       `<${token.tag} class="list-of-figures-list">\n`
     );
@@ -116,17 +121,39 @@ function figure_reference_list_close_renderer(opts) {
   };
 }
 
+function figure_wrapper_renderer(opts, defaultRenderer) {
+  return (tokens, idx, options, env, self) => {
+    const token = tokens[idx];
+    const id = token.attrGet("id");
+    const title = token.attrGet("title");
+    const entry = env.figures.refs[id];
+    if (id && entry) {
+      return (
+        `<${opts.wrapTag} class="figure-wrapper" id="${id}">\n` +
+        `  <figure>\n` +
+        `    ${defaultRenderer(tokens, idx, options, env, self)}\n` +
+        `    <figcaption>\n` +
+        `      ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${title}\n` +
+        `    </figcaption>\n` +
+        `  </figure>\n` +
+        `</${opts.wrapTag}>`
+      );
+    }
+  };
+}
+
 function sanitize(text) {
   return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
 }
 
 figure_references.defaults = {
-  list: {
-    enable: true,
-    title: "List of Figures",
-    tag: "ol",
-  },
+  list: true,
+  listTitle: "List of Figures",
+  listTag: "ol",
   label: "Figure",
+  wrapImage: true,
+  wrapTag: "div",
+  injectLabel: true,
 };
 
 module.exports = figure_references;
