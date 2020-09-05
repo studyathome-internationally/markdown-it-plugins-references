@@ -1,7 +1,7 @@
 const figure_references = (md, opts) => {
   opts = Object.assign({}, figure_references.defaults, opts);
 
-  const reload = md.core.ruler.getRules("").find(({ name }) => name === "figure_reference");
+  const reload = md.core.ruler.getRules("").find(({ name }) => name === "figure_reference") || false;
   if (reload) {
     md.core.ruler.at("figure_reference", figure_reference_rule(opts));
     md.core.ruler.at("figure_reference_list", figure_reference_list_rule(opts));
@@ -34,38 +34,33 @@ function figure_reference_rule(opts) {
         let token = children[j];
         if (token.type !== "image") continue;
 
-        const title = token.attrGet("title") || token.attrGet("alt");
-        if (!title) continue;
+        const titleContent = token.attrGet("title") || token.attrGet("alt");
+        if (!titleContent) continue;
 
-        token.type = "figure_wrapper";
+        if (opts.wrapImage) token.type = "figure_wrapper";
 
-        if (!state.env.figures) {
-          state.env.figures = {};
-        }
-        if (!state.env.figures.refs) {
-          state.env.figures.refs = {};
-        }
-
-        if (title.split("#").length === 2) {
-          const [id, newTitle] = title.split("#");
-          token.attrSet("title", newTitle);
-          token.attrSet("id", id);
-          state.env.figures.refs[id] = {
-            id,
-            alt: token.attrGet("alt"),
-            index: Object.keys(state.env.figures.refs).length + 1,
-            title: newTitle,
-          };
+        let id,
+          title = titleContent;
+        if (titleContent.split("#").length === 2) {
+          [id, title] = titleContent.split("#");
         } else {
-          const id = sanitize(title);
-          token.attrSet("id", id);
-          state.env.figures.refs[id] = {
-            id,
-            alt: token.attrGet("alt"),
-            index: Object.keys(state.env.figures.refs).length + 1,
-            title,
-          };
+          id = sanitize(title);
         }
+        token.attrSet("id", opts.wrapImage ? `${id}-img` : id);
+        token.attrSet("title", title);
+        token.meta = { origin: id };
+
+        if (!state.env[opts.ns]) {
+          state.env[opts.ns] = {};
+        }
+        if (!state.env[opts.ns].refs) {
+          state.env[opts.ns].refs = {};
+        }
+        state.env[opts.ns].refs[id] = {
+          id,
+          title,
+          index: Object.keys(state.env[opts.ns].refs).length + 1,
+        };
       }
     }
   };
@@ -74,26 +69,15 @@ function figure_reference_rule(opts) {
 
 function figure_reference_list_rule(opts) {
   const figure_reference_list = (state) => {
-    if (!state.env.figures || !opts.list) return;
+    if (!state.env[opts.ns] || !opts.list) return;
     const tokens = state.tokens;
-    const figures = [];
-    tokens
-      .filter((tok) => tok.type === "inline")
-      .filter((tok) => {
-        for (const child of tok.children) {
-          if (child.type === "figure_wrapper") {
-            figures.push(child);
-          }
-        }
-      });
 
     let token = new state.Token("figure_reference_list_open", opts.listTag, 1);
     token.block = true;
     tokens.push(token);
 
-    for (const figure of figures) {
-      const id = figure.attrGet("id");
-      const entry = state.env.figures.refs[id];
+    for (const id in state.env[opts.ns].refs) {
+      const entry = state.env[opts.ns].refs[id];
       token = new state.Token("figure_reference_list_item", "li", 0);
       token.meta = { ...entry };
       tokens.push(token);
@@ -135,12 +119,12 @@ function figure_reference_list_close_renderer(opts) {
 function figure_wrapper_renderer(opts, defaultRenderer) {
   return (tokens, idx, options, env, self) => {
     const token = tokens[idx];
-    const id = token.attrGet("id");
+    const id = token.meta.origin;
     const title = token.attrGet("title");
-    const entry = env.figures.refs[id];
+    const entry = env[opts.ns].refs[id];
     if (id && entry) {
       return (
-        `<${opts.wrapTag} class="figure-wrapper" id="${id}">\n` +
+        `<${opts.wrapTag} id="${id}" class="figure-wrapper">\n` +
         `  <figure>\n` +
         `    ${defaultRenderer(tokens, idx, options, env, self)}\n` +
         `    <figcaption>\n` +
@@ -158,6 +142,7 @@ function sanitize(text) {
 }
 
 figure_references.defaults = {
+  ns: "figures",
   list: true,
   listTitle: "List of Figures",
   listTag: "ol",

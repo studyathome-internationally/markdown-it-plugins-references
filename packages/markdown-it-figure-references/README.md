@@ -15,6 +15,7 @@ The `opts` object can contain:
 
 | Name          | Description                                                    | Default             |
 | ------------- | -------------------------------------------------------------- | ------------------- |
+| `ns`          | Namespace for saving registered images (`env`).                | `"figures"`         |
 | `list`        | Render list of figures.                                        | `true`              |
 | `listTitle`   | Title of list of figures.                                      | `"List of Figures"` |
 | `listTag`     | HTML tag for used for list (of figures).                       | `"ol"`              |

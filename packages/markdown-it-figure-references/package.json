@@ -27,7 +27,8 @@
     "url": "git+https://github.com/studyathome-internationally/markdown-it-plugins.git"
   },
   "scripts": {
-    "test": "jest --config=jest.config.js"
+    "test": "jest --config=jest.config.js",
+    "test:update": "jest --updateSnapshot --config=jest.config.js"
   },
   "bugs": {
     "url": "https://github.com/studyathome-internationally/markdown-it-plugins/issues"

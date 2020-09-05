@@ -1,6 +1,3 @@
-const { join } = require("path");
-const { readFileSync } = require("fs");
-
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
@@ -15,14 +12,14 @@ describe("basic functionality", function () {
         Hello World
       </h1>
       <p>
-        <div class="figure-wrapper"
-             id="the-stormtroopocat"
+        <div id="the-stormtroopocat"
+             class="figure-wrapper"
         >
           <figure>
             <img src="https://octodex.github.com/images/stormtroopocat.jpg"
                  alt="Stormtroopocat"
                  title="The Stormtroopocat"
-                 id="the-stormtroopocat"
+                 id="the-stormtroopocat-img"
             >
             <figcaption>
               <a href="#the-stormtroopocat">
@@ -60,14 +57,14 @@ describe("basic functionality", function () {
         Hello World
       </h1>
       <p>
-        <div class="figure-wrapper"
-             id="trooper"
+        <div id="trooper"
+             class="figure-wrapper"
         >
           <figure>
             <img src="https://octodex.github.com/images/stormtroopocat.jpg"
                  alt="Stormtroopocat"
                  title="The Stormtroopocat"
-                 id="trooper"
+                 id="trooper-img"
             >
             <figcaption>
               <a href="#trooper">
@@ -107,14 +104,14 @@ describe("basic functionality", function () {
         Hello World
       </h1>
       <p>
-        <div class="figure-wrapper"
-             id="the-stormtroopocat"
+        <div id="the-stormtroopocat"
+             class="figure-wrapper"
         >
           <figure>
             <img src="https://octodex.github.com/images/stormtroopocat.jpg"
                  alt="Stormtroopocat"
                  title="The Stormtroopocat"
-                 id="the-stormtroopocat"
+                 id="the-stormtroopocat-img"
             >
             <figcaption>
               <a href="#the-stormtroopocat">
@@ -124,14 +121,14 @@ describe("basic functionality", function () {
             </figcaption>
           </figure>
         </div>
-        <div class="figure-wrapper"
-             id="minion"
+        <div id="minion"
+             class="figure-wrapper"
         >
           <figure>
             <img src="https://octodex.github.com/images/minion.png"
                  alt="Minion"
                  title="The Minion"
-                 id="minion"
+                 id="minion-img"
             >
             <figcaption>
               <a href="#minion">

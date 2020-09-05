@@ -1,6 +1,3 @@
-const { join } = require("path");
-const { readFileSync } = require("fs");
-
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
@@ -16,14 +13,14 @@ describe("markdown-it handling", function () {
         Hello World
       </h1>
       <p>
-        <div class="figure-wrapper"
-             id="the-stormtroopocat"
+        <div id="the-stormtroopocat"
+             class="figure-wrapper"
         >
           <figure>
             <img src="https://octodex.github.com/images/stormtroopocat.jpg"
                  alt="Stormtroopocat"
                  title="The Stormtroopocat"
-                 id="the-stormtroopocat"
+                 id="the-stormtroopocat-img"
             >
             <figcaption>
               <a href="#the-stormtroopocat">
