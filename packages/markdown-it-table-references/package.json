@@ -1,0 +1,45 @@
+{
+  "name": "markdown-it-table-references",
+  "version": "0.0.0",
+  "description": "MarkdownIt Plugin for table references and list",
+  "keywords": [
+    "markdown",
+    "markdown-it",
+    "markdown-it-plugin",
+    "table",
+    "reference",
+    "list"
+  ],
+  "author": "Alija Sabic <sabic.alija@gmail.com>",
+  "homepage": "https://www.github.com/studyathome-internationally/markdown-it-plugins/packages/markdown-it-table-references",
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "directories": {
+    "test": "__tests__"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/studyathome-internationally/markdown-it-plugins.git"
+  },
+  "scripts": {
+    "test": "jest --config=jest.config.js",
+    "test:update": "jest --updateSnapshot --config=jest.config.js"
+  },
+  "bugs": {
+    "url": "https://github.com/studyathome-internationally/markdown-it-plugins/issues"
+  },
+  "peerDependencies": {
+    "markdown-it": "*"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "jest-serializer-html": "^7.0.0",
+    "markdown-it": "^11.0.0",
+    "prettier": "^2.1.1"
+  }
+}

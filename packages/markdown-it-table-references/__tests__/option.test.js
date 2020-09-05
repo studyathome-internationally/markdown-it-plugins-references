@@ -1,0 +1,496 @@
+const { join } = require("path");
+const { readFileSync } = require("fs");
+
+const MarkdownIt = require("markdown-it");
+const MarkdownItPluginTableReferences = require("./../index.js");
+const md = new MarkdownIt({ xhtmlOut: true, html: true });
+
+describe("option: list", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { list: false });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <div class="table-wrapper"
+           id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            <a href="#client-overview">
+              Table 1
+            </a>
+            : Client overview
+          </figcaption>
+        </figure>
+      </div>
+    `);
+  });
+});
+
+describe("option: listTitle", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { listTitle: "List of Boards" });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <div class="table-wrapper"
+           id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            <a href="#client-overview">
+              Table 1
+            </a>
+            : Client overview
+          </figcaption>
+        </figure>
+      </div>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Boards
+      </h2>
+      <ol class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Table 1
+          </a>
+          : Client overview
+        </li>
+      </ol>
+    `);
+  });
+});
+
+describe("option: listTag", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { listTag: "ul" });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <div class="table-wrapper"
+           id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            <a href="#client-overview">
+              Table 1
+            </a>
+            : Client overview
+          </figcaption>
+        </figure>
+      </div>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Tables
+      </h2>
+      <ul class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Table 1
+          </a>
+          : Client overview
+        </li>
+      </ul>
+    `);
+  });
+});
+
+describe("option: label", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { label: "Board" });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <div class="table-wrapper"
+           id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            <a href="#client-overview">
+              Board 1
+            </a>
+            : Client overview
+          </figcaption>
+        </figure>
+      </div>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Tables
+      </h2>
+      <ol class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Board 1
+          </a>
+          : Client overview
+        </li>
+      </ol>
+    `);
+  });
+});
+
+describe("option: wrapTable", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { wrapTable: false });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <table id="client-overview">
+        <caption>
+          Client overview
+        </caption>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Client
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Alice
+            </td>
+            <td>
+              Mobile
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Bob
+            </td>
+            <td>
+              Desktop
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Tables
+      </h2>
+      <ol class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Table 1
+          </a>
+          : Client overview
+        </li>
+      </ol>
+    `);
+  });
+});
+
+describe("option: wrapTag", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { wrapTag: "span" });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <span class="table-wrapper"
+            id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            <a href="#client-overview">
+              Table 1
+            </a>
+            : Client overview
+          </figcaption>
+        </figure>
+      </span>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Tables
+      </h2>
+      <ol class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Table 1
+          </a>
+          : Client overview
+        </li>
+      </ol>
+    `);
+  });
+});
+
+describe("option: injectLabel", function () {
+  it("reload rule", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginTableReferences, { injectLabel: false });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <div class="table-wrapper"
+           id="client-overview"
+      >
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Client
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Alice
+                </td>
+                <td>
+                  Mobile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bob
+                </td>
+                <td>
+                  Desktop
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            Client overview
+          </figcaption>
+        </figure>
+      </div>
+      <h2 id="list-of-tables">
+        <a href="#list-of-tables"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Tables
+      </h2>
+      <ol class="list-of-tables-list">
+        <li>
+          <a href="#client-overview">
+            Table 1
+          </a>
+          : Client overview
+        </li>
+      </ol>
+    `);
+  });
+});
