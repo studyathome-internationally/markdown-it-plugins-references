@@ -15,7 +15,6 @@
   "license": "GPL-3.0",
   "main": "index.js",
   "directories": {
-    "lib": "lib",
     "test": "__tests__"
   },
   "files": [
@@ -38,6 +37,8 @@
   },
   "devDependencies": {
     "jest": "^26.4.2",
-    "markdown-it": "^11.0.0"
+    "jest-serializer-html": "^7.0.0",
+    "markdown-it": "^11.0.0",
+    "prettier": "^2.1.1"
   }
 }
