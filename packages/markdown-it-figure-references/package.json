@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-figure-references",
-  "version": "0.0.0-beta.5",
+  "version": "0.0.0-beta.6",
   "description": "MarkdownIt Plugin for image references and list",
   "keywords": [
     "markdown",
