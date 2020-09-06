@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-references",
-  "version": "0.0.0-beta.1",
+  "version": "0.0.1",
   "description": "MarkdownIt Plugin for (ordered) id reference injection",
   "keywords": [
     "markdown",
@@ -39,9 +39,9 @@
     "jest": "^26.4.2",
     "jest-serializer-html": "^7.0.0",
     "markdown-it": "^11.0.0",
-    "markdown-it-attribution-references": "^0.0.0-beta.2",
-    "markdown-it-figure-references": "^0.0.0-beta.8",
-    "markdown-it-table-references": "^0.0.0-beta.2",
+    "markdown-it-attribution-references": "^0.0.1",
+    "markdown-it-figure-references": "^0.0.1",
+    "markdown-it-table-references": "^0.0.1",
     "prettier": "^2.1.1"
   }
 }
