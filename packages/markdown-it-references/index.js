@@ -86,7 +86,7 @@ function reference_renderer(opts) {
     if (label) {
       return renderer(id, label, index);
     }
-    return `<<${token.meta.targetId}>>`;
+    return `&lt;&lt;${token.meta.targetId}&gt;&gt;`;
   };
 }
 

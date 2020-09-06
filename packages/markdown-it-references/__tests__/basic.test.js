@@ -9,8 +9,28 @@ md.use(require("markdown-it-table-references"));
 md.use(require("markdown-it-attribution-references"));
 
 describe("basic functionality", () => {
+  it("missing id", () => {
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
+    md.use(MarkdownItPluginReferences);
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        References
+      </h1>
+      <p>
+        &lt;&lt;icognito&gt;&gt; is not defined.
+      </p>
+    `);
+  });
+
   it("figure label insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.figure.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.figure.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -62,7 +82,10 @@ describe("basic functionality", () => {
   });
 
   it("table label insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.table.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.table.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -137,7 +160,10 @@ describe("basic functionality", () => {
   });
 
   it("attribution label insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.attribution.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.attribution.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -201,7 +227,10 @@ describe("basic functionality", () => {
   });
 
   it("mutli label insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.multi.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.multi.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
