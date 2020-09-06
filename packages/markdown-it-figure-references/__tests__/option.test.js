@@ -64,13 +64,46 @@ describe("options", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Images
       </h2>
+      <ol class="list-of-figures-list">
+        <li>
+          <a href="#the-stormtroopocat">
+            Figure 1
+          </a>
+          : The Stormtroopocat
+        </li>
+      </ol>
+    `);
+  });
+
+  it("option: listTitle empty", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    md.use(MarkdownItPluginFigureReferences, { listTitle: "" });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>
+        Hello World
+      </h1>
+      <p>
+        <div id="the-stormtroopocat"
+             class="figure-wrapper"
+        >
+          <figure>
+            <img src="https://octodex.github.com/images/stormtroopocat.jpg"
+                 alt="Stormtroopocat"
+                 title="The Stormtroopocat"
+                 id="the-stormtroopocat-img"
+            >
+            <figcaption>
+              <a href="#the-stormtroopocat">
+                Figure 1
+              </a>
+              : The Stormtroopocat
+            </figcaption>
+          </figure>
+        </div>
+      </p>
       <ol class="list-of-figures-list">
         <li>
           <a href="#the-stormtroopocat">
@@ -110,11 +143,6 @@ describe("options", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ul class="list-of-figures-list">
@@ -156,11 +184,6 @@ describe("options", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
@@ -190,11 +213,6 @@ describe("options", () => {
         >
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
@@ -236,11 +254,6 @@ describe("options", () => {
         </span>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
@@ -279,11 +292,6 @@ describe("options", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">

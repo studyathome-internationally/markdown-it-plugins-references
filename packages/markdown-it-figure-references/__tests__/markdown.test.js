@@ -7,7 +7,10 @@ const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("markdown-it handling", () => {
   it("reload rule", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginFigureReferences);
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
@@ -35,11 +38,6 @@ describe("markdown-it handling", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">

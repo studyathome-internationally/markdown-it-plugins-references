@@ -7,7 +7,10 @@ const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("basic functionality", () => {
   it("automatic id insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.1.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -34,11 +37,6 @@ describe("basic functionality", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
@@ -52,7 +50,10 @@ describe("basic functionality", () => {
     `);
   });
   it("manual id insertion", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.2.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.2.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -79,11 +80,6 @@ describe("basic functionality", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
@@ -97,7 +93,10 @@ describe("basic functionality", () => {
     `);
   });
   it("multiple images", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "basic.3.md"), "utf8");
+    const text = readFileSync(
+      join(__dirname, "__cases__", "basic.3.md"),
+      "utf8"
+    );
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -122,6 +121,8 @@ describe("basic functionality", () => {
             </figcaption>
           </figure>
         </div>
+      </p>
+      <p>
         <div id="minion"
              class="figure-wrapper"
         >
@@ -141,11 +142,6 @@ describe("basic functionality", () => {
         </div>
       </p>
       <h2 id="list-of-figures">
-        <a href="#list-of-figures"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Figures
       </h2>
       <ol class="list-of-figures-list">
