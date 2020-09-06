@@ -9,7 +9,7 @@ const md = require("markdown-it")()
   .use(require("markdown-it-attribution-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](). -->
+See a [demo as JSFiddle](https://jsfiddle.net/ezg50hj7/1/).
 
 The `opts` object can contain:
 
