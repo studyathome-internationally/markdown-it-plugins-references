@@ -94,23 +94,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of References
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of References
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -155,23 +155,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ul class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ul>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ul class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ul>
     `);
   });
 
@@ -216,23 +216,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Reference 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Reference 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -277,23 +277,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </section>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -338,23 +338,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -399,23 +399,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -425,7 +425,7 @@ describe("options", () => {
       "utf8"
     );
     md.use(MarkdownItPluginAttributeReferences, {
-      class: "reference-container",
+      wrapClass: "reference-container",
     });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -462,23 +462,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 
@@ -537,23 +537,23 @@ describe("options", () => {
       Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
           </p>
         </div>
-        <h2 id="list-of-attributions">
-          <a href="#list-of-attributions"
-             class="header-anchor"
-          >
-            #
-          </a>
-          List of Attributions
-        </h2>
-        <ol class="list-of-attributions-list">
-          <li>
-            <a href="#wikipedia-authors-markdown">
-              Attribution 1
-            </a>
-            : Markdown
-          </li>
-        </ol>
       </div>
+      <h2 id="list-of-attributions">
+        <a href="#list-of-attributions"
+           class="header-anchor"
+        >
+          #
+        </a>
+        List of Attributions
+      </h2>
+      <ol class="list-of-attributions-list">
+        <li>
+          <a href="#wikipedia-authors-markdown">
+            Attribution 1
+          </a>
+          : Markdown
+        </li>
+      </ol>
     `);
   });
 });
