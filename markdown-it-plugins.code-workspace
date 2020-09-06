@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "packages/markdown-it-figure-references"
+    },
+    {
+      "path": "packages/markdown-it-table-references"
+    },
+    {
+      "path": "packages/markdown-it-attribution-references"
+    }
+  ],
+  "settings": {}
+}
