@@ -93,12 +93,8 @@ function figure_reference_list_rule(opts) {
 function figure_reference_list_open_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
-    return (
-      `<h2 id="list-of-figures"><a href="#list-of-figures" class="header-anchor">#</a>` +
-      opts.listTitle +
-      `</h2>\n` +
-      `<${token.tag} class="list-of-figures-list">\n`
-    );
+    const title = opts.listTitle ? `<h2 id="list-of-figures">${opts.listTitle}</h2>\n` : "";
+    return `${title}<${token.tag} class="list-of-figures-list">\n`;
   };
 }
 
