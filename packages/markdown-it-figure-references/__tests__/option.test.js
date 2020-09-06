@@ -2,7 +2,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
-describe("options", function () {
+describe("options", () => {
   it("option: list", () => {
     const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
     md.use(MarkdownItPluginFigureReferences, { list: false });
