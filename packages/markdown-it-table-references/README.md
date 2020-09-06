@@ -9,7 +9,7 @@ const md = require("markdown-it")()
   .use(require("markdown-it-table-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](). -->
+See a [demo as JSFiddle](https://jsfiddle.net/sbhfd0tg/3/).
 
 The `opts` object can contain:
 
