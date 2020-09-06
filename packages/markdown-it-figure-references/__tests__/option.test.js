@@ -1,10 +1,13 @@
+const { join } = require("path");
+const { readFileSync } = require("fs");
+
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("options", () => {
   it("option: list", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { list: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -34,7 +37,7 @@ describe("options", () => {
   });
 
   it("option: listTitle", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { listTitle: "List of Images" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -80,7 +83,7 @@ describe("options", () => {
   });
 
   it("option: listTag", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { listTag: "ul" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -126,7 +129,7 @@ describe("options", () => {
   });
 
   it("option: label", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { label: "Image" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -172,7 +175,7 @@ describe("options", () => {
   });
 
   it("option: wrapImage", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { wrapImage: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -206,7 +209,7 @@ describe("options", () => {
   });
 
   it("option: wrapTag", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { wrapTag: "span" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -252,7 +255,7 @@ describe("options", () => {
   });
 
   it("option: injectLabel", () => {
-    const text = `# Hello World\n\n![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")`;
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences, { injectLabel: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
