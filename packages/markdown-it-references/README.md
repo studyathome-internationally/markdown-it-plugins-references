@@ -27,10 +27,12 @@ const md = require("markdown-it")()
   .use(require("markdown-it-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](). -->
+See a [demo as JSFiddle](https://jsfiddle.net/w2r6gkoc/1/).
 
 | Name     | Description                                        | Default                                                                           |
 | -------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
 | `labels` | Array of arrays of namespace (ns) and label pairs. | `[ ["figures", "Figure"], ["tables", "Table"], ["attributions", "Attribution"] ]` |
 
-NOTE: Label order resolves naming conflicts. However, the same id shouldn't occur in the same document more than once.
+**NOTE**  
+Label order resolves naming conflicts.
+However, the same id shouldn't occur in the same document more than once.
