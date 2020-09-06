@@ -5,12 +5,9 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginTableReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
-describe("option: list", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+describe("options", () => {
+  it("option: list", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { list: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -61,14 +58,9 @@ describe("option: list", function () {
       </div>
     `);
   });
-});
 
-describe("option: listTitle", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: listTitle", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { listTitle: "List of Boards" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -135,14 +127,9 @@ describe("option: listTitle", function () {
       </ol>
     `);
   });
-});
 
-describe("option: listTag", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: listTag", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { listTag: "ul" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -209,14 +196,9 @@ describe("option: listTag", function () {
       </ul>
     `);
   });
-});
 
-describe("option: label", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: label", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { label: "Board" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -283,14 +265,9 @@ describe("option: label", function () {
       </ol>
     `);
   });
-});
 
-describe("option: wrapTable", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: wrapTable", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { wrapTable: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -348,14 +325,9 @@ describe("option: wrapTable", function () {
       </ol>
     `);
   });
-});
 
-describe("option: wrapTag", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: wrapTag", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { wrapTag: "span" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -422,14 +394,9 @@ describe("option: wrapTag", function () {
       </ol>
     `);
   });
-});
 
-describe("option: injectLabel", function () {
-  it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("option: injectLabel", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences, { injectLabel: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

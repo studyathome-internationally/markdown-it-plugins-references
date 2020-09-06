@@ -5,12 +5,9 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginTableReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
-describe("markdown-it handling", function () {
+describe("markdown-it handling", () => {
   it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginTableReferences);
     md.use(MarkdownItPluginTableReferences);
     const result = md.render(text);

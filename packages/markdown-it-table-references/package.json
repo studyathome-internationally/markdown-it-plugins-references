@@ -24,7 +24,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/studyathome-internationally/markdown-it-plugins.git"
+    "url": "git+https://github.com/studyathome-internationally/markdown-it-plugins.git",
+    "directory": "packages/markdown-it-table-references"
   },
   "scripts": {
     "test": "jest --config=jest.config.js",
