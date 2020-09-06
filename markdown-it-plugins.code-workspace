@@ -11,6 +11,9 @@
     },
     {
       "path": "packages/markdown-it-attribution-references"
+    },
+    {
+      "path": "packages/markdown-it-references"
     }
   ],
   "settings": {}
