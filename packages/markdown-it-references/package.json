@@ -9,7 +9,7 @@
     "reference"
   ],
   "author": "Alija Sabic <sabic.alija@gmail.com>",
-  "homepage": "https://www.github.com/studyathome-internationally/markdown-it-plugins/packages/markdown-it-references",
+  "homepage": "https://github.com/studyathome-internationally/markdown-it-plugins/tree/master/packages/markdown-it-references",
   "license": "GPL-3.0",
   "main": "index.js",
   "directories": {
