@@ -44,7 +44,7 @@ function attribution_rule(opts) {
       const attributionOpen = new state.Token("attribution_open", opts.wrapTag, 1);
       attributionOpen.block = true;
       attributionOpen.attrSet("id", id);
-      attributionOpen.attrSet("class", opts.class);
+      attributionOpen.attrSet("class", opts.wrapClass);
       attributionOpen.meta = { license, title, titleUrl, author, authorUrl };
 
       tokens.push(attributionOpen);
@@ -65,10 +65,10 @@ function attribution_rule(opts) {
     } else if (line === attribution_terminator_close) {
       state.line++;
 
-      const attributionClose = new state.Token("attribution_close", opts.tag, -1);
+      const attributionClose = new state.Token("attribution_close", opts.wrapTag, -1);
       attributionClose.block = true;
-
       tokens.push(attributionClose);
+
       return true;
     }
 
@@ -119,7 +119,7 @@ function attribution_open_renderer(opts) {
 function attribution_close_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
-    return `</div></${token.tag}>\n`;
+    return `</div>\n</${token.tag}>\n`;
   };
 }
 
@@ -160,10 +160,9 @@ attribution_references.defaults = {
   listTag: "ol",
   label: "Attribution",
   wrapTag: "div",
+  wrapClass: "attribution-container",
   terminator: ":::",
   terminatorLabel: "attribution",
-  class: "attribution-container",
-  // https://en.wikipedia.org/wiki/Comparison_of_free_and_open-source_software_licences
   licenses: [
     {
       id: "cc-by",
