@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-references",
-  "version": "0.0.0-beta.0",
+  "version": "0.0.0-beta.1",
   "description": "MarkdownIt Plugin for (ordered) id reference injection",
   "keywords": [
     "markdown",
