@@ -49,11 +49,6 @@ describe("basic functionality", function () {
         </div>
       </div>
       <h2 id="list-of-attributions">
-        <a href="#list-of-attributions"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Attributions
       </h2>
       <ol class="list-of-attributions-list">
@@ -110,11 +105,6 @@ describe("basic functionality", function () {
         </div>
       </div>
       <h2 id="list-of-attributions">
-        <a href="#list-of-attributions"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Attributions
       </h2>
       <ol class="list-of-attributions-list">
@@ -208,11 +198,6 @@ describe("basic functionality", function () {
         </div>
       </div>
       <h2 id="list-of-attributions">
-        <a href="#list-of-attributions"
-           class="header-anchor"
-        >
-          #
-        </a>
         List of Attributions
       </h2>
       <ol class="list-of-attributions-list">
