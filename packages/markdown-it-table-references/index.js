@@ -13,49 +13,106 @@ const table_references = (md, opts) => {
   md.renderer.rules.table_reference_list_open = table_reference_list_open_renderer(opts);
   md.renderer.rules.table_reference_list_item = table_reference_list_item_renderer(opts);
   md.renderer.rules.table_reference_list_close = table_reference_list_close_renderer(opts);
-
-  if (opts.wrapTable) {
-    md.renderer.rules.table_wrapper_open = table_wrapper_open_renderer(opts);
-    md.renderer.rules.table_wrapper_close = table_wrapper_close_renderer(opts);
-  }
+  md.renderer.rules.table_wrapper_open = table_wrapper_open_renderer(opts);
+  md.renderer.rules.table_wrapper_close = table_wrapper_close_renderer(opts);
 };
+
+function addTable(state, opts, id, caption) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = {};
+  }
+  const refs = state.env[opts.ns].refs;
+  refs[id] = {
+    id,
+    caption,
+    index: Object.keys(refs).length + 1,
+  };
+}
 
 function table_reference_rule(opts) {
   const table_reference = (state /* , silent */) => {
     let tableOpenPos = 0;
     const tokens = state.tokens;
 
-    for (let idx = 0; idx < tokens.length - 2; idx++) {
-      const token = tokens[idx];
+    for (let i = 0; i < tokens.length; i++) {
+      const { type, content } = tokens[i];
 
-      if (token.type === "html_block") {
-      } else if (token.type === "table_open") {
-        tableOpenPos = idx;
-      } else if (token.type === "table_close") {
-        if (idx < tableOpenPos) {
+      if (type === "html_block") {
+        if (opts.wrap) {
+          const rFigure = /<figure[\s\S]*?<\/figure>/gm;
+          let match;
+          while ((match = rFigure.exec(content))) {
+            const rProp = /id\s*?=\s*?"(.*?)"[\s\S]*?table[\s\S]*<figcaption>(.*?)<\/figcaption>/gm;
+            let m = rProp.exec(match);
+            if (!m) continue;
+            const [figure, id, caption] = m;
+            addTable(state, opts, id, caption);
+
+            if (opts.injectLabel) {
+              const start = content.substring(0, match.index);
+              const end = content.substring(match.index + match[0].length);
+              const label = opts.label;
+              const index = state.env[opts.ns].refs[id].index;
+              const newFigure = match[0].replace(
+                "<figcaption>",
+                `<figcaption>\n  <a href="#${id}">${label} ${index}</a>: `
+              );
+              tokens[i].content = start + newFigure + end;
+            }
+          }
+        } else {
+          const rTable = /<table[\s\S]*?<\/table>/gm;
+          let match;
+          while ((match = rTable.exec(content))) {
+            const rProp = /id\s*?=\s*?"(.*?)"[\s\S]*?<caption>([\s\S]*?)<\/caption>/gm;
+            let m = rProp.exec(match);
+            if (!m) continue;
+            const [table, id, caption] = m;
+            addTable(state, opts, id, caption);
+
+            if (opts.injectLabel) {
+              const start = content.substring(0, match.index);
+              const end = content.substring(match.index + match[0].length);
+              const label = opts.label;
+              const index = state.env[opts.ns].refs[id].index;
+              const newTable = match[0].replace("<caption>", `<caption>\n  <a href="#${id}">${label} ${index}</a>: `);
+              tokens[i].content = start + newTable + end;
+            }
+          }
+        }
+      } else if (type === "table_open") {
+        tableOpenPos = i;
+      } else if (type === "table_close") {
+        if (i + 4 > tokens.length) {
           break;
         }
-        if (tokens[idx + 1].type !== "paragraph_open") {
+        if (i < tableOpenPos) {
           break;
         }
-        if (tokens[idx + 2].type !== "inline") {
+        if (tokens[i + 1].type !== "paragraph_open") {
           break;
         }
-        if (tokens[idx + 2].children.length !== 1) {
+        if (tokens[i + 2].type !== "inline") {
           break;
         }
-        if (tokens[idx + 3].type !== "paragraph_close") {
+        if (tokens[i + 2].children.length !== 1) {
           break;
         }
-        if (tokens[idx + 2].content.charCodeAt(0) !== 0x2e /* . */) {
+        if (tokens[i + 3].type !== "paragraph_close") {
           break;
         }
-        if (tokens[idx + 2].content.charCodeAt(1) === 0x20) {
+        if (tokens[i + 2].content.charCodeAt(0) !== 0x2e /* . */) {
+          break;
+        }
+        if (tokens[i + 2].content.charCodeAt(1) === 0x20) {
           break;
         }
 
         let id, caption;
-        const tableCaption = tokens[idx + 2];
+        const tableCaption = tokens[i + 2];
         if (tableCaption.content.split("#").length === 2) {
           [id, caption] = tableCaption.content.substring(1).split("#");
         } else {
@@ -65,16 +122,16 @@ function table_reference_rule(opts) {
 
         const tableOpen = tokens[tableOpenPos];
         tableOpen.attrSet("id", id);
-        if (opts.wrapTable) tableOpen.type = "table_wrapper_open";
+        if (opts.wrap) tableOpen.type = "table_wrapper_open";
         tableOpen.meta = { id, caption };
 
-        const tableClose = tokens[idx];
-        if (opts.wrapTable) tableClose.type = "table_wrapper_close";
+        const tableClose = tokens[i];
+        if (opts.wrap) tableClose.type = "table_wrapper_close";
         tableClose.meta = { origin: id, caption };
 
-        tokens.splice(idx + 1, 3);
+        tokens.splice(i + 1, 3);
 
-        if (!opts.wrapTable) {
+        if (!opts.wrap) {
           const tableCaptionOpen = new state.Token("table_caption_open", "caption", 1);
           const tableCaptionContent = new state.Token("inline", "", 0);
           const tableCaptionText = new state.Token("text", "", 0);
@@ -86,17 +143,7 @@ function table_reference_rule(opts) {
           tokens.splice(tableOpenPos + 1, 0, tableCaptionOpen, tableCaptionContent, tableCaptionClose);
         }
 
-        if (!state.env[opts.ns]) {
-          state.env[opts.ns] = {};
-        }
-        if (!state.env[opts.ns].refs) {
-          state.env[opts.ns].refs = {};
-        }
-        state.env[opts.ns].refs[id] = {
-          id,
-          caption,
-          index: Object.keys(state.env[opts.ns].refs).length + 1,
-        };
+        addTable(state, opts, id, caption);
       }
     }
   };
@@ -152,7 +199,7 @@ function table_wrapper_open_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
     const id = token.attrGet("id");
-    return `<${opts.wrapTag} class="table-wrapper" id="${id}">\n<figure>\n<${token.tag}>\n`;
+    return `<figure id="${id}">\n<${token.tag}>\n`;
   };
 }
 
@@ -167,8 +214,7 @@ function table_wrapper_close_renderer(opts) {
       `  <figcaption>\n` +
       `    ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${caption}\n` +
       `  </figcaption>\n` +
-      `</figure>\n` +
-      `</${opts.wrapTag}>`
+      `</figure>\n`
     );
   };
 }
@@ -179,13 +225,12 @@ function sanitize(text) {
 
 table_references.defaults = {
   ns: "tables",
+  label: "Table",
+  injectLabel: true,
+  wrap: true,
   list: true,
   listTitle: "List of Tables",
   listTag: "ol",
-  label: "Table",
-  wrapTable: true,
-  wrapTag: "div",
-  injectLabel: true,
 };
 
 module.exports = table_references;
