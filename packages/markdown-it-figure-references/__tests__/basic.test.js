@@ -7,10 +7,7 @@ const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("basic functionality", () => {
   it("automatic id insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -50,10 +47,7 @@ describe("basic functionality", () => {
     `);
   });
   it("manual id insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.2.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.2.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -93,10 +87,7 @@ describe("basic functionality", () => {
     `);
   });
   it("multiple images", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.3.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.3.md"), "utf8");
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

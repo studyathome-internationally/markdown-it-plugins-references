@@ -94,7 +94,7 @@ function figure_reference_list_open_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
     const title = opts.listTitle ? `<h2 id="list-of-figures">${opts.listTitle}</h2>\n` : "";
-    return `${title}<${token.tag} class="list-of-figures-list">\n`;
+    return title + `<${token.tag} class="list-of-figures-list">\n`;
   };
 }
 
