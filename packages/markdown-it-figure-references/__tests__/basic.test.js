@@ -13,14 +13,12 @@ describe("basic functionality", () => {
     expect(result).toMatchInlineSnapshot(`
       <h1>Hello World</h1>
       <p>
-      <div id="the-stormtroopocat" class="figure-wrapper">
-        <figure>
-          <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" id="the-stormtroopocat-img" />
-          <figcaption>
-            <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
-          </figcaption>
-        </figure>
-      </div>
+      <figure id="the-stormtroopocat">
+        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+        <figcaption>
+          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
+        </figcaption>
+      </figure>
       </p>
       <h2 id="list-of-figures">List of Figures</h2>
       <ol class="list-of-figures-list">
@@ -35,14 +33,12 @@ describe("basic functionality", () => {
     expect(result).toMatchInlineSnapshot(`
       <h1>Hello World</h1>
       <p>
-      <div id="trooper" class="figure-wrapper">
-        <figure>
-          <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" id="trooper-img" />
-          <figcaption>
-            <a href="#trooper">Figure 1</a>: The Stormtroopocat
-          </figcaption>
-        </figure>
-      </div>
+      <figure id="trooper">
+        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+        <figcaption>
+          <a href="#trooper">Figure 1</a>: The Stormtroopocat
+        </figcaption>
+      </figure>
       </p>
       <h2 id="list-of-figures">List of Figures</h2>
       <ol class="list-of-figures-list">
@@ -57,24 +53,20 @@ describe("basic functionality", () => {
     expect(result).toMatchInlineSnapshot(`
       <h1>Hello World</h1>
       <p>
-      <div id="the-stormtroopocat" class="figure-wrapper">
-        <figure>
-          <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" id="the-stormtroopocat-img" />
-          <figcaption>
-            <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
-          </figcaption>
-        </figure>
-      </div>
+      <figure id="the-stormtroopocat">
+        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+        <figcaption>
+          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
+        </figcaption>
+      </figure>
       </p>
       <p>
-      <div id="minion" class="figure-wrapper">
-        <figure>
-          <img src="https://octodex.github.com/images/minion.png" alt="Minion" title="The Minion" id="minion-img" />
-          <figcaption>
-            <a href="#minion">Figure 2</a>: The Minion
-          </figcaption>
-        </figure>
-      </div>
+      <figure id="minion">
+        <img src="https://octodex.github.com/images/minion.png" alt="Minion" title="The Minion" />
+        <figcaption>
+          <a href="#minion">Figure 2</a>: The Minion
+        </figcaption>
+      </figure>
       </p>
       <h2 id="list-of-figures">List of Figures</h2>
       <ol class="list-of-figures-list">

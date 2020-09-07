@@ -13,54 +13,95 @@ const figure_references = (md, opts) => {
   md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
   md.renderer.rules.figure_reference_list_item = figure_reference_list_item_renderer(opts);
   md.renderer.rules.figure_reference_list_close = figure_reference_list_close_renderer(opts);
-
-  if (opts.wrapImage) {
-    md.renderer.rules.figure_wrapper = figure_wrapper_renderer(opts, md.renderer.rules.image);
-  } else if (reload) {
-    md.renderer.rules.figure_wrapper = md.renderer.rules.image;
-  }
+  md.renderer.rules.figure_wrapper = figure_wrapper_renderer(opts, md.renderer.rules.image);
 };
+
+function addImage(state, opts, id, title) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = {};
+  }
+  const refs = state.env[opts.ns].refs;
+  refs[id] = {
+    id,
+    title,
+    index: Object.keys(refs).length + 1,
+  };
+}
 
 function figure_reference_rule(opts) {
   const figure_reference = (state /* , silent */) => {
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
-      let { children, type } = state.tokens[i];
+      let { children, type, content } = state.tokens[i];
 
-      if (type !== "inline") continue;
+      if (type !== "inline" && type !== "html_block") continue;
 
-      for (let j = 0; j < children.length; j++) {
-        let token = children[j];
-        if (token.type !== "image") continue;
+      if (type === "html_block") {
+        if (opts.wrap) {
+          const rFigure = /<figure[\s\S]*?<\/figure>/gm;
+          let match;
+          while ((match = rFigure.exec(content))) {
+            const rProp = /id\s*?=\s*?"(.*?)"[\s\S]*?img[\s\S]*?<figcaption>([\s\S]*?)<\/figcaption>/gm;
+            const m = rProp.exec(match);
+            if (!m) continue;
+            const [figure, id, title] = m;
+            addImage(state, opts, id, title);
 
-        const titleContent = token.attrGet("title") || token.attrGet("alt");
-        if (!titleContent) continue;
-
-        if (opts.wrapImage) token.type = "figure_wrapper";
-
-        let id,
-          title = titleContent;
-        if (titleContent.split("#").length === 2) {
-          [id, title] = titleContent.split("#");
+            if (opts.injectLabel) {
+              const start = content.substring(0, match.index);
+              const end = content.substring(match.index + match[0].length);
+              const label = opts.label;
+              const index = state.env[opts.ns].refs[id].index;
+              const newFigure = match[0].replace(
+                "<figcaption>",
+                `<figcaption>\n  <a href="#${id}">${label} ${index}</a>: `
+              );
+              tokens[i].content = start + newFigure + end;
+            }
+          }
         } else {
-          id = sanitize(title);
-        }
-        token.attrSet("id", opts.wrapImage ? `${id}-img` : id);
-        token.attrSet("title", title);
-        token.meta = { origin: id };
+          const rImage = /<img[\s\S]*?(?:id\s*?=\s*?"(.*?))"[\s\S]*?\/(?:img)?>/gm;
+          let match;
+          while ((match = rImage.exec(content))) {
+            const [image, id] = match;
 
-        if (!state.env[opts.ns]) {
-          state.env[opts.ns] = {};
+            let title;
+            const rTitle = /title\s*?=\s*?"(.*?)"/gm.exec(image);
+            const rAlt = /alt\s*?=\s*?"(.*?)"/gm.exec(image);
+
+            title = rTitle ? rTitle[1] : rAlt ? rAlt[1] : false;
+            if (!title) continue;
+
+            addImage(state, opts, id, title);
+          }
         }
-        if (!state.env[opts.ns].refs) {
-          state.env[opts.ns].refs = {};
+      } else {
+        for (let j = 0; j < children.length; j++) {
+          let token = children[j];
+          if (token.type !== "image") continue;
+
+          const titleContent = token.attrGet("title") || token.attrGet("alt");
+          if (!titleContent) continue;
+
+          if (opts.wrap) token.type = "figure_wrapper";
+
+          let id,
+            title = titleContent;
+          if (titleContent.split("#").length === 2) {
+            [id, title] = titleContent.split("#");
+          } else {
+            id = sanitize(title);
+          }
+          if (!opts.wrap) token.attrSet("id", id);
+          token.attrSet("title", title);
+          token.meta = { targetId: id };
+
+          addImage(state, opts, id, title);
         }
-        state.env[opts.ns].refs[id] = {
-          id,
-          title,
-          index: Object.keys(state.env[opts.ns].refs).length + 1,
-        };
       }
     }
   };
@@ -115,19 +156,17 @@ function figure_reference_list_close_renderer(opts) {
 function figure_wrapper_renderer(opts, defaultRenderer) {
   return (tokens, idx, options, env, self) => {
     const token = tokens[idx];
-    const id = token.meta.origin;
+    const id = token.meta.targetId;
     const title = token.attrGet("title");
     const entry = env[opts.ns].refs[id];
     if (id && entry) {
       return (
-        `<${opts.wrapTag} id="${id}" class="figure-wrapper">\n` +
-        `  <figure>\n` +
-        `    ${defaultRenderer(tokens, idx, options, env, self)}\n` +
-        `    <figcaption>\n` +
-        `      ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${title}\n` +
-        `    </figcaption>\n` +
-        `  </figure>\n` +
-        `</${opts.wrapTag}>`
+        `<figure id="${id}">\n` +
+        `  ${defaultRenderer(tokens, idx, options, env, self)}\n` +
+        `  <figcaption>\n` +
+        `    ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${title}\n` +
+        `  </figcaption>\n` +
+        `</figure>`
       );
     }
   };
@@ -139,13 +178,12 @@ function sanitize(text) {
 
 figure_references.defaults = {
   ns: "figures",
+  label: "Figure",
+  injectLabel: true,
+  wrap: true,
   list: true,
   listTitle: "List of Figures",
   listTag: "ol",
-  label: "Figure",
-  wrapImage: true,
-  wrapTag: "div",
-  injectLabel: true,
 };
 
 module.exports = figure_references;
