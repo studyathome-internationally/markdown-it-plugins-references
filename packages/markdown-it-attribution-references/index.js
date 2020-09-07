@@ -126,12 +126,8 @@ function attribution_close_renderer(opts) {
 function attribution_list_open_renderer(opts) {
   return function (tokens, idx /* , options, env, self */) {
     const token = tokens[idx];
-    return (
-      '<h2 id="list-of-attributions"><a href="#list-of-attributions" class="header-anchor">#</a>' +
-      opts.listTitle +
-      "</h2>\n" +
-      `<${token.tag} class="list-of-attributions-list">\n`
-    );
+    const title = opts.listTitle ? `<h2 id="list-of-attributions">${opts.listTitle}</h2>\n` : "";
+    return title + `<${token.tag} class="list-of-attributions-list">\n`;
   };
 }
 
