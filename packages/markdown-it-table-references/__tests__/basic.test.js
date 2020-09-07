@@ -14,61 +14,35 @@ describe("basic functionality", () => {
     md.use(MarkdownItPluginTableReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
-      <h1>
-        Hello World
-      </h1>
-      <div class="table-wrapper"
-           id="client-overview"
-      >
+      <h1>Hello World</h1>
+      <div class="table-wrapper" id="client-overview">
         <figure>
           <table>
             <thead>
               <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Client
-                </th>
+                <th>Name</th>
+                <th>Client</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>
-                  Alice
-                </td>
-                <td>
-                  Mobile
-                </td>
+                <td>Alice</td>
+                <td>Mobile</td>
               </tr>
               <tr>
-                <td>
-                  Bob
-                </td>
-                <td>
-                  Desktop
-                </td>
+                <td>Bob</td>
+                <td>Desktop</td>
               </tr>
             </tbody>
           </table>
           <figcaption>
-            <a href="#client-overview">
-              Table 1
-            </a>
-            : Client overview
+            <a href="#client-overview">Table 1</a>: Client overview
           </figcaption>
         </figure>
       </div>
-      <h2 id="list-of-tables">
-        List of Tables
-      </h2>
+      <h2 id="list-of-tables">List of Tables</h2>
       <ol class="list-of-tables-list">
-        <li>
-          <a href="#client-overview">
-            Table 1
-          </a>
-          : Client overview
-        </li>
+        <li><a href="#client-overview">Table 1</a>: Client overview</li>
       </ol>
     `);
   });
@@ -81,61 +55,35 @@ describe("basic functionality", () => {
     md.use(MarkdownItPluginTableReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
-      <h1>
-        Hello World
-      </h1>
-      <div class="table-wrapper"
-           id="overview"
-      >
+      <h1>Hello World</h1>
+      <div class="table-wrapper" id="overview">
         <figure>
           <table>
             <thead>
               <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Client
-                </th>
+                <th>Name</th>
+                <th>Client</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>
-                  Alice
-                </td>
-                <td>
-                  Mobile
-                </td>
+                <td>Alice</td>
+                <td>Mobile</td>
               </tr>
               <tr>
-                <td>
-                  Bob
-                </td>
-                <td>
-                  Desktop
-                </td>
+                <td>Bob</td>
+                <td>Desktop</td>
               </tr>
             </tbody>
           </table>
           <figcaption>
-            <a href="#overview">
-              Table 1
-            </a>
-            : Client overview
+            <a href="#overview">Table 1</a>: Client overview
           </figcaption>
         </figure>
       </div>
-      <h2 id="list-of-tables">
-        List of Tables
-      </h2>
+      <h2 id="list-of-tables">List of Tables</h2>
       <ol class="list-of-tables-list">
-        <li>
-          <a href="#overview">
-            Table 1
-          </a>
-          : Client overview
-        </li>
+        <li><a href="#overview">Table 1</a>: Client overview</li>
       </ol>
     `);
   });
@@ -148,109 +96,61 @@ describe("basic functionality", () => {
     md.use(MarkdownItPluginTableReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
-      <h1>
-        Hello World
-      </h1>
-      <div class="table-wrapper"
-           id="client-overview"
-      >
+      <h1>Hello World</h1>
+      <div class="table-wrapper" id="client-overview">
         <figure>
           <table>
             <thead>
               <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Client
-                </th>
+                <th>Name</th>
+                <th>Client</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>
-                  Alice
-                </td>
-                <td>
-                  Mobile
-                </td>
+                <td>Alice</td>
+                <td>Mobile</td>
               </tr>
               <tr>
-                <td>
-                  Bob
-                </td>
-                <td>
-                  Desktop
-                </td>
+                <td>Bob</td>
+                <td>Desktop</td>
               </tr>
             </tbody>
           </table>
           <figcaption>
-            <a href="#client-overview">
-              Table 1
-            </a>
-            : Client overview
+            <a href="#client-overview">Table 1</a>: Client overview
           </figcaption>
         </figure>
       </div>
-      <div class="table-wrapper"
-           id="server-overview"
-      >
+      <div class="table-wrapper" id="server-overview">
         <figure>
           <table>
             <thead>
               <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Server
-                </th>
+                <th>Name</th>
+                <th>Server</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>
-                  Chris
-                </td>
-                <td>
-                  nginx
-                </td>
+                <td>Chris</td>
+                <td>nginx</td>
               </tr>
               <tr>
-                <td>
-                  Debra
-                </td>
-                <td>
-                  apache
-                </td>
+                <td>Debra</td>
+                <td>apache</td>
               </tr>
             </tbody>
           </table>
           <figcaption>
-            <a href="#server-overview">
-              Table 2
-            </a>
-            : Server overview
+            <a href="#server-overview">Table 2</a>: Server overview
           </figcaption>
         </figure>
       </div>
-      <h2 id="list-of-tables">
-        List of Tables
-      </h2>
+      <h2 id="list-of-tables">List of Tables</h2>
       <ol class="list-of-tables-list">
-        <li>
-          <a href="#client-overview">
-            Table 1
-          </a>
-          : Client overview
-        </li>
-        <li>
-          <a href="#server-overview">
-            Table 2
-          </a>
-          : Server overview
-        </li>
+        <li><a href="#client-overview">Table 1</a>: Client overview</li>
+        <li><a href="#server-overview">Table 2</a>: Server overview</li>
       </ol>
     `);
   });
