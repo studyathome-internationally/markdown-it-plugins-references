@@ -6,15 +6,12 @@ const MarkdownItPluginReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 md.use(require("markdown-it-figure-references"), {
   list: false,
-  wrapImage: false,
+  wrap: false,
 });
 
 describe("markdown-it handling", () => {
   it("reload rule", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.figure.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.figure.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
