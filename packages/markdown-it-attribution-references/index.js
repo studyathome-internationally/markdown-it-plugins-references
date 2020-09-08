@@ -18,6 +18,20 @@ const attribution_references = (md, opts) => {
   md.renderer.rules.attribution_list_close = attribution_list_close_renderer(opts);
 };
 
+function addAttribution(state, opts, id, meta) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = {};
+  }
+  state.env[opts.ns].refs[id] = {
+    id,
+    ...meta,
+    index: Object.keys(state.env[opts.ns].refs).length + 1,
+  };
+}
+
 function attribution_rule(opts) {
   const attribution = (state, startLine /* , endLine, silent */) => {
     const tokens = state.tokens;
@@ -44,29 +58,29 @@ function attribution_rule(opts) {
       const attributionOpen = new state.Token("attribution_open", opts.wrapTag, 1);
       attributionOpen.block = true;
       attributionOpen.attrSet("id", id);
-      attributionOpen.attrSet("class", opts.wrapClass);
       attributionOpen.meta = { license, title, titleUrl, author, authorUrl };
 
       tokens.push(attributionOpen);
 
-      if (!state.env[opts.ns]) {
-        state.env[opts.ns] = {};
-      }
-      if (!state.env[opts.ns].refs) {
-        state.env[opts.ns].refs = {};
-      }
-      state.env[opts.ns].refs[id] = {
-        id,
-        ...attributionOpen.meta,
-        index: Object.keys(state.env[opts.ns].refs).length + 1,
-      };
+      addAttribution(state, opts, id, attributionOpen.meta);
 
       return true;
     } else if (line === attribution_terminator_close) {
       state.line++;
 
+      const attributionOpen = tokens
+        .slice()
+        .reverse()
+        .find(({ type }) => type === "attribution_open");
+      if (!attributionOpen) return false;
+
+      const id = attributionOpen.attrGet("id");
+      const meta = attributionOpen.meta;
+
       const attributionClose = new state.Token("attribution_close", opts.wrapTag, -1);
       attributionClose.block = true;
+      attributionClose.meta = { targetId: id, ...meta };
+
       tokens.push(attributionClose);
 
       return true;
@@ -100,26 +114,22 @@ function attribution_list_rule(opts) {
   return attribution_list;
 }
 
+function attribution(token, opts) {
+  return `<p>\n<span>${opts.attribution.title}<a href="${token.meta.titleUrl}">${token.meta.title}</a>${opts.attribution.author}<a href="${token.meta.authorUrl}">${token.meta.author}</a>${opts.attribution.license}<a href="${token.meta.license.url.deeds}">${token.meta.license.name} ${token.meta.license.version}</a></span>\n</p>`;
+}
+
 function attribution_open_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
     const id = token.attrGet("id");
-    const className = token.attrGet("class");
-    return (
-      `<${token.tag} id="${id}" class="${className}">\n` +
-      `<p>\n` +
-      `<a href="#${id}" class="attribution-anchor">#</a>` +
-      `<span>Based on: <a href="${token.meta.titleUrl}">${token.meta.title}</a> by <a href="${token.meta.authorUrl}">${token.meta.author}</a>, License: <a href="${token.meta.license.url.deeds}">${token.meta.license.name} ${token.meta.license.version}</a></span>` +
-      "</p>\n" +
-      "<div>\n"
-    );
+    return `<${token.tag} id="${id}">\n` + `${opts.top ? attribution(token, opts) + "\n" : ""}` + "<div>\n";
   };
 }
 
 function attribution_close_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
-    return `</div>\n</${token.tag}>\n`;
+    return `</div>\n${opts.top ? "" : attribution(token, opts) + "\n"}</${token.tag}>\n`;
   };
 }
 
@@ -151,14 +161,19 @@ function sanitize(text) {
 
 attribution_references.defaults = {
   ns: "attributions",
+  top: false,
+  label: "Attribution",
+  wrapTag: "div",
   list: true,
   listTitle: "List of Attributions",
   listTag: "ol",
-  label: "Attribution",
-  wrapTag: "div",
-  wrapClass: "attribution-container",
   terminator: ":::",
   terminatorLabel: "attribution",
+  attribution: {
+    title: "Based on: ",
+    author: " by ",
+    license: ", License: ",
+  },
   licenses: [
     {
       id: "cc-by",
