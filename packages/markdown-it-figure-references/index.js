@@ -1,5 +1,5 @@
 const figure_references = (md, opts) => {
-  opts = Object.assign({}, figure_references.defaults, opts);
+  opts = loadOptions(opts);
 
   const reload = md.core.ruler.getRules("").find(({ name }) => name === "figure_reference") || false;
   if (reload) {
@@ -13,11 +13,25 @@ const figure_references = (md, opts) => {
     md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
   }
 
-  md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
+  // md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
   md.renderer.rules.figure_reference_list_item = figure_reference_list_item_renderer(opts);
-  md.renderer.rules.figure_reference_list_close = figure_reference_list_close_renderer(opts);
+  // md.renderer.rules.figure_reference_list_close = figure_reference_list_close_renderer(opts);
   md.renderer.rules.figure_wrapper = figure_wrapper_renderer(opts, md.renderer.rules.image);
 };
+
+function loadOptions(options) {
+  const item = Object.assign(
+    {},
+    figure_references.defaults.list.item,
+    options && options.list && options.list.item ? options.list.item : {}
+  );
+  if (options && options.list) options.list.item = item;
+  const list = Object.assign({}, figure_references.defaults.list, options && options.list ? options.list : {});
+  const label = Object.assign({}, figure_references.defaults.label, options && options.label ? options.label : {});
+  const anchor = Object.assign({}, figure_references.defaults.anchor, options && options.anchor ? options.anchor : {});
+  const opts = Object.assign({}, options, { list, label, anchor });
+  return Object.assign({}, figure_references.defaults, opts);
+}
 
 function addImage(state, opts, id, title) {
   if (!state.env[opts.ns]) {
@@ -32,6 +46,17 @@ function addImage(state, opts, id, title) {
     title,
     index: Object.keys(refs).length + 1,
   };
+}
+
+function render_anchor(id, opts) {
+  return opts.anchor && opts.anchor.enable
+    ? `<a href="#${id}" class="${opts.anchor.class}">${opts.anchor.content}</a>`
+    : "";
+}
+
+function render_label(id, index, opts) {
+  const label = opts.label.text.replace(opts.label.placeholder, index);
+  return opts.label && opts.label.enable ? `<a href="#${id}" class="${opts.label.class}">${label}</a>` : "";
 }
 
 function figure_reference_rule(opts) {
@@ -54,15 +79,23 @@ function figure_reference_rule(opts) {
             const [figure, id, title] = m;
             addImage(state, opts, id, title);
 
-            if (opts.injectLabel) {
+            if (opts.anchor && (opts.anchor.enable || opts.label.enable)) {
               const start = content.substring(0, match.index);
               const end = content.substring(match.index + match[0].length);
-              const label = opts.label;
+
               const index = state.env[opts.ns].refs[id].index;
-              const newFigure = match[0].replace(
-                "<figcaption>",
-                `<figcaption>\n  <a href="#${id}">${label} ${index}</a>: `
-              );
+              const anchor = render_anchor(id, opts);
+              //   opts.anchor && opts.anchor.enable
+              //     ? `<a href="#${id}" class="${opts.anchor.class}">${opts.anchor.content}</a>`
+              //     : "";
+              const label = render_label(id, index, opts);
+              // opts.label && opts.label.enable
+              //   ? `<a href="#${id}" class="${opts.label.class}">${opts.label.text.replace(
+              //       opts.label.placeholder,
+              //       index
+              //     )}</a>`
+              //   : "";
+              const newFigure = match[0].replace("<figcaption>", `<figcaption>\n${anchor}${label}${label ? ": " : ""}`);
               tokens[i].content = start + newFigure + end;
             }
           }
@@ -115,20 +148,21 @@ function figure_reference_rule(opts) {
 
 function figure_reference_list_rule(opts) {
   const figure_reference_list = (state) => {
-    if (!state.env[opts.ns] || !opts.list) return;
+    if (!state.env[opts.ns] || !opts.list.enable) return;
     const tokens = state.tokens;
     let token, tokenChild;
 
-    if (opts.list && opts.listTitle !== "") {
+    if (opts.list.enable && opts.list.title !== "") {
       token = new state.Token("heading_open", "h2", 1);
       token.attrSet("id", "list-of-figures");
+      token.attrSet("class", opts.list.class);
       token.markup = "##";
       token.block = true;
       tokens.push(token);
 
       token = new state.Token("inline", "", 0);
       tokenChild = new state.Token("text", "", 0);
-      tokenChild.content = opts.listTitle;
+      tokenChild.content = opts.list.title;
       token.children = [tokenChild];
       tokens.push(token);
 
@@ -136,44 +170,65 @@ function figure_reference_list_rule(opts) {
       tokens.push(token);
     }
 
-    token = new state.Token("figure_reference_list_open", opts.listTag, 1);
+    token = new state.Token("figure_reference_list_open", opts.list.tag, 1);
+    token.attrSet("class", opts.list.class);
     token.block = true;
     tokens.push(token);
 
     for (const id in state.env[opts.ns].refs) {
       const entry = state.env[opts.ns].refs[id];
-      token = new state.Token("figure_reference_list_item", "li", 0);
+      token = new state.Token("figure_reference_list_item", opts.list.item.tag, 0);
+      token.attrSet("class", opts.list.item.class);
       token.meta = { ...entry };
       tokens.push(token);
     }
 
-    token = new state.Token("figure_reference_list_close", opts.listTag, -1);
+    token = new state.Token("figure_reference_list_close", opts.list.tag, -1);
     token.block = true;
     tokens.push(token);
   };
   return figure_reference_list;
 }
 
-function figure_reference_list_open_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
-    const token = tokens[idx];
-    return `<${token.tag} class="list-of-figures-list">\n`;
-  };
+// function figure_reference_list_open_renderer(opts) {
+//   return (tokens, idx /* , options, env, self */) => {
+//     const token = tokens[idx];
+//     return `<${token.tag} class="list-of-figures-list">\n`;
+//   };
+// }
+
+function render_item_label(id, index, opts) {
+  const label = opts.label.text.replace(opts.label.placeholder, index);
+  return opts.list && opts.list.item && opts.list.item.label
+    ? `<a${opts.list.item.href ? ` href="#${id}"` : ""} class="${opts.label.class}">${label}</a>`
+    : "";
 }
 
 function figure_reference_list_item_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
+  return (tokens, idx, options, env /* , self */) => {
     const token = tokens[idx];
-    return `  <${token.tag}><a href="#${token.meta.id}">${opts.label} ${token.meta.index}</a>: ${token.meta.title}</${token.tag}>\n`;
+    const id = token.meta.id;
+    const index = env[opts.ns].refs[id].index;
+    const label = render_item_label(id, index, opts);
+    const sep = opts && opts.list && opts.list.item && opts.list.item.title && label ? ": " : "";
+    const title = opts.list.item.title ? `${token.meta.title}` : "";
+    // opts.list && opts.list.item && opts.list.item.label
+    //   ? `<a${opts.list.item.href ? ` href="#${id}"` : ""} class="${opts.label.class}">${opts.label.text.replace(
+    //       opts.label.placeholder,
+    //       index
+    //     )}</a>`
+    //   : "";
+
+    return `  <${token.tag} class="${token.attrGet("class")}">${label}${sep}${title}</${token.tag}>\n`;
   };
 }
 
-function figure_reference_list_close_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
-    const token = tokens[idx];
-    return `</${token.tag}>`;
-  };
-}
+// function figure_reference_list_close_renderer(opts) {
+//   return (tokens, idx /* , options, env, self */) => {
+//     const token = tokens[idx];
+//     return `</${token.tag}>`;
+//   };
+// }
 
 function figure_wrapper_renderer(opts, defaultRenderer) {
   return (tokens, idx, options, env, self) => {
@@ -183,12 +238,14 @@ function figure_wrapper_renderer(opts, defaultRenderer) {
     const entry = env[opts.ns].refs[id];
     const rId = new RegExp('\\s?id="' + id + '"');
     const figure = defaultRenderer(tokens, idx, options, env, self);
+    const anchor = render_anchor(id, opts);
+    const label = render_label(id, entry.index, opts);
     if (id && entry && opts.wrap) {
       return (
         `<figure id="${id}">\n` +
         `  ${figure.replace(rId, "")}\n` +
         `  <figcaption>\n` +
-        `    ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${title}\n` +
+        `    ${anchor}${label}${label ? ": " : ""}${title}\n` +
         `  </figcaption>\n` +
         `</figure>`
       );
@@ -203,12 +260,31 @@ function slugify(text) {
 
 figure_references.defaults = {
   ns: "figures",
-  label: "Figure",
-  injectLabel: true,
   wrap: true,
-  list: true,
-  listTitle: "List of Figures",
-  listTag: "ol",
+  anchor: {
+    enable: true,
+    content: "§",
+    class: "anchor",
+  },
+  label: {
+    enable: true,
+    text: "Figure #",
+    placeholder: "#",
+    class: "label",
+  },
+  list: {
+    enable: true,
+    class: "list",
+    title: "List of Figures",
+    tag: "ol",
+    item: {
+      tag: "li",
+      href: true,
+      class: "item",
+      label: true,
+      title: true,
+    },
+  },
 };
 
 module.exports = figure_references;
