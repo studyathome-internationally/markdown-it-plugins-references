@@ -13,9 +13,7 @@ const figure_references = (md, opts) => {
     md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
   }
 
-  // md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
   md.renderer.rules.figure_reference_list_item = figure_reference_list_item_renderer(opts);
-  // md.renderer.rules.figure_reference_list_close = figure_reference_list_close_renderer(opts);
   md.renderer.rules.figure_wrapper = figure_wrapper_renderer(opts, md.renderer.rules.image);
 };
 
@@ -85,16 +83,7 @@ function figure_reference_rule(opts) {
 
               const index = state.env[opts.ns].refs[id].index;
               const anchor = render_anchor(id, opts);
-              //   opts.anchor && opts.anchor.enable
-              //     ? `<a href="#${id}" class="${opts.anchor.class}">${opts.anchor.content}</a>`
-              //     : "";
               const label = render_label(id, index, opts);
-              // opts.label && opts.label.enable
-              //   ? `<a href="#${id}" class="${opts.label.class}">${opts.label.text.replace(
-              //       opts.label.placeholder,
-              //       index
-              //     )}</a>`
-              //   : "";
               const newFigure = match[0].replace("<figcaption>", `<figcaption>\n${anchor}${label}${label ? ": " : ""}`);
               tokens[i].content = start + newFigure + end;
             }
@@ -123,7 +112,6 @@ function figure_reference_rule(opts) {
           const titleContent = token.attrGet("title") || token.attrGet("alt");
           if (!titleContent) continue;
 
-          // if (opts.wrap)
           token.type = "figure_wrapper";
 
           let id,
@@ -133,7 +121,6 @@ function figure_reference_rule(opts) {
           } else {
             id = slugify(title);
           }
-          // if (!opts.wrap)
           token.attrSet("id", id);
           token.attrSet("title", title);
           token.meta = { targetId: id };
@@ -190,13 +177,6 @@ function figure_reference_list_rule(opts) {
   return figure_reference_list;
 }
 
-// function figure_reference_list_open_renderer(opts) {
-//   return (tokens, idx /* , options, env, self */) => {
-//     const token = tokens[idx];
-//     return `<${token.tag} class="list-of-figures-list">\n`;
-//   };
-// }
-
 function render_item_label(id, index, opts) {
   const label = opts.label.text.replace(opts.label.placeholder, index);
   return opts.list && opts.list.item && opts.list.item.label
@@ -212,23 +192,9 @@ function figure_reference_list_item_renderer(opts) {
     const label = render_item_label(id, index, opts);
     const sep = opts && opts.list && opts.list.item && opts.list.item.title && label ? ": " : "";
     const title = opts.list.item.title ? `${token.meta.title}` : "";
-    // opts.list && opts.list.item && opts.list.item.label
-    //   ? `<a${opts.list.item.href ? ` href="#${id}"` : ""} class="${opts.label.class}">${opts.label.text.replace(
-    //       opts.label.placeholder,
-    //       index
-    //     )}</a>`
-    //   : "";
-
     return `  <${token.tag} class="${token.attrGet("class")}">${label}${sep}${title}</${token.tag}>\n`;
   };
 }
-
-// function figure_reference_list_close_renderer(opts) {
-//   return (tokens, idx /* , options, env, self */) => {
-//     const token = tokens[idx];
-//     return `</${token.tag}>`;
-//   };
-// }
 
 function figure_wrapper_renderer(opts, defaultRenderer) {
   return (tokens, idx, options, env, self) => {
