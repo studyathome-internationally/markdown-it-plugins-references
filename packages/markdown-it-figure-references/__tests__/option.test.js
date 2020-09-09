@@ -71,18 +71,11 @@ describe("options", () => {
 
   it("option: wrap", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
-    md.use(MarkdownItPluginFigureReferences, { wrapImage: false });
+    md.use(MarkdownItPluginFigureReferences, { wrap: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
       <h1>Hello World</h1>
-      <p>
-      <figure id="the-stormtroopocat">
-        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
-        <figcaption>
-          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
-        </figcaption>
-      </figure>
-      </p>
+      <p><img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" id="the-stormtroopocat" /></p>
       <h2 id="list-of-figures">List of Figures</h2>
       <ol class="list-of-figures-list">
         <li><a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat</li>

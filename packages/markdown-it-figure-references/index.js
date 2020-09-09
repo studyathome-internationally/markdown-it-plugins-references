@@ -5,9 +5,12 @@ const figure_references = (md, opts) => {
   if (reload) {
     md.core.ruler.at("figure_reference", figure_reference_rule(opts));
     md.core.ruler.at("figure_reference_list", figure_reference_list_rule(opts));
+  } else if (md.core.ruler.getRules("").find(({ name }) => name === "inline")) {
+    md.core.ruler.after("inline", "figure_reference", figure_reference_rule(opts), [""]);
+    md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
   } else {
-    md.core.ruler.push("figure_reference", figure_reference_rule(opts));
-    md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
+    md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
+    md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
   }
 
   md.renderer.rules.figure_reference_list_open = figure_reference_list_open_renderer(opts);
@@ -87,16 +90,18 @@ function figure_reference_rule(opts) {
           const titleContent = token.attrGet("title") || token.attrGet("alt");
           if (!titleContent) continue;
 
-          if (opts.wrap) token.type = "figure_wrapper";
+          // if (opts.wrap)
+          token.type = "figure_wrapper";
 
           let id,
             title = titleContent;
           if (titleContent.split("#").length === 2) {
             [id, title] = titleContent.split("#");
           } else {
-            id = sanitize(title);
+            id = slugify(title);
           }
-          if (!opts.wrap) token.attrSet("id", id);
+          // if (!opts.wrap)
+          token.attrSet("id", id);
           token.attrSet("title", title);
           token.meta = { targetId: id };
 
@@ -112,8 +117,26 @@ function figure_reference_list_rule(opts) {
   const figure_reference_list = (state) => {
     if (!state.env[opts.ns] || !opts.list) return;
     const tokens = state.tokens;
+    let token, tokenChild;
 
-    let token = new state.Token("figure_reference_list_open", opts.listTag, 1);
+    if (opts.list && opts.listTitle !== "") {
+      token = new state.Token("heading_open", "h2", 1);
+      token.attrSet("id", "list-of-figures");
+      token.markup = "##";
+      token.block = true;
+      tokens.push(token);
+
+      token = new state.Token("inline", "", 0);
+      tokenChild = new state.Token("text", "", 0);
+      tokenChild.content = opts.listTitle;
+      token.children = [tokenChild];
+      tokens.push(token);
+
+      token = new state.Token("heading_close", "h2", -1);
+      tokens.push(token);
+    }
+
+    token = new state.Token("figure_reference_list_open", opts.listTag, 1);
     token.block = true;
     tokens.push(token);
 
@@ -134,8 +157,7 @@ function figure_reference_list_rule(opts) {
 function figure_reference_list_open_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
-    const title = opts.listTitle ? `<h2 id="list-of-figures">${opts.listTitle}</h2>\n` : "";
-    return title + `<${token.tag} class="list-of-figures-list">\n`;
+    return `<${token.tag} class="list-of-figures-list">\n`;
   };
 }
 
@@ -159,20 +181,23 @@ function figure_wrapper_renderer(opts, defaultRenderer) {
     const id = token.meta.targetId;
     const title = token.attrGet("title");
     const entry = env[opts.ns].refs[id];
-    if (id && entry) {
+    const rId = new RegExp('\\s?id="' + id + '"');
+    const figure = defaultRenderer(tokens, idx, options, env, self);
+    if (id && entry && opts.wrap) {
       return (
         `<figure id="${id}">\n` +
-        `  ${defaultRenderer(tokens, idx, options, env, self)}\n` +
+        `  ${figure.replace(rId, "")}\n` +
         `  <figcaption>\n` +
         `    ${opts.injectLabel ? `<a href="#${id}">${opts.label} ${entry.index}</a>: ` : ""}${title}\n` +
         `  </figcaption>\n` +
         `</figure>`
       );
     }
+    return figure;
   };
 }
 
-function sanitize(text) {
+function slugify(text) {
   return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
 }
 
