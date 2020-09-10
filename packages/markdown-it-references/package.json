@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-references",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "MarkdownIt Plugin for (ordered) id reference injection",
   "keywords": [
     "markdown",
@@ -44,8 +44,8 @@
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.3.0",
     "markdown-it-attribution-references": "^1.0.0-alpha.1",
-    "markdown-it-figure-references": "^1.0.0-alpha.2",
-    "markdown-it-table-references": "^1.0.0-alpha.2",
+    "markdown-it-figure-references": "^1.0.0-alpha.3",
+    "markdown-it-table-references": "^1.0.0-alpha.3",
     "prettier": "^2.1.1"
   }
 }
