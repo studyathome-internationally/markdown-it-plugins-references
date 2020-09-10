@@ -10,10 +10,7 @@ md.use(require("markdown-it-attribution-references"));
 
 describe("basic functionality", () => {
   it("missing id", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -23,10 +20,7 @@ describe("basic functionality", () => {
   });
 
   it("figure label insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.figure.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.figure.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -35,23 +29,20 @@ describe("basic functionality", () => {
       <figure id="the-stormtroopocat">
         <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
         <figcaption>
-          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
+          <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
         </figcaption>
       </figure>
       </p>
       <p><a href="#the-stormtroopocat">Figure 1</a> shows an example.</p>
-      <h2 id="list-of-figures">List of Figures</h2>
-      <ol class="list-of-figures-list">
-        <li><a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat</li>
+      <h2 id="list-of-figures" class="list">List of Figures</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
       </ol>
     `);
   });
 
   it("table label insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.table.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.table.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -88,10 +79,7 @@ describe("basic functionality", () => {
   });
 
   it("attribution label insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.attribution.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.attribution.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -114,10 +102,7 @@ describe("basic functionality", () => {
   });
 
   it("mutli label insertion", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.multi.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.multi.1.md"), "utf8");
     md.use(MarkdownItPluginReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -126,7 +111,7 @@ describe("basic functionality", () => {
       <figure id="the-stormtroopocat">
         <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
         <figcaption>
-          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
+          <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
         </figcaption>
       </figure>
       </p>
@@ -163,9 +148,9 @@ describe("basic functionality", () => {
         </p>
       </div>
       <p>The example contains following references: <a href="#the-stormtroopocat">Figure 1</a>, <a href="#client-overview">Table 1</a>, <a href="#wikipedia-authors-markdown">Attribution 1</a>.</p>
-      <h2 id="list-of-figures">List of Figures</h2>
-      <ol class="list-of-figures-list">
-        <li><a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat</li>
+      <h2 id="list-of-figures" class="list">List of Figures</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
       </ol>
       <h2 id="list-of-tables">List of Tables</h2>
       <ol class="list-of-tables-list">

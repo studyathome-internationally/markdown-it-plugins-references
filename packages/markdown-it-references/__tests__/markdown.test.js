@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 md.use(require("markdown-it-figure-references"), {
-  list: false,
+  list: { enable: false },
   wrap: false,
 });
 

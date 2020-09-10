@@ -32,14 +32,14 @@ describe("options namespace", () => {
       <figure id="the-stormtroopocat">
         <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
         <figcaption>
-          <a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat
+          <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
         </figcaption>
       </figure>
       </p>
       <p><a href="#the-stormtroopocat">Figure 1</a> shows an example.</p>
-      <h2 id="list-of-figures">List of Figures</h2>
-      <ol class="list-of-figures-list">
-        <li><a href="#the-stormtroopocat">Figure 1</a>: The Stormtroopocat</li>
+      <h2 id="list-of-figures" class="list">List of Figures</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
       </ol>
     `);
   });

@@ -6,8 +6,12 @@ const MarkdownItPluginReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 md.use(require("markdown-it-figure-references"), {
-  label: "Image",
-  listTitle: "List of Images",
+  label: {
+    text: "Image #",
+  },
+  list: {
+    title: "List of Images",
+  },
 });
 md.use(require("markdown-it-table-references"), {
   label: "Spreadsheet",
@@ -20,10 +24,7 @@ md.use(require("markdown-it-attribution-references"), {
 
 describe("options", () => {
   it("option: labels", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.multi.1.md"),
-      "utf8"
-    );
+    const text = readFileSync(join(__dirname, "__cases__", "basic.multi.1.md"), "utf8");
     md.use(MarkdownItPluginReferences, {
       label: [
         ["figures", "Image"],
@@ -38,7 +39,7 @@ describe("options", () => {
       <figure id="the-stormtroopocat">
         <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
         <figcaption>
-          <a href="#the-stormtroopocat">Image 1</a>: The Stormtroopocat
+          <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Image 1</a>: The Stormtroopocat
         </figcaption>
       </figure>
       </p>
@@ -75,9 +76,9 @@ describe("options", () => {
         </p>
       </div>
       <p>The example contains following references: <a href="#the-stormtroopocat">Figure 1</a>, <a href="#client-overview">Table 1</a>, <a href="#wikipedia-authors-markdown">Attribution 1</a>.</p>
-      <h2 id="list-of-figures">List of Images</h2>
-      <ol class="list-of-figures-list">
-        <li><a href="#the-stormtroopocat">Image 1</a>: The Stormtroopocat</li>
+      <h2 id="list-of-figures" class="list">List of Images</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Image 1</a>: The Stormtroopocat</li>
       </ol>
       <h2 id="list-of-tables">List of Spreadsheets</h2>
       <ol class="list-of-tables-list">
