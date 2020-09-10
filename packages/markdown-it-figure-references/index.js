@@ -1,10 +1,17 @@
 const figure_references = (md, opts) => {
   opts = loadOptions(opts);
 
-  const reload = md.core.ruler.getRules("").find(({ name }) => name === "figure_reference") || false;
+  // const reload = md.core.ruler.getRules("").find(({ name }) => name === "figure_reference") || false;
+  const reload = md.core.ruler.__rules__.find(({ name }) => name === "figure_reference") || false;
   if (reload) {
     md.core.ruler.at("figure_reference", figure_reference_rule(opts));
     md.core.ruler.at("figure_reference_list", figure_reference_list_rule(opts));
+    if (!md.core.ruler.getRules("").find(({ name }) => name === "figure_reference")) {
+      md.core.ruler.enable("figure_reference");
+    }
+    if (!md.core.ruler.getRules("").find(({ name }) => name === "figure_reference_list")) {
+      md.core.ruler.enable("figure_reference_list");
+    }
   } else if (md.core.ruler.getRules("").find(({ name }) => name === "inline")) {
     md.core.ruler.after("inline", "figure_reference", figure_reference_rule(opts), [""]);
     md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
@@ -82,9 +89,13 @@ function figure_reference_rule(opts) {
               const end = content.substring(match.index + match[0].length);
 
               const index = state.env[opts.ns].refs[id].index;
+              const title = state.env[opts.ns].refs[id].title;
               const anchor = render_anchor(id, opts);
               const label = render_label(id, index, opts);
-              const newFigure = match[0].replace("<figcaption>", `<figcaption>\n${anchor}${label}${label ? ": " : ""}`);
+              const newFigure = match[0].replace(
+                "<figcaption>",
+                `<figcaption>\n${anchor}${label}${label && title ? ": " : ""}`
+              );
               tokens[i].content = start + newFigure + end;
             }
           }
@@ -94,13 +105,8 @@ function figure_reference_rule(opts) {
           while ((match = rImage.exec(content))) {
             const [image, id] = match;
 
-            let title;
             const rTitle = /title\s*?=\s*?"(.*?)"/gm.exec(image);
-            const rAlt = /alt\s*?=\s*?"(.*?)"/gm.exec(image);
-
-            title = rTitle ? rTitle[1] : rAlt ? rAlt[1] : false;
-            if (!title) continue;
-
+            const title = rTitle ? rTitle[1] : "";
             addImage(state, opts, id, title);
           }
         }
@@ -109,7 +115,7 @@ function figure_reference_rule(opts) {
           let token = children[j];
           if (token.type !== "image") continue;
 
-          const titleContent = token.attrGet("title") || token.attrGet("alt");
+          const titleContent = token.attrGet("title");
           if (!titleContent) continue;
 
           token.type = "figure_wrapper";
@@ -190,7 +196,7 @@ function figure_reference_list_item_renderer(opts) {
     const id = token.meta.id;
     const index = env[opts.ns].refs[id].index;
     const label = render_item_label(id, index, opts);
-    const sep = opts && opts.list && opts.list.item && opts.list.item.title && label ? ": " : "";
+    const sep = opts && opts.list && opts.list.item && opts.list.item.title && label && token.meta.title ? ": " : "";
     const title = opts.list.item.title ? `${token.meta.title}` : "";
     return `  <${token.tag} class="${token.attrGet("class")}">${label}${sep}${title}</${token.tag}>\n`;
   };
@@ -211,7 +217,7 @@ function figure_wrapper_renderer(opts, defaultRenderer) {
         `<figure id="${id}">\n` +
         `  ${figure.replace(rId, "")}\n` +
         `  <figcaption>\n` +
-        `    ${anchor}${label}${label ? ": " : ""}${title}\n` +
+        `    ${anchor}${label}${label && title ? ": " : ""}${title}\n` +
         `  </figcaption>\n` +
         `</figure>`
       );
