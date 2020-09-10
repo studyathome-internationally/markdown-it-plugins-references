@@ -70,6 +70,31 @@ The `item` object can contain:
 | `label` | Insert figure label.              | `true`   |
 | `title` | Insert figure title.              | `true`   |
 
+## Example
+
+```md
+# Hello World
+
+![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
+```
+
+```html
+<h1>Hello World</h1>
+<p>
+  <figure id="the-stormtroopocat">
+    <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+    <figcaption>
+      <a href="#the-stormtroopocat" class="anchor">§</a>
+      <a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
+    </figcaption>
+  </figure>
+</p>
+<h2 id="list-of-figures" class="list">List of Figures</h2>
+<ol class="list">
+  <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
+</ol>
+```
+
 ## License
 
 [GPL-3.0](https://github.com/studyathome-internationally/vuepress-plugins/blob/master/LICENSE) &copy; [StudyATHome Internationally](https://github.com/studyathome-internationally/)
