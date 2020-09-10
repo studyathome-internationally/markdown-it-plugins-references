@@ -2,6 +2,18 @@
 
 > Figure referencing for [markdown-it](https://github.com/markdown-it/markdown-it).
 
+<div>
+  <p align="center">
+    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-figure-references/coverage/badge-branches.svg">
+    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-figure-references/coverage/badge-functions.svg">
+    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-figure-references/coverage/badge-lines.svg">
+    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-figure-references/coverage/badge-statements.svg">
+    <a href="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-figure-references/LICENSE" target="_blank">
+      <img src="https://badgen.net/github/license/studyathome-internationally/markdown-it-plugins">
+    </a>
+  </p>
+</div>
+
 ## Installation
 
 ```sh
@@ -28,10 +40,12 @@ The `opts` object can contain:
 | Name     | Description                                     | Default     |
 | -------- | ----------------------------------------------- | ----------- |
 | `ns`     | Namespace for saving registered images (`env`). | `"figures"` |
-| `wrap`   | Wrap `<image>` in an `<figure>` element.        | `true`      |
+| `wrap`   | Wrap `<image>` in a `<figure>` element.         | `true`      |
 | `anchor` | Anchor options.                                 | see below   |
 | `label`  | Label options.                                  | see below   |
 | `list`   | List options.                                   | see below   |
+
+<br/>
 
 The `anchor` object can contain:
 
@@ -41,6 +55,8 @@ The `anchor` object can contain:
 | `content` | Anchor content.                    | `"§"`      |
 | `class`   | Anchor class.                      | `"anchor"` |
 
+<br/>
+
 The `label` object can contain:
 
 | Name          | Description                                | Default      |
@@ -49,6 +65,8 @@ The `label` object can contain:
 | `text`        | Figure label text.                         | `"Figure #"` |
 | `placeholder` | Figure number placeholder.                 | `"#"`        |
 | `class`       | Figure label class.                        | `"label"`    |
+
+<br/>
 
 The `list` object can contain:
 
@@ -60,6 +78,8 @@ The `list` object can contain:
 | `tag`    | HTML tag for list.      | `"ol"`              |
 | `item`   | List item options       | see below           |
 
+<br/>
+
 The `item` object can contain:
 
 | Name    | Description                       | Default  |
@@ -69,6 +89,8 @@ The `item` object can contain:
 | `class` | List item class.                  | `"item"` |
 | `label` | Insert figure label.              | `true`   |
 | `title` | Insert figure title.              | `true`   |
+
+<br/>
 
 ## Example
 
