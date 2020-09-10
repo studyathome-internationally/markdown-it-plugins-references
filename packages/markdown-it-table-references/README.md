@@ -4,11 +4,11 @@
 
 <div>
   <p align="center">
-    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-table-references/coverage/badge-branches.svg">
-    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-table-references/coverage/badge-functions.svg">
-    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-table-references/coverage/badge-lines.svg">
-    <img src="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-table-references/coverage/badge-statements.svg">
-    <a href="https://github.com/studyathome-internationally/markdown-it-plugins/blob/master/packages/markdown-it-table-references/LICENSE" target="_blank">
+    <img src="https://raw.githubusercontent.com/studyathome-internationally/markdown-it-plugins/master/packages/markdown-it-table-references/coverage/badge-branches.svg">
+    <img src="https://raw.githubusercontent.com/studyathome-internationally/markdown-it-plugins/master/packages/markdown-it-table-references/coverage/badge-functions.svg">
+    <img src="https://raw.githubusercontent.com/studyathome-internationally/markdown-it-plugins/master/packages/markdown-it-table-references/coverage/badge-lines.svg">
+    <img src="https://raw.githubusercontent.com/studyathome-internationally/markdown-it-plugins/master/packages/markdown-it-table-references/coverage/badge-statements.svg">
+    <a href="https://raw.githubusercontent.com/studyathome-internationally/markdown-it-plugins/master/packages/markdown-it-table-references/LICENSE" target="_blank">
       <img src="https://badgen.net/github/license/studyathome-internationally/markdown-it-plugins">
     </a>
   </p>
