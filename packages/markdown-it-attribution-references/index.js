@@ -13,24 +13,8 @@ const attribution_references = (md, opts) => {
   md.renderer.rules.attribution_open = attribution_open_renderer(opts);
   md.renderer.rules.attribution_close = attribution_close_renderer(opts);
 
-  md.renderer.rules.attribution_list_open = attribution_list_open_renderer(opts);
   md.renderer.rules.attribution_list_item = attribution_list_item_renderer(opts);
-  md.renderer.rules.attribution_list_close = attribution_list_close_renderer(opts);
 };
-
-function addAttribution(state, opts, id, meta) {
-  if (!state.env[opts.ns]) {
-    state.env[opts.ns] = {};
-  }
-  if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
-  }
-  state.env[opts.ns].refs[id] = {
-    id,
-    ...meta,
-    index: Object.keys(state.env[opts.ns].refs).length + 1,
-  };
-}
 
 function attribution_rule(opts) {
   const attribution = (state, startLine /* , endLine, silent */) => {
@@ -50,7 +34,7 @@ function attribution_rule(opts) {
       const [m, idLabel, licenseLabel, title, titleUrl, author, authorUrl] = r.exec(data);
 
       if (!m) return false;
-      const id = idLabel ? idLabel : sanitize(author + "-" + title);
+      const id = idLabel ? idLabel : slugify(author + "-" + title);
       const license = opts.licenses.find(({ id }) => id === licenseLabel) || licenseLabel;
 
       state.line++;
@@ -95,8 +79,29 @@ function attribution_list_rule(opts) {
   const attribution_list = (state) => {
     if (!state.env[opts.ns] || !opts.list) return;
     const tokens = state.tokens;
+    let token, tokenChild;
 
-    let token = new state.Token("attribution_list_open", opts.listTag, 1);
+    if (opts.listTitle !== "") {
+      token = new state.Token("heading_open", "h2", 1);
+      token.attrSet("id", "list-of-attributions");
+      // token.attrSet("class", opts.list.class);
+      token.markup = "##";
+      token.block = true;
+      tokens.push(token);
+
+      token = new state.Token("inline", "", 0);
+      tokenChild = new state.Token("text", "", 0);
+      // tokenChild.content = opts.list.title;
+      tokenChild.content = opts.listTitle;
+      token.children = [tokenChild];
+      tokens.push(token);
+
+      token = new state.Token("heading_close", "h2", -1);
+      tokens.push(token);
+    }
+
+    token = new state.Token("attribution_list_open", opts.listTag, 1);
+    token.attrSet("class", "list-of-attributions-list");
     token.block = true;
     tokens.push(token);
 
@@ -133,14 +138,6 @@ function attribution_close_renderer(opts) {
   };
 }
 
-function attribution_list_open_renderer(opts) {
-  return function (tokens, idx /* , options, env, self */) {
-    const token = tokens[idx];
-    const title = opts.listTitle ? `<h2 id="list-of-attributions">${opts.listTitle}</h2>\n` : "";
-    return title + `<${token.tag} class="list-of-attributions-list">\n`;
-  };
-}
-
 function attribution_list_item_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
@@ -148,14 +145,21 @@ function attribution_list_item_renderer(opts) {
   };
 }
 
-function attribution_list_close_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
-    const token = tokens[idx];
-    return `</${token.tag}>`;
+function addAttribution(state, opts, id, meta) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = {};
+  }
+  state.env[opts.ns].refs[id] = {
+    id,
+    ...meta,
+    index: Object.keys(state.env[opts.ns].refs).length + 1,
   };
 }
 
-function sanitize(text) {
+function slugify(text) {
   return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
 }
 
