@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("option: anchor", () => {
   it("anchor: null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { anchor: null });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -29,6 +29,7 @@ describe("option: anchor", () => {
 
   it("anchor: enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { anchor: { enable: false } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -50,6 +51,7 @@ describe("option: anchor", () => {
 
   it("anchor: content", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { anchor: { content: "#" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -71,6 +73,7 @@ describe("option: anchor", () => {
 
   it("anchor: class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { anchor: { class: "figure-label-anchor" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

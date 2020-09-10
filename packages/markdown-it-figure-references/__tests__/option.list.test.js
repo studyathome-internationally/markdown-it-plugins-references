@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("option: list", () => {
   it("list: null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: null });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -29,6 +29,7 @@ describe("option: list", () => {
 
   it("list: enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { enable: false } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -46,6 +47,7 @@ describe("option: list", () => {
 
   it("list: class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { class: "list-of-figures" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -67,6 +69,7 @@ describe("option: list", () => {
 
   it("list: title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { title: "List of Images" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -88,6 +91,7 @@ describe("option: list", () => {
 
   it("list: tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { tag: "ul" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

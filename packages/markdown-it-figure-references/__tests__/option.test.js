@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("options", () => {
   it("option: ns", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { ns: "images" });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -29,6 +29,7 @@ describe("options", () => {
 
   it("option: wrap", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { wrap: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

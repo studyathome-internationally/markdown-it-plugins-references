@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("advanced functionality", () => {
   it("plain html figure", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -27,6 +27,7 @@ describe("advanced functionality", () => {
 
   it("plain html figure without anchor or label", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { anchor: { enable: false }, label: { enable: false } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -44,6 +45,7 @@ describe("advanced functionality", () => {
 
   it("plain html figure w/o label", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { enable: false } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -63,6 +65,7 @@ describe("advanced functionality", () => {
 
   it("plain html image", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.2.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { wrap: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -77,6 +80,7 @@ describe("advanced functionality", () => {
 
   it("plain html image w/o title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.5.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { wrap: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -91,6 +95,7 @@ describe("advanced functionality", () => {
 
   it("plain html figure and image", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.3.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -111,6 +116,7 @@ describe("advanced functionality", () => {
 
   it("plain html figure and image w/o wrap", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.3.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { wrap: false });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -129,6 +135,7 @@ describe("advanced functionality", () => {
 
   it("plain html figure, image and table", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.4.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("option: label", () => {
   it("label: null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: null });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -29,6 +29,7 @@ describe("option: label", () => {
 
   it("label: enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { enable: false } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -50,6 +51,7 @@ describe("option: label", () => {
 
   it("label: text", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { text: "Image #" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -71,6 +73,7 @@ describe("option: label", () => {
 
   it("label: placeholder", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { text: "Figure §§", placeholder: "§§" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -92,6 +95,7 @@ describe("option: label", () => {
 
   it("label: class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { class: "figure-label" } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`

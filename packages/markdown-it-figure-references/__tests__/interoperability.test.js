@@ -4,17 +4,17 @@ const { readFileSync } = require("fs");
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAnchor = require("markdown-it-anchor");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("interoperability", () => {
   it("markdown-it-anchor", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
+    md.use(MarkdownItPluginFigureReferences);
     md.use(MarkdownItPluginAnchor, {
       permalink: true,
       permalinkBefore: true,
       permalinkSymbol: "#",
     });
-    md.use(MarkdownItPluginFigureReferences);
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
       <h1 id="hello-world"><a class="header-anchor" href="#hello-world">#</a> Hello World</h1>

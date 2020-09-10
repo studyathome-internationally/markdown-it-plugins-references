@@ -3,11 +3,11 @@ const { readFileSync } = require("fs");
 
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("option: list item", () => {
   it("list item: null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { item: null } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -29,6 +29,7 @@ describe("option: list item", () => {
 
   it("list item: tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { tag: "div", item: { tag: "span" } } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -50,6 +51,7 @@ describe("option: list item", () => {
 
   it("list item: href", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { item: { href: false } } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -71,6 +73,7 @@ describe("option: list item", () => {
 
   it("list item: class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { item: { class: "figure" } } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -92,6 +95,7 @@ describe("option: list item", () => {
 
   it("list item: label", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { item: { label: false } } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
@@ -113,6 +117,7 @@ describe("option: list item", () => {
 
   it("list item: title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { item: { title: false } } });
     const result = md.render(text);
     expect(result).toMatchInlineSnapshot(`
