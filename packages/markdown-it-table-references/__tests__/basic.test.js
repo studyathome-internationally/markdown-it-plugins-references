@@ -6,7 +6,7 @@ const MarkdownItPluginTableReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("basic functionality", () => {
-  it("automatic id insertion", () => {
+  it("no caption", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.0.md"), "utf8");
     md.use(MarkdownItPluginTableReferences);
     const result = md.render(text);
