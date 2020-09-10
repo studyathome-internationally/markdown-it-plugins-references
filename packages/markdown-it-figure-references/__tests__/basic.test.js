@@ -75,4 +75,13 @@ describe("basic functionality", () => {
       </ol>
     `);
   });
+  it("no title", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.4.md"), "utf8");
+    md.use(MarkdownItPluginFigureReferences);
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>Hello World</h1>
+      <p><img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" /></p>
+    `);
+  });
 });
