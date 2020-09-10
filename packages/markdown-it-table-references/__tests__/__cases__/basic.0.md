@@ -4,3 +4,10 @@
 | ----- | ------- |
 | Alice | Mobile  |
 | Bob   | Desktop |
+
+| Name  | Server |
+| ----- | ------ |
+| Chris | nginx  |
+| Debra | apache |
+
+New paragraph.

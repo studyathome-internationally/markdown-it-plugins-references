@@ -4,11 +4,11 @@ const { readFileSync } = require("fs");
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAnchor = require("markdown-it-anchor");
 const MarkdownItPluginTableReferences = require("./../index.js");
-const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("interoperability", () => {
   it("markdown-it-anchor", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences);
     md.use(MarkdownItPluginAnchor, {
       permalink: true,
@@ -38,12 +38,12 @@ describe("interoperability", () => {
           </tbody>
         </table>
         <figcaption>
-          <a href="#client-overview">Table 1</a>: Client overview
+          <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Table 1</a>: Client overview
         </figcaption>
       </figure>
-      <h2 id="list-of-tables"><a class="header-anchor" href="#list-of-tables">#</a> List of Tables</h2>
-      <ol class="list-of-tables-list">
-        <li><a href="#client-overview">Table 1</a>: Client overview</li>
+      <h2 id="list-of-tables" class="list"><a class="header-anchor" href="#list-of-tables">#</a> List of Tables</h2>
+      <ol class="list">
+        <li class="item"><a href="#client-overview" class="label">Table 1</a>: Client overview</li>
       </ol>
     `);
   });
