@@ -4,33 +4,16 @@ const table_references = (md, opts) => {
   const reload = md.core.ruler.getRules("").find(({ name }) => name === "table_reference") || false;
   if (reload) {
     md.core.ruler.at("table_reference", table_reference_rule(opts));
-    md.core.ruler.at("list_of_tables", table_reference_list_rule(opts));
+    md.core.ruler.at("table_reference_list", table_reference_list_rule(opts));
   } else {
     md.core.ruler.push("table_reference", table_reference_rule(opts));
-    md.core.ruler.push("list_of_tables", table_reference_list_rule(opts));
+    md.core.ruler.after("table_reference", "table_reference_list", table_reference_list_rule(opts));
   }
 
-  md.renderer.rules.table_reference_list_open = table_reference_list_open_renderer(opts);
   md.renderer.rules.table_reference_list_item = table_reference_list_item_renderer(opts);
-  md.renderer.rules.table_reference_list_close = table_reference_list_close_renderer(opts);
   md.renderer.rules.table_wrapper_open = table_wrapper_open_renderer(opts);
   md.renderer.rules.table_wrapper_close = table_wrapper_close_renderer(opts);
 };
-
-function addTable(state, opts, id, caption) {
-  if (!state.env[opts.ns]) {
-    state.env[opts.ns] = {};
-  }
-  if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
-  }
-  const refs = state.env[opts.ns].refs;
-  refs[id] = {
-    id,
-    caption,
-    index: Object.keys(refs).length + 1,
-  };
-}
 
 function table_reference_rule(opts) {
   const table_reference = (state /* , silent */) => {
@@ -117,7 +100,7 @@ function table_reference_rule(opts) {
           [id, caption] = tableCaption.content.substring(1).split("#");
         } else {
           caption = tableCaption.content.substring(1);
-          id = sanitize(caption);
+          id = slugify(caption);
         }
 
         const tableOpen = tokens[tableOpenPos];
@@ -154,8 +137,27 @@ function table_reference_list_rule(opts) {
   const table_reference_list = (state /* , silent */) => {
     if (!state.env[opts.ns] || !opts.list) return;
     const tokens = state.tokens;
+    let token, tokenChild;
 
-    let token = new state.Token("table_reference_list_open", opts.listTag, 1);
+    if (opts.list && opts.listTitle !== "") {
+      token = new state.Token("heading_open", "h2", 1);
+      token.attrSet("id", "list-of-tables");
+      token.markup = "##";
+      token.block = true;
+      tokens.push(token);
+
+      token = new state.Token("inline", "", 0);
+      tokenChild = new state.Token("text", "", 0);
+      tokenChild.content = opts.listTitle;
+      token.children = [tokenChild];
+      tokens.push(token);
+
+      token = new state.Token("heading_close", "h2", -1);
+      tokens.push(token);
+    }
+
+    token = new state.Token("table_reference_list_open", opts.listTag, 1);
+    token.attrSet("class", "list-of-tables-list");
     token.block = true;
     tokens.push(token);
 
@@ -173,25 +175,10 @@ function table_reference_list_rule(opts) {
   return table_reference_list;
 }
 
-function table_reference_list_open_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
-    const token = tokens[idx];
-    const title = opts.listTitle ? `<h2 id="list-of-tables">${opts.listTitle}</h2>\n` : "";
-    return title + `<${token.tag} class="list-of-tables-list">\n`;
-  };
-}
-
 function table_reference_list_item_renderer(opts) {
   return (tokens, idx /* , options, env, self */) => {
     const token = tokens[idx];
     return `  <${token.tag}><a href="#${token.meta.id}">${opts.label} ${token.meta.index}</a>: ${token.meta.caption}</${token.tag}>\n`;
-  };
-}
-
-function table_reference_list_close_renderer(opts) {
-  return (tokens, idx /* , options, env, self */) => {
-    const token = tokens[idx];
-    return `</${token.tag}>`;
   };
 }
 
@@ -219,7 +206,22 @@ function table_wrapper_close_renderer(opts) {
   };
 }
 
-function sanitize(text) {
+function addTable(state, opts, id, caption) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = {};
+  }
+  const refs = state.env[opts.ns].refs;
+  refs[id] = {
+    id,
+    caption,
+    index: Object.keys(refs).length + 1,
+  };
+}
+
+function slugify(text) {
   return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
 }
 
