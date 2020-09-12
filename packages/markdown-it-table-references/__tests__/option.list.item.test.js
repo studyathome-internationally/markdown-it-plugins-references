@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginTableReferences = require("./../index.js");
 
 describe("option: list item", () => {
-  it("list item: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { item: null } });
@@ -42,7 +42,7 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: tag", () => {
+  it("tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { tag: "div", item: { tag: "span" } } });
@@ -79,7 +79,7 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: href", () => {
+  it("href", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { item: { href: false } } });
@@ -116,7 +116,7 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: class", () => {
+  it("class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { item: { class: "table" } } });
@@ -153,7 +153,7 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: label", () => {
+  it("label", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { item: { label: false } } });
@@ -190,7 +190,7 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: title", () => {
+  it("title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginTableReferences, { list: { item: { title: false } } });
