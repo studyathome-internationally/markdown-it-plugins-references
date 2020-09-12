@@ -15,9 +15,7 @@ describe("options combination", () => {
       <p>
       <figure id="the-stormtroopocat">
         <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
-        <figcaption>
-          The Stormtroopocat
-        </figcaption>
+        <figcaption>The Stormtroopocat</figcaption>
       </figure>
       </p>
       <h2 id="list-of-figures" class="list">List of Figures</h2>

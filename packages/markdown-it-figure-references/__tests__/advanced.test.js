@@ -25,6 +25,26 @@ describe("advanced functionality", () => {
     `);
   });
 
+  it("plain html figure - anchor enable", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "advanced.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
+    md.use(MarkdownItPluginFigureReferences, { anchor: { enable: false } });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>Hello World</h1>
+      <figure id="the-stormtroopocat">
+        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+        <figcaption>
+          <a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
+        </figcaption>
+      </figure>
+      <h2 id="list-of-figures" class="list">List of Figures</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
+      </ol>
+    `);
+  });
+
   it("plain html figure without anchor or label", () => {
     const text = readFileSync(join(__dirname, "__cases__", "advanced.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
