@@ -265,7 +265,7 @@ function slugify(text) {
 function loadOptions(options) {
   return options
     ? {
-        after: typeof options.after === "string" ? options.after : figure_references.defaults.after,
+        after: typeof options.after === "string" ? options.after : attribution_references.defaults.after,
         ns: options.ns || attribution_references.defaults.ns,
         wrap: {
           parent: Object.assign(

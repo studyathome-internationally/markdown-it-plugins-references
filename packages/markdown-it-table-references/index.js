@@ -111,7 +111,7 @@ function table_reference_rule(opts) {
 
         if (opts.wrap) {
           const pre = tokens.slice(0, tableOpenPos);
-          token = new Token("figure_open", "figure", 1);
+          token = new Token("figure_table_open", "figure", 1);
           token.attrSet("id", id);
           token.block = true;
           token.meta = { id, caption };
@@ -142,13 +142,13 @@ function table_reference_rule(opts) {
           const pre = tokens.slice(0, i + 1);
           let children = [];
 
-          token = new Token("figure_caption_open", "figcaption", 1);
+          token = new Token("figure_table_caption_open", "figcaption", 1);
           token.block = opts.anchor.enable || opts.label.enable;
           children.push(token);
 
           generate_caption(children, id, index, caption, opts);
 
-          token = new Token("figure_caption_close", "figcaption", -1);
+          token = new Token("figure_table_caption_close", "figcaption", -1);
           token.block = true;
           children.push(token);
 
@@ -156,7 +156,7 @@ function table_reference_rule(opts) {
           token.children = children;
           pre.push(token);
 
-          token = new Token("figure_close", "figure", -1);
+          token = new Token("figure_table_close", "figure", -1);
           token.block = true;
           pre.push(token);
 
@@ -306,7 +306,7 @@ function slugify(text) {
 function loadOptions(options) {
   return options
     ? {
-        after: typeof options.after === "string" ? options.after : figure_references.defaults.after,
+        after: typeof options.after === "string" ? options.after : table_references.defaults.after,
         ns: typeof options.ns === "string" && options.ns ? options.ns : table_references.defaults.ns,
         wrap: typeof options.wrap === "boolean" ? options.wrap : table_references.defaults.wrap,
         anchor: Object.assign({}, table_references.defaults.anchor, options.anchor ? options.anchor : {}),

@@ -80,7 +80,7 @@ function figure_reference_rule(opts) {
 
           if (opts.wrap) {
             const pre = children.slice(0, j);
-            let child = new state.Token("figure_open", "figure", 1);
+            let child = new state.Token("figure_image_open", "figure", 1);
             child.attrSet("id", id);
             child.block = true;
             pre.push(child);
@@ -89,7 +89,7 @@ function figure_reference_rule(opts) {
             token.meta = { targetId: id };
             pre.push(token);
 
-            child = new state.Token("figure_caption_open", "figcaption", 1);
+            child = new state.Token("figure_image_caption_open", "figcaption", 1);
             child.block = opts.anchor.enable || opts.label.enable;
             pre.push(child);
 
@@ -108,11 +108,11 @@ function figure_reference_rule(opts) {
               pre.push(child);
             }
 
-            child = new state.Token("figure_caption_close", "figcaption", -1);
+            child = new state.Token("figure_image_caption_close", "figcaption", -1);
             child.block = true;
             pre.push(child);
 
-            child = new state.Token("figure_close", "figure", -1);
+            child = new state.Token("figure_image_close", "figure", -1);
             child.block = true;
             pre.push(child);
 
