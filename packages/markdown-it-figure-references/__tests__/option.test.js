@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 
 describe("options", () => {
-  it("option: ns", () => {
+  it("ns", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { ns: "images" });
@@ -27,7 +27,7 @@ describe("options", () => {
     `);
   });
 
-  it("option: wrap", () => {
+  it("wrap", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { wrap: false });

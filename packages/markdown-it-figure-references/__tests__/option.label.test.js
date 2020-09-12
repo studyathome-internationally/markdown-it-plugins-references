@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 
 describe("option: label", () => {
-  it("label: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: null });
@@ -27,7 +27,7 @@ describe("option: label", () => {
     `);
   });
 
-  it("label: enable", () => {
+  it("enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { enable: false } });
@@ -49,7 +49,7 @@ describe("option: label", () => {
     `);
   });
 
-  it("label: text", () => {
+  it("text", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { text: "Image #" } });
@@ -71,7 +71,7 @@ describe("option: label", () => {
     `);
   });
 
-  it("label: placeholder", () => {
+  it("placeholder", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { text: "Figure §§", placeholder: "§§" } });
@@ -93,7 +93,7 @@ describe("option: label", () => {
     `);
   });
 
-  it("label: class", () => {
+  it("class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { label: { class: "figure-label" } });

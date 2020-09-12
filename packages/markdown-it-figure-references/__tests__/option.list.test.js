@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginFigureReferences = require("./../index.js");
 
 describe("option: list", () => {
-  it("list: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: null });
@@ -27,7 +27,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: enable", () => {
+  it("enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { enable: false } });
@@ -45,7 +45,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: class", () => {
+  it("class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { class: "list-of-figures" } });
@@ -67,7 +67,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: title", () => {
+  it("title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { title: "List of Images" } });
@@ -89,7 +89,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: tag", () => {
+  it("tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginFigureReferences, { list: { tag: "ul" } });
