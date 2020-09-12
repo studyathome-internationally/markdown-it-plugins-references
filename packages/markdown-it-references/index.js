@@ -1,13 +1,7 @@
 const references = (md, opts) => {
-  opts = Object.assign({}, references.defaults, opts);
+  opts = loadOptions(opts);
 
-  const reload = md.inline.ruler.getRules("").find(({ name }) => name === "references") || false;
-  if (reload) {
-    md.inline.ruler.at("references", references_rule(opts));
-  } else {
-    md.inline.ruler.push("references", references_rule(opts));
-  }
-
+  md.inline.ruler.push("references", references_rule(opts));
   md.renderer.rules.reference = reference_renderer(opts);
 };
 
@@ -69,33 +63,55 @@ function reference_renderer(opts) {
     const token = tokens[idx];
     const id = token.meta.targetId;
 
-    let label, index, renderer;
-    for (const [
-      ns,
-      nsLabel,
-      customRenderer = (id, label, index) => `<a href="#${id}">${label} ${index}</a>`,
-    ] of opts.labels) {
-      if (env[ns] && env[ns].refs && env[ns].refs[id]) {
-        const entry = env[ns].refs[id];
-        label = nsLabel;
-        index = entry.index;
-        renderer = customRenderer;
-        break;
+    if (id && Array.isArray(opts.labels)) {
+      for (const labelCfg of opts.labels) {
+        const { ns, text, placeholder, class: className, renderer: customRenderer } = labelCfg;
+        if (ns && env[ns] && env[ns].refs && env[ns].refs[id]) {
+          const { index } = env[ns].refs[id];
+          const renderer = customRenderer ? customRenderer : references.defaults.renderer;
+          return renderer(id, className, text, placeholder, index);
+        }
       }
     }
-    if (label) {
-      return renderer(id, label, index);
-    }
+
     return `&lt;&lt;${token.meta.targetId}&gt;&gt;`;
   };
 }
 
+function loadOptions(options) {
+  return options
+    ? {
+        labels: Array.isArray(options.labels) ? options.labels : references.defaults.labels,
+      }
+    : references.defaults;
+}
+
 references.defaults = {
   labels: [
-    ["figures", "Figure"],
-    ["tables", "Table"],
-    ["attributions", "Attribution"],
+    {
+      ns: "figures",
+      text: "Figure #",
+      placeholder: "#",
+      class: "figure-reference",
+    },
+    {
+      ns: "tables",
+      text: "Table #",
+      placeholder: "#",
+      class: "table-reference",
+    },
+    {
+      ns: "attributions",
+      text: "Attribution #",
+      placeholder: "#",
+      class: "attribution-reference",
+    },
   ],
+  renderer: (id, className, text, placeholder, index) =>
+    `<a ${id ? `href="#${id}"` : ""} ${className ? `class="${className}"` : ""}>${text.replace(
+      placeholder,
+      index
+    )}</a>`,
 };
 
 module.exports = references;
