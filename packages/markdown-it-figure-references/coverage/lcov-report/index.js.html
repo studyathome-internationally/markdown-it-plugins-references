@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>311/311</span>
+                <span class='fraction'>300/300</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>90/90</span>
+                <span class='fraction'>93/93</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>311/311</span>
+                <span class='fraction'>300/300</span>
             </div>
         
             
@@ -357,19 +357,7 @@
 <a name='L298'></a><a href='#L298'>298</a>
 <a name='L299'></a><a href='#L299'>299</a>
 <a name='L300'></a><a href='#L300'>300</a>
-<a name='L301'></a><a href='#L301'>301</a>
-<a name='L302'></a><a href='#L302'>302</a>
-<a name='L303'></a><a href='#L303'>303</a>
-<a name='L304'></a><a href='#L304'>304</a>
-<a name='L305'></a><a href='#L305'>305</a>
-<a name='L306'></a><a href='#L306'>306</a>
-<a name='L307'></a><a href='#L307'>307</a>
-<a name='L308'></a><a href='#L308'>308</a>
-<a name='L309'></a><a href='#L309'>309</a>
-<a name='L310'></a><a href='#L310'>310</a>
-<a name='L311'></a><a href='#L311'>311</a>
-<a name='L312'></a><a href='#L312'>312</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L301'></a><a href='#L301'>301</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -486,11 +474,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">209x</span>
@@ -544,16 +527,11 @@
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">36x</span>
-<span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
@@ -680,7 +658,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Token = require("markdown-it/lib/token");
-const attribution_references = require("../markdown-it-attribution-references");
 &nbsp;
 const figure_references = (md, opts) =&gt; {
   opts = loadOptions(opts);
@@ -776,15 +753,10 @@ function figure_reference_rule(opts) {
               pre.push(
                 ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
               );
-              if (title) {
-                child = new state.Token("text", "", 0);
-                child.content = ": ";
-                pre.push(child);
-              }
             }
             if (title) {
               child = new state.Token("text", "", 0);
-              child.content = title;
+              child.content = opts.label.enable ? `: ${title}` : title;
               pre.push(child);
             }
 &nbsp;
@@ -854,15 +826,10 @@ function figure_reference_list_rule(opts) {
             opts.label.text.replace(opts.label.placeholder, entry.index)
           )
         );
-        if (opts.list.item.title &amp;&amp; entry.title) {
-          token = new state.Token("text", "", 0);
-          token.content = ": ";
-          children.push(token);
-        }
       }
-      if (opts.list.item.title) {
+      if (opts.list.item.title &amp;&amp; entry.title) {
         token = new state.Token("text", "", 0);
-        token.content = entry.title;
+        token.content = opts.list.item.label ? `: ${entry.title}` : entry.title;
         children.push(token);
       }
 &nbsp;
@@ -997,7 +964,7 @@ module.exports = figure_references;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Sep 12 2020 02:17:14 GMT+0200 (Central European Summer Time)
+                at Sat Sep 12 2020 16:03:38 GMT+0200 (Central European Summer Time)
             </div>
         </div>
         <script src="prettify.js"></script>
