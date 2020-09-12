@@ -74,7 +74,7 @@ const md = require("markdown-it")()
   .use(require("markdown-it-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](https://jsfiddle.net/w2r6gkoc/1/). -->
+See a [demo as JSFiddle](https://jsfiddle.net/r62t17av/).
 
 <style>
 table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}

@@ -129,14 +129,14 @@ Plain HTML figures and tables are supported too.
 </ol>
 ```
 
-
 ## Usage
 
 ```js
 const md = require("markdown-it")()
   .use(require("markdown-it-table-references"), opts);
 ```
-<!-- See a [demo as JSFiddle](https://jsfiddle.net/sbhfd0tg/3/). -->
+
+See a [demo as JSFiddle](https://jsfiddle.net/mx7c9bfq/).
 
 <style>
 table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}

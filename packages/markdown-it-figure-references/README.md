@@ -67,7 +67,8 @@ Plain HTML figures and images are supported too.
 <figure id="the-stormtroopocat">
   <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
   <figcaption>
-    <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
+    <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The
+    Stormtroopocat
   </figcaption>
 </figure>
 <h2 id="list-of-figures" class="list">List of Figures</h2>
@@ -79,11 +80,10 @@ Plain HTML figures and images are supported too.
 ## Usage
 
 ```js
-const md = require("markdown-it")()
-  .use(require("markdown-it-figure-references"), opts);
+const md = require("markdown-it")().use(require("markdown-it-figure-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](https://jsfiddle.net/fke71wm4/2/). -->
+See a [demo as JSFiddle](https://jsfiddle.net/uxfgbq9v/).
 
 <style>
 table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}

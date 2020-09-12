@@ -14,7 +14,6 @@
   </p>
 </div>
 
-
 ## Installation
 
 ```sh
@@ -40,22 +39,36 @@ Markdown is often used for formatting readme files, for writing messages in onli
 :::
 ```
 
-
 ```html
 <h1>Markdown</h1>
 <div id="wikipedia-authors-markdown" class="parent">
   <div class="child">
-    <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
-      Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
+    <p>
+      Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with
+      Aaron Swartz. Markdown is often used for formatting readme files, for writing messages in online discussion
+      forums, and to create rich text using a plain text editor.
+    </p>
   </div>
-  <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
+  <p>
+    <a href="#wikipedia-authors-markdown" class="anchor">§</a
+    ><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a
+    ><span
+      >Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by
+      <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License:
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span
+    >
+  </p>
 </div>
 <h2 id="list-of-attributions" class="list">List of Attributions</h2>
 <ol class="list">
-  <li class="item"><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></li>
+  <li class="item">
+    <a href="#wikipedia-authors-markdown" class="label">Attribution 1</a>:
+    <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By:
+    <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>,
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a>
+  </li>
 </ol>
 ```
-
 
 ## Usage
 
@@ -64,7 +77,8 @@ const md = require("markdown-it")()
   .use(require("markdown-it-attribution-references"), opts);
 ```
 
-<!-- See a [demo as JSFiddle](https://jsfiddle.net/ezg50hj7/1/). -->
+See a [demo as JSFiddle](https://jsfiddle.net/rq25Lgun/).
+
 <style>
 table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}
 </style>
@@ -88,7 +102,6 @@ The `wrap` object can contain:
 | -------- | ----------------------- | --------- |
 | `parent` | Parent wrapper options. | see below |
 | `child`  | Child wrapper options.  | see below |
-
 
 <br/>
 
