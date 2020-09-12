@@ -5,11 +5,8 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
 describe("option: attribution", () => {
-  it("attribution: null", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("null", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { attribution: null });
     const result = md.render(text);
@@ -29,11 +26,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: top", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("top", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { attribution: { top: true } });
     const result = md.render(text);
@@ -53,11 +47,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: terminator", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "option.1.md"),
-      "utf8"
-    );
+  it("terminator", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "option.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       attribution: { terminator: "===" },
@@ -79,11 +70,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: label", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "option.2.md"),
-      "utf8"
-    );
+  it("label", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "option.2.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       attribution: { label: "@" },
@@ -105,11 +93,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: text", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("text", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       attribution: {
@@ -133,11 +118,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: text (empty)", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("text (empty)", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { attribution: { text: "" } });
     const result = md.render(text);
@@ -157,11 +139,8 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("attribution: licenses", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("licenses", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       attribution: {
@@ -173,8 +152,7 @@ describe("option: attribution", () => {
             version: "3.0",
             url: {
               deeds: "https://creativecommons.org/licenses/by-sa/3.0/",
-              legalCode:
-                "https://creativecommons.org/licenses/by-sa/3.0/legalcode",
+              legalCode: "https://creativecommons.org/licenses/by-sa/3.0/legalcode",
             },
           },
         ],

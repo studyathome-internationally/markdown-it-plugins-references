@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
 describe("option: anchor", () => {
-  it("anchor: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { anchor: null });
@@ -26,7 +26,7 @@ describe("option: anchor", () => {
     `);
   });
 
-  it("anchor: enable", () => {
+  it("enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { anchor: { enable: false } });
@@ -47,7 +47,7 @@ describe("option: anchor", () => {
     `);
   });
 
-  it("anchor: content", () => {
+  it("content", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { anchor: { content: "#" } });
@@ -68,7 +68,7 @@ describe("option: anchor", () => {
     `);
   });
 
-  it("anchor: class", () => {
+  it("class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {

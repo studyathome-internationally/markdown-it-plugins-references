@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
 describe("option: list", () => {
-  it("list: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { list: null });
@@ -26,7 +26,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: enable", () => {
+  it("enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { list: { enable: false } });
@@ -43,7 +43,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: class", () => {
+  it("class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -66,7 +66,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: title", () => {
+  it("title", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -89,7 +89,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: title (empty)", () => {
+  it("title (empty)", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { list: { title: "" } });
@@ -109,7 +109,7 @@ describe("option: list", () => {
     `);
   });
 
-  it("list: tag", () => {
+  it("tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { list: { tag: "ul" } });

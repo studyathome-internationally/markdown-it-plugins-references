@@ -5,7 +5,7 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
 describe("option: wrap", () => {
-  it("wrap: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { wrap: null });
@@ -26,7 +26,7 @@ describe("option: wrap", () => {
     `);
   });
 
-  it("wrap: parent - tag", () => {
+  it("parent - tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -49,7 +49,7 @@ describe("option: wrap", () => {
     `);
   });
 
-  it("wrap: parent - class", () => {
+  it("parent - class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -72,7 +72,7 @@ describe("option: wrap", () => {
     `);
   });
 
-  it("wrap: child - enable", () => {
+  it("child - enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -93,7 +93,7 @@ describe("option: wrap", () => {
     `);
   });
 
-  it("wrap: child - tag", () => {
+  it("child - tag", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
@@ -116,7 +116,7 @@ describe("option: wrap", () => {
     `);
   });
 
-  it("wrap: child - class", () => {
+  it("child - class", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {

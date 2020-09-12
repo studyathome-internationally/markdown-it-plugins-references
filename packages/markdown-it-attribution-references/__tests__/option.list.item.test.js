@@ -5,11 +5,8 @@ const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
 describe("option: list item", () => {
-  it("list item: null", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("null", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, { list: { item: null } });
     const result = md.render(text);
@@ -29,11 +26,8 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: tag", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("tag", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { tag: "div", item: { tag: "span" } },
@@ -55,11 +49,8 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: href", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("href", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { item: { href: false } },
@@ -81,11 +72,8 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: class", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("class", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { item: { class: "reference-item" } },
@@ -106,11 +94,8 @@ describe("option: list item", () => {
       </ol>
     `);
   });
-  it("list item: label", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("label", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { item: { label: false } },
@@ -132,11 +117,8 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: text", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("text", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { item: { text: "<title> (<author>)" } },
@@ -158,11 +140,8 @@ describe("option: list item", () => {
     `);
   });
 
-  it("list item: text (empty)", () => {
-    const text = readFileSync(
-      join(__dirname, "__cases__", "basic.1.md"),
-      "utf8"
-    );
+  it("text (empty)", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences, {
       list: { item: { text: "" } },

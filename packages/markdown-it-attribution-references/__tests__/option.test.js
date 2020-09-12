@@ -6,7 +6,7 @@ const MarkdownItPluginAttributeReferences = require("./../index.js");
 const md = new MarkdownIt({ xhtmlOut: true, html: true });
 
 describe("options", () => {
-  it("option: null", () => {
+  it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginAttributeReferences, null);
     const result = md.render(text);
@@ -26,7 +26,7 @@ describe("options", () => {
     `);
   });
 
-  it("option: ns", () => {
+  it("ns", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     md.use(MarkdownItPluginAttributeReferences, { ns: "references" });
     const result = md.render(text);
