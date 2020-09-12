@@ -26,6 +26,56 @@ or
 npm install markdown-it-figure-references
 ```
 
+## Example
+
+```md
+# Hello World
+
+![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
+```
+
+```html
+<h1>Hello World</h1>
+<p>
+  <figure id="the-stormtroopocat">
+    <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+    <figcaption>
+      <a href="#the-stormtroopocat" class="anchor">§</a>
+      <a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
+    </figcaption>
+  </figure>
+</p>
+<h2 id="list-of-figures" class="list">List of Figures</h2>
+<ol class="list">
+  <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
+</ol>
+```
+
+Plain HTML figures and images are supported too.
+
+```md
+# Hello World
+
+<figure id="the-stormtroopocat">
+  <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat"/>
+  <figcaption>The Stormtroopocat</figcaption>
+</figure>
+```
+
+```html
+<h1>Hello World</h1>
+<figure id="the-stormtroopocat">
+  <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+  <figcaption>
+    <a href="#the-stormtroopocat" class="anchor">§</a><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
+  </figcaption>
+</figure>
+<h2 id="list-of-figures" class="list">List of Figures</h2>
+<ol class="list">
+  <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
+</ol>
+```
+
 ## Usage
 
 ```js
@@ -34,6 +84,10 @@ const md = require("markdown-it")()
 ```
 
 <!-- See a [demo as JSFiddle](https://jsfiddle.net/fke71wm4/2/). -->
+
+<style>
+table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}
+</style>
 
 The `opts` object can contain:
 
@@ -91,31 +145,6 @@ The `item` object can contain:
 | `title` | Insert figure title.              | `true`   |
 
 <br/>
-
-## Example
-
-```md
-# Hello World
-
-![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
-```
-
-```html
-<h1>Hello World</h1>
-<p>
-  <figure id="the-stormtroopocat">
-    <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
-    <figcaption>
-      <a href="#the-stormtroopocat" class="anchor">§</a>
-      <a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat
-    </figcaption>
-  </figure>
-</p>
-<h2 id="list-of-figures" class="list">List of Figures</h2>
-<ol class="list">
-  <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
-</ol>
-```
 
 ## License
 
