@@ -244,6 +244,7 @@ function slugify(text) {
 function loadOptions(options) {
   return options
     ? {
+        after: typeof options.after === "string" ? options.after : figure_references.defaults.after,
         ns: typeof options.ns === "string" && options.ns ? options.ns : figure_references.defaults.ns,
         wrap: typeof options.wrap === "boolean" ? options.wrap : figure_references.defaults.wrap,
         anchor: Object.assign({}, figure_references.defaults.anchor, options.anchor ? options.anchor : {}),
