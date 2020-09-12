@@ -28,7 +28,7 @@ npm install markdown-it-figure-references
 
 ## Usage
 
-```
+```js
 const md = require("markdown-it")()
   .use(require("markdown-it-figure-references"), opts);
 ```
