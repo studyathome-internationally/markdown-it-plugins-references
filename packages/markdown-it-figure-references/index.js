@@ -1,5 +1,4 @@
 const Token = require("markdown-it/lib/token");
-const attribution_references = require("../markdown-it-attribution-references");
 
 const figure_references = (md, opts) => {
   opts = loadOptions(opts);
@@ -95,15 +94,10 @@ function figure_reference_rule(opts) {
               pre.push(
                 ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
               );
-              if (title) {
-                child = new state.Token("text", "", 0);
-                child.content = ": ";
-                pre.push(child);
-              }
             }
             if (title) {
               child = new state.Token("text", "", 0);
-              child.content = title;
+              child.content = opts.label.enable ? `: ${title}` : title;
               pre.push(child);
             }
 
@@ -173,15 +167,10 @@ function figure_reference_list_rule(opts) {
             opts.label.text.replace(opts.label.placeholder, entry.index)
           )
         );
-        if (opts.list.item.title && entry.title) {
-          token = new state.Token("text", "", 0);
-          token.content = ": ";
-          children.push(token);
-        }
       }
-      if (opts.list.item.title) {
+      if (opts.list.item.title && entry.title) {
         token = new state.Token("text", "", 0);
-        token.content = entry.title;
+        token.content = opts.list.item.label ? `: ${entry.title}` : entry.title;
         children.push(token);
       }
 
