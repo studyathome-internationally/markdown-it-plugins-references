@@ -1,11 +1,11 @@
+const Token = require("markdown-it/lib/token");
+const attribution_references = require("../markdown-it-attribution-references");
+
 const figure_references = (md, opts) => {
   opts = loadOptions(opts);
 
   md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
   md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
-
-  md.renderer.rules.figure_reference_list_item = figure_reference_list_item_renderer(opts);
-  md.renderer.rules.figure_wrapper = figure_wrapper_renderer(opts, md.renderer.rules.image);
 };
 
 function figure_reference_rule(opts) {
@@ -26,7 +26,7 @@ function figure_reference_rule(opts) {
             const m = rProp.exec(match);
             if (!m) continue;
             const [figure, id, title] = m;
-            addImage(state, opts, id, title);
+            add_image(state, opts, id, title);
 
             if (opts.anchor.enable || opts.label.enable) {
               const start = content.substring(0, match.index);
@@ -51,7 +51,7 @@ function figure_reference_rule(opts) {
 
             const rTitle = /title\s*?=\s*?"(.*?)"/gm.exec(image);
             const title = rTitle ? rTitle[1] : "";
-            addImage(state, opts, id, title);
+            add_image(state, opts, id, title);
           }
         }
       } else {
@@ -62,8 +62,6 @@ function figure_reference_rule(opts) {
           const titleContent = token.attrGet("title");
           if (!titleContent) continue;
 
-          token.type = "figure_wrapper";
-
           let id,
             title = titleContent;
           if (titleContent.split("#").length === 2) {
@@ -71,11 +69,58 @@ function figure_reference_rule(opts) {
           } else {
             id = slugify(title);
           }
-          token.attrSet("id", id);
-          token.attrSet("title", title);
-          token.meta = { targetId: id };
 
-          addImage(state, opts, id, title);
+          add_image(state, opts, id, title);
+
+          if (opts.wrap) {
+            const pre = children.slice(0, j);
+            let child = new state.Token("figure_open", "figure", 1);
+            child.attrSet("id", id);
+            child.block = true;
+            pre.push(child);
+
+            token.attrSet("title", title);
+            token.meta = { targetId: id };
+            pre.push(token);
+
+            child = new state.Token("figure_caption_open", "figcaption", 1);
+            child.block = opts.anchor.enable || opts.label.enable;
+            pre.push(child);
+
+            if (opts.anchor.enable) {
+              pre.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
+            }
+            if (opts.label.enable) {
+              const index = state.env[opts.ns].refs[id].index;
+              pre.push(
+                ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
+              );
+              if (title) {
+                child = new state.Token("text", "", 0);
+                child.content = ": ";
+                pre.push(child);
+              }
+            }
+            if (title) {
+              child = new state.Token("text", "", 0);
+              child.content = title;
+              pre.push(child);
+            }
+
+            child = new state.Token("figure_caption_close", "figcaption", -1);
+            child.block = true;
+            pre.push(child);
+
+            child = new state.Token("figure_close", "figure", -1);
+            child.block = true;
+            pre.push(child);
+
+            children = [...pre, ...children.slice(j + 1)];
+            state.tokens[i].children = children;
+            j = pre.length - 1;
+          } else {
+            token.attrSet("id", id);
+          }
         }
       }
     }
@@ -89,7 +134,7 @@ function figure_reference_list_rule(opts) {
     const tokens = state.tokens;
     let token, tokenChild;
 
-    if (opts.list.enable && opts.list.title !== "") {
+    if (opts.list.title !== "") {
       token = new state.Token("heading_open", "h2", 1);
       token.attrSet("id", "list-of-figures");
       token.attrSet("class", opts.list.class);
@@ -114,9 +159,37 @@ function figure_reference_list_rule(opts) {
 
     for (const id in state.env[opts.ns].refs) {
       const entry = state.env[opts.ns].refs[id];
-      token = new state.Token("figure_reference_list_item", opts.list.item.tag, 0);
+      token = new state.Token("figure_reference_list_item_open", opts.list.item.tag, 1);
       token.attrSet("class", opts.list.item.class);
       token.meta = { ...entry };
+      tokens.push(token);
+
+      const children = [];
+      if (opts.list.item.label) {
+        children.push(
+          ...generate_link(
+            opts.list.item.href ? `#${id}` : "",
+            opts.label.class,
+            opts.label.text.replace(opts.label.placeholder, entry.index)
+          )
+        );
+        if (opts.list.item.title && entry.title) {
+          token = new state.Token("text", "", 0);
+          token.content = ": ";
+          children.push(token);
+        }
+      }
+      if (opts.list.item.title) {
+        token = new state.Token("text", "", 0);
+        token.content = entry.title;
+        children.push(token);
+      }
+
+      token = new state.Token("inline", "", 0);
+      token.children = children;
+      tokens.push(token);
+
+      token = new state.Token("figure_reference_list_item_close", opts.list.item.tag, -1);
       tokens.push(token);
     }
 
@@ -127,54 +200,21 @@ function figure_reference_list_rule(opts) {
   return figure_reference_list;
 }
 
-function figure_reference_list_item_renderer(opts) {
-  return (tokens, idx, options, env /* , self */) => {
-    const token = tokens[idx];
-    const id = token.meta.id;
-    const index = env[opts.ns].refs[id].index;
-    const label = render_item_label(id, index, opts);
-    const sep = opts.list.item.title && label && token.meta.title ? ": " : "";
-    const title = opts.list.item.title ? token.meta.title : "";
-    return `  <${token.tag} class="${token.attrGet("class")}">${label}${sep}${title}</${token.tag}>\n`;
-  };
-}
+function generate_link(href, className, content) {
+  const tokens = [];
+  let token = new Token("link_open", "a", 1);
+  if (href) token.attrSet("href", href);
+  if (className) token.attrSet("class", className);
+  tokens.push(token);
 
-function figure_wrapper_renderer(opts, defaultRenderer) {
-  return (tokens, idx, options, env, self) => {
-    const token = tokens[idx];
-    const id = token.meta.targetId;
-    const title = token.attrGet("title");
-    const entry = env[opts.ns].refs[id];
-    const rId = new RegExp('\\s?id="' + id + '"');
-    const figure = defaultRenderer(tokens, idx, options, env, self);
-    const anchor = render_anchor(id, opts);
-    const label = render_label(id, entry.index, opts);
-    if (id && entry && opts.wrap) {
-      return (
-        `<figure id="${id}">\n` +
-        `  ${figure.replace(rId, "")}\n` +
-        `  <figcaption>\n` +
-        `    ${anchor}${label}${label && title ? ": " : ""}${title}\n` +
-        `  </figcaption>\n` +
-        `</figure>`
-      );
-    }
-    return figure;
-  };
-}
+  token = new Token("text", "", 0);
+  token.content = content;
+  tokens.push(token);
 
-function loadOptions(options) {
-  const item = Object.assign(
-    {},
-    figure_references.defaults.list.item,
-    options && options.list && options.list.item ? options.list.item : {}
-  );
-  if (options && options.list) options.list.item = item;
-  const list = Object.assign({}, figure_references.defaults.list, options && options.list ? options.list : {});
-  const label = Object.assign({}, figure_references.defaults.label, options && options.label ? options.label : {});
-  const anchor = Object.assign({}, figure_references.defaults.anchor, options && options.anchor ? options.anchor : {});
-  const opts = Object.assign({}, options, { list, label, anchor });
-  return Object.assign({}, figure_references.defaults, opts);
+  token = new Token("link_close", "a", -1);
+  tokens.push(token);
+
+  return tokens;
 }
 
 function render_anchor(id, opts) {
@@ -186,14 +226,7 @@ function render_label(id, index, opts) {
   return opts.label.enable ? `<a href="#${id}" class="${opts.label.class}">${label}</a>` : "";
 }
 
-function render_item_label(id, index, opts) {
-  const label = opts.label.text.replace(opts.label.placeholder, index);
-  return opts.list.item.label
-    ? `<a${opts.list.item.href ? ` href="#${id}"` : ""} class="${opts.label.class}">${label}</a>`
-    : "";
-}
-
-function addImage(state, opts, id, title) {
+function add_image(state, opts, id, title) {
   if (!state.env[opts.ns]) {
     state.env[opts.ns] = {};
   }
@@ -210,6 +243,40 @@ function addImage(state, opts, id, title) {
 
 function slugify(text) {
   return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
+}
+
+function loadOptions(options) {
+  return options
+    ? {
+        ns: typeof options.ns === "string" && options.ns ? options.ns : figure_references.defaults.ns,
+        wrap: typeof options.wrap === "boolean" ? options.wrap : figure_references.defaults.wrap,
+        anchor: Object.assign({}, figure_references.defaults.anchor, options.anchor ? options.anchor : {}),
+        label: Object.assign({}, figure_references.defaults.label, options.label ? options.label : {}),
+        list: {
+          enable:
+            options.list && typeof options.list.enable === "boolean"
+              ? options.list.enable
+              : figure_references.defaults.list.enable,
+          class:
+            options.list && typeof options.list.class === "string"
+              ? options.list.class
+              : figure_references.defaults.list.class,
+          title:
+            options.list && typeof options.list.title === "string"
+              ? options.list.title
+              : figure_references.defaults.list.title,
+          tag:
+            options.list && typeof options.list.tag === "string"
+              ? options.list.tag
+              : figure_references.defaults.list.tag,
+          item: Object.assign(
+            {},
+            figure_references.defaults.list.item,
+            options.list && options.list.item ? options.list.item : {}
+          ),
+        },
+      }
+    : figure_references.defaults;
 }
 
 figure_references.defaults = {
