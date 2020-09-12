@@ -27,6 +27,35 @@ or
 npm install markdown-it-attribution-references
 ```
 
+## Example
+
+```md
+# Markdown
+
+::: attribution cc-by-sa [Markdown](https://en.wikipedia.org/w/index.php?title=Markdown&oldid=975764292) [Wikipedia Authors](https://en.wikipedia.org/w/index.php?title=Markdown&action=history)
+
+Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
+Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
+
+:::
+```
+
+
+```html
+<h1>Markdown</h1>
+<div id="wikipedia-authors-markdown" class="parent">
+  <div class="child">
+    <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
+      Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
+  </div>
+  <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
+</div>
+<h2 id="list-of-attributions" class="list">List of Attributions</h2>
+<ol class="list">
+  <li class="item"><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></li>
+</ol>
+```
+
 
 ## Usage
 
@@ -151,31 +180,8 @@ Each license objects can contain:
 
 An extensive list of possible license agreements can be found at [Comparison of free and open-source software licences](https://en.wikipedia.org/wiki/Comparison_of_free_and_open-source_software_licences).
 
-## Example
+<br />
 
-```md
-# Markdown
+## License
 
-::: attribution cc-by-sa [Markdown](https://en.wikipedia.org/w/index.php?title=Markdown&oldid=975764292) [Wikipedia Authors](https://en.wikipedia.org/w/index.php?title=Markdown&action=history)
-
-Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
-Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-
-:::
-```
-
-
-```html
-<h1>Markdown</h1>
-<div id="wikipedia-authors-markdown" class="parent">
-  <div class="child">
-    <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
-      Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
-  </div>
-  <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
-</div>
-<h2 id="list-of-attributions" class="list">List of Attributions</h2>
-<ol class="list">
-  <li class="item"><a href="#wikipedia-authors-markdown" class="label">Attribution 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></li>
-</ol>
-```
+[GPL-3.0](https://github.com/studyathome-internationally/vuepress-plugins/blob/master/LICENSE) &copy; [StudyATHome Internationally](https://github.com/studyathome-internationally/)
