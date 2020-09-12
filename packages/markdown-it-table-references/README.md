@@ -132,8 +132,7 @@ Plain HTML figures and tables are supported too.
 ## Usage
 
 ```js
-const md = require("markdown-it")()
-  .use(require("markdown-it-table-references"), opts);
+const md = require("markdown-it")().use(require("markdown-it-table-references"), opts);
 ```
 
 See a [demo as JSFiddle](https://jsfiddle.net/mx7c9bfq/).
@@ -146,6 +145,7 @@ The `opts` object can contain:
 
 | Name     | Description                                     | Default    |
 | -------- | ----------------------------------------------- | ---------- |
+| `after`  | Rule name to insert new rules after.            | `false`    |
 | `ns`     | Namespace for saving registered tables (`env`). | `"tables"` |
 | `wrap`   | Wrap `<table>` in `<figure>` element.           | `true`     |
 | `anchor` | Anchor options.                                 | see below  |

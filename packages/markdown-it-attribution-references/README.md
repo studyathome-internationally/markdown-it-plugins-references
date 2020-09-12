@@ -73,8 +73,7 @@ Markdown is often used for formatting readme files, for writing messages in onli
 ## Usage
 
 ```js
-const md = require("markdown-it")()
-  .use(require("markdown-it-attribution-references"), opts);
+const md = require("markdown-it")().use(require("markdown-it-attribution-references"), opts);
 ```
 
 See a [demo as JSFiddle](https://jsfiddle.net/rq25Lgun/).
@@ -87,6 +86,7 @@ The `opts` object can contain:
 
 | Name          | Description                                           | Default          |
 | ------------- | ----------------------------------------------------- | ---------------- |
+| `after`       | Rule name to insert new rules after.                  | `false`          |
 | `ns`          | Namespace for saving registered attributions (`env`). | `"attributions"` |
 | `wrap`        | Wrapper options.                                      | see below        |
 | `anchor`      | Anchor options.                                       | see below        |

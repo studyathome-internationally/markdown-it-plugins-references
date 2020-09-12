@@ -3,8 +3,15 @@ const Token = require("markdown-it/lib/token");
 const figure_references = (md, opts) => {
   opts = loadOptions(opts);
 
-  md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
-  md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
+  if (typeof opts.after === "string") {
+    if (md.core.ruler.getRules("").find(({ name }) => name === opts.after)) {
+      md.core.ruler.after(opts.after, "figure_reference", figure_reference_rule(opts), [""]);
+      md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
+    }
+  } else {
+    md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
+    md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
+  }
 };
 
 function figure_reference_rule(opts) {
@@ -269,6 +276,7 @@ function loadOptions(options) {
 }
 
 figure_references.defaults = {
+  after: false,
   ns: "figures",
   wrap: true,
   anchor: {

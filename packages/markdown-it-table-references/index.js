@@ -4,8 +4,15 @@ const { isSpace } = require("markdown-it/lib/common/utils");
 const table_references = (md, opts) => {
   opts = loadOptions(opts);
 
-  md.core.ruler.push("table_reference", table_reference_rule(opts));
-  md.core.ruler.push("table_reference_list", table_reference_list_rule(opts));
+  if (typeof opts.after === "string") {
+    if (md.core.ruler.getRules("").find(({ name }) => name === opts.after)) {
+      md.core.ruler.after(opts.after, "table_reference", table_reference_rule(opts));
+      md.core.ruler.after("table_reference", "table_reference_list", table_reference_list_rule(opts));
+    }
+  } else {
+    md.core.ruler.push("table_reference", table_reference_rule(opts));
+    md.core.ruler.push("table_reference_list", table_reference_list_rule(opts));
+  }
 };
 
 function table_reference_rule(opts) {
@@ -331,6 +338,7 @@ function loadOptions(options) {
 }
 
 table_references.defaults = {
+  after: false,
   ns: "tables",
   wrap: true,
   anchor: {

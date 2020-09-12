@@ -3,8 +3,14 @@ const Token = require("markdown-it/lib/token");
 const attribution_references = (md, opts) => {
   opts = loadOptions(opts);
 
+  if (typeof opts.after === "string") {
+    if (md.block.ruler.getRules("").find(({ name }) => name === opts.after)) {
+      md.core.ruler.after(opts.after, "attribution_list", attribution_list_rule(opts));
+    }
+  } else {
+    md.core.ruler.push("attribution_list", attribution_list_rule(opts));
+  }
   md.block.ruler.before("paragraph", "attribution", attribution_rule(opts));
-  md.core.ruler.push("attribution_list", attribution_list_rule(opts));
 };
 
 function attribution_rule(opts) {
@@ -324,6 +330,7 @@ function loadOptions(options) {
 }
 
 attribution_references.defaults = {
+  after: false,
   ns: "attributions",
   wrap: {
     parent: {

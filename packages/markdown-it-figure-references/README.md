@@ -93,6 +93,7 @@ The `opts` object can contain:
 
 | Name     | Description                                     | Default     |
 | -------- | ----------------------------------------------- | ----------- |
+| `after`  | Rule name to insert new rules after.            | `false`     |
 | `ns`     | Namespace for saving registered images (`env`). | `"figures"` |
 | `wrap`   | Wrap `<image>` in a `<figure>` element.         | `true`      |
 | `anchor` | Anchor options.                                 | see below   |
