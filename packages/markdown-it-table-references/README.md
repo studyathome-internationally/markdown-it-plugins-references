@@ -26,9 +26,113 @@ or
 npm install markdown-it-table-references
 ```
 
+## Example
+
+```md
+# Hello World
+
+| Name  | Client  |
+| ----- | ------- |
+| Alice | Mobile  |
+| Bob   | Desktop |
+
+.Client overview
+```
+
+```html
+<h1>Hello World</h1>
+<figure id="client-overview">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice</td>
+        <td>Mobile</td>
+      </tr>
+      <tr>
+        <td>Bob</td>
+        <td>Desktop</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Table 1</a>: Client overview
+  </figcaption>
+</figure>
+<h2 id="list-of-tables" class="list">List of Tables</h2>
+<ol class="list">
+  <li class="item"><a href="#client-overview" class="label">Table 1</a>: Client overview</li>
+</ol>
+```
+
+Plain HTML tables are supported too.
+
+```md
+# Hello World
+
+<figure id="client-overview">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice</td>
+        <td>Mobile</td>
+      </tr>
+      <tr>
+        <td>Bob</td>
+        <td>Desktop</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>Client overview</figcaption>
+</figure>
+```
+
+```html
+<h1>Hello World</h1>
+<figure id="client-overview">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice</td>
+        <td>Mobile</td>
+      </tr>
+      <tr>
+        <td>Bob</td>
+        <td>Desktop</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Table 1</a>: Client overview
+  </figcaption>
+</figure>
+<h2 id="list-of-tables" class="list">List of Tables</h2>
+<ol class="list">
+  <li class="item"><a href="#client-overview" class="label">Table 1</a>: Client overview</li>
+</ol>
+```
+
+
 ## Usage
 
-```
+```js
 const md = require("markdown-it")()
   .use(require("markdown-it-table-references"), opts);
 ```
@@ -91,50 +195,6 @@ The `item` object can contain:
 | `title` | Insert table title.               | `true`   |
 
 <br/>
-
-## Example
-
-```md
-# Hello World
-
-| Name  | Client  |
-| ----- | ------- |
-| Alice | Mobile  |
-| Bob   | Desktop |
-
-.Client overview
-```
-
-```html
-<h1>Hello World</h1>
-<figure id="client-overview">
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Client</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Alice</td>
-        <td>Mobile</td>
-      </tr>
-      <tr>
-        <td>Bob</td>
-        <td>Desktop</td>
-      </tr>
-    </tbody>
-  </table>
-  <figcaption>
-    <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Table 1</a>: Client overview
-  </figcaption>
-</figure>
-<h2 id="list-of-tables" class="list">List of Tables</h2>
-<ol class="list">
-  <li class="item"><a href="#client-overview" class="label">Table 1</a>: Client overview</li>
-</ol>
-```
 
 ## License
 
