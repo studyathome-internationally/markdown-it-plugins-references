@@ -70,7 +70,7 @@ npm install markdown-it-table-references
 </ol>
 ```
 
-Plain HTML tables are supported too.
+Plain HTML figures and tables are supported too.
 
 ```md
 # Hello World
@@ -136,8 +136,11 @@ Plain HTML tables are supported too.
 const md = require("markdown-it")()
   .use(require("markdown-it-table-references"), opts);
 ```
-
 <!-- See a [demo as JSFiddle](https://jsfiddle.net/sbhfd0tg/3/). -->
+
+<style>
+table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}
+</style>
 
 The `opts` object can contain:
 
