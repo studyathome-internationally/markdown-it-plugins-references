@@ -4,7 +4,7 @@ const attribution_references = (md, opts) => {
   opts = loadOptions(opts);
 
   if (typeof opts.after === "string") {
-    if (md.block.ruler.getRules("").find(({ name }) => name === opts.after)) {
+    if (md.core.ruler.getRules("").find(({ name }) => name === opts.after)) {
       md.core.ruler.after(opts.after, "attribution_list", attribution_list_rule(opts));
     }
   } else {
