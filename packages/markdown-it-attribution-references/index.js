@@ -194,32 +194,33 @@ function generate_link(href, className, content) {
 }
 
 function insert_title(tokens, text, meta, opts) {
-  const r = /(.*?)<(title|author|license)>(.*?)/gm;
+  const tags = "<title>|<author>|<license>";
+  const r = new RegExp("(" + tags + "|^)(.*?)(?=" + tags + "|$)", "gm");
   let m, token;
   while ((m = r.exec(text))) {
-    const [_, before, type, after] = m;
+    const [_, type, text] = m;
 
-    token = new Token("text", "", 0);
-    token.content = before;
-    tokens.push(token);
-
-    if (type === "author") {
-      tokens.push(...generate_link(meta.authorUrl, "", meta.author));
-    } else if (type === "title") {
-      tokens.push(...generate_link(meta.titleUrl, "", meta.title));
-    } else if (type === "license") {
-      tokens.push(
-        ...generate_link(
-          typeof meta.license === "string" ? "" : meta.license.url.deeds,
-          "",
-          typeof meta.license === "string" ? meta.license : `${meta.license.name} ${meta.license.version}`
-        )
-      );
+    if (type) {
+      if (type === "<author>") {
+        tokens.push(...generate_link(meta.authorUrl, "", meta.author));
+      } else if (type === "<title>") {
+        tokens.push(...generate_link(meta.titleUrl, "", meta.title));
+      } else if (type === "<license>") {
+        tokens.push(
+          ...generate_link(
+            typeof meta.license === "string" ? "" : meta.license.url.deeds,
+            "",
+            typeof meta.license === "string" ? meta.license : `${meta.license.name} ${meta.license.version}`
+          )
+        );
+      }
     }
 
-    token = new Token("text", "", 0);
-    token.content = after;
-    tokens.push(token);
+    if (text) {
+      token = new Token("text", "", 0);
+      token.content = text;
+      tokens.push(token);
+    }
   }
 }
 
