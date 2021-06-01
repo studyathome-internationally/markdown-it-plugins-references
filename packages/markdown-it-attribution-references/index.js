@@ -57,10 +57,19 @@ function attribution_rule(opts) {
 
       return true;
     } else if (line === attribution_terminator_close) {
+      let nesting = 0;
       let token = tokens
         .slice()
         .reverse()
-        .find(({ type }) => type === "attribution_parent_open");
+        .find((element /*, index, array*/) => {
+          const { type } = element;
+          if (type === "attribution_parent_close") {
+            nesting++;
+          } else if (type === "attribution_parent_open") {
+            if (nesting > 0) nesting--;
+            else return true;
+          }
+        });
       if (!token) return false;
 
       const id = token.attrGet("id");
