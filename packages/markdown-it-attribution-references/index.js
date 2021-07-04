@@ -178,11 +178,13 @@ function add_attribution(state, opts, id, meta) {
   if (!state.env[opts.ns].refs) {
     state.env[opts.ns].refs = {};
   }
-  state.env[opts.ns].refs[id] = {
-    id,
-    ...meta,
-    index: Object.keys(state.env[opts.ns].refs).length + 1,
-  };
+  if (!state.env[opts.ns].refs[id]) {
+    state.env[opts.ns].refs[id] = {
+      id,
+      ...meta,
+      index: Object.keys(state.env[opts.ns].refs).length + 1,
+    };
+  }
 }
 
 function generate_link(href, className, content) {
