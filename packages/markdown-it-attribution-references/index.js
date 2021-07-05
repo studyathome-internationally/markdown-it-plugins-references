@@ -19,39 +19,33 @@ function attribution_rule(opts) {
 
     const pos = state.bMarks[startLine] + state.tShift[startLine];
     const max = state.eMarks[startLine];
-    const terminatorLength = opts.attribution.terminator.length + opts.attribution.label.length + 1;
-
+    const attribution_terminator_open = opts.attribution.terminatorStart;
+    const attribution_terminator_close = opts.attribution.terminatorEnd;
+    const terminatorLength = attribution_terminator_open.length;
     const line = state.src.substring(pos, Math.min(max, pos + terminatorLength));
-    const attribution_terminator_open = opts.attribution.terminator + " " + opts.attribution.label;
-    const attribution_terminator_close = opts.attribution.terminator;
 
     if (line === attribution_terminator_open) {
-      const r = /(?:#([\w-]+)\s+)?([\w-]+)\s+\[(.*?)\]\((.*?)\)\s+\[(.*?)\]\((.*?)\)/;
-      const data = state.src.substring(pos + line.length + 1, max);
-      const [m, idLabel, licenseLabel, title, titleUrl, author, authorUrl] = r.exec(data);
+      const keys = state.src.substring(pos + line.length + 1, max).split(",");
 
-      if (!m) return false;
-      const id = idLabel ? idLabel : slugify(author + "-" + title);
-      const license = opts.attribution.licenses.find(({ id }) => id === licenseLabel) || licenseLabel;
-
+      if (keys.length === 0) return false;
+      const id = add_attributions(state, opts, keys);
       state.line++;
 
-      let token = new state.Token("attribution_parent_open", opts.wrap.parent.tag, 1);
+      let token = new Token("attribution_parent_open", opts.attribution.wrap.parent.tag, 1);
       token.block = true;
       token.attrSet("id", id);
-      token.attrSet("class", opts.wrap.parent.class);
-      token.meta = { license, title, titleUrl, author, authorUrl };
+      token.attrSet("class", opts.attribution.wrap.parent.class);
+      token.meta = { keys };
 
       tokens.push(token);
-      add_attribution(state, opts, id, token.meta);
 
       if (opts.attribution.top) {
-        insert_attribution(state, id, token.meta, opts);
+        tokens.push(...generate_attribution(keys, opts, { anchor: id, env: state.env }));
       }
 
-      if (opts.wrap.child.enable) {
-        token = new state.Token("attribution_child_open", opts.wrap.child.tag, 1);
-        token.attrSet("class", opts.wrap.child.class);
+      if (opts.attribution.wrap.child.enable) {
+        token = new Token("attribution_child_open", opts.attribution.wrap.child.tag, 1);
+        token.attrSet("class", opts.attribution.wrap.child.class);
         tokens.push(token);
       }
 
@@ -77,16 +71,16 @@ function attribution_rule(opts) {
 
       state.line++;
 
-      if (opts.wrap.child.enable) {
-        token = new state.Token("attribution_child_close", opts.wrap.child.tag, -1);
+      if (opts.attribution.wrap.child.enable) {
+        token = new Token("attribution_child_close", opts.attribution.wrap.child.tag, -1);
         tokens.push(token);
       }
 
       if (!opts.attribution.top) {
-        insert_attribution(state, id, meta, opts);
+        tokens.push(...generate_attribution(meta.keys, opts, { anchor: id, env: state.env }));
       }
 
-      token = new state.Token("attribution_parent_close", opts.wrap.parent.tag, -1);
+      token = new Token("attribution_parent_close", opts.attribution.wrap.parent.tag, -1);
       token.block = true;
       token.meta = { targetId: id, ...meta };
 
@@ -107,54 +101,54 @@ function attribution_list_rule(opts) {
     let token, tokenChild;
 
     if (opts.list.title !== "") {
-      token = new state.Token("heading_open", "h2", 1);
+      token = new Token("heading_open", "h2", 1);
       token.attrSet("id", "list-of-attributions");
       token.attrSet("class", opts.list.class);
       token.markup = "##";
       token.block = true;
       tokens.push(token);
 
-      token = new state.Token("inline", "", 0);
-      tokenChild = new state.Token("text", "", 0);
+      token = new Token("inline", "", 0);
+      tokenChild = new Token("text", "", 0);
       tokenChild.content = opts.list.title;
       token.children = [tokenChild];
       tokens.push(token);
 
-      token = new state.Token("heading_close", "h2", -1);
+      token = new Token("heading_close", "h2", -1);
       tokens.push(token);
     }
 
-    token = new state.Token("attribution_list_open", opts.list.tag, 1);
+    token = new Token("attribution_list_open", opts.list.tag, 1);
     token.attrSet("class", opts.list.class);
     token.block = true;
     tokens.push(token);
 
-    for (const id in state.env[opts.ns].refs) {
-      const entry = state.env[opts.ns].refs[id];
-      token = new state.Token("attribution_list_item_open", opts.list.item.tag, 1);
+    for (const ref of state.env[opts.ns].refs) {
+      token = new Token("attribution_list_item_open", opts.list.item.tag, 1);
+      token.attrSet("id", ref.id);
       token.attrSet("class", opts.list.item.class);
-      token.meta = { ...entry };
       tokens.push(token);
 
       const children = [];
-      if (opts.list.item.label) {
-        children.push(
-          ...generate_link(
-            opts.list.item.href ? `#${id}` : "",
-            opts.label.class,
-            opts.label.text.replace(opts.label.placeholder, entry.index)
-          )
-        );
-        if (opts.list.item.text) {
-          token = new Token("text", "", 0);
-          token.content = ": ";
-          children.push(token);
-        }
-      }
 
-      if (opts.list.item.text) {
-        insert_title(children, opts.list.item.text, entry, opts);
-      }
+      token = new Token("paragraph_open", "span", 1);
+      token.block = false;
+      token.attrSet("class", opts.attribution.label.class);
+      children.push(token);
+
+      token = new Token("text", "", 0);
+      token.content = "[" + ref.index + "]";
+      children.push(token);
+
+      token = new Token("paragraph_close", "span", -1);
+      token.block = false;
+      children.push(token);
+
+      token = new Token("text", "", 0);
+      token.content = ": ";
+      children.push(token);
+
+      children.push(...generate_attribution_list_entry(opts, ref));
 
       token = new Token("inline", "", 0);
       token.children = children;
@@ -164,27 +158,127 @@ function attribution_list_rule(opts) {
       tokens.push(token);
     }
 
-    token = new state.Token("attribution_list_close", opts.list.tag, -1);
+    token = new Token("attribution_list_close", opts.list.tag, -1);
     token.block = true;
     tokens.push(token);
   };
   return attribution_list;
 }
 
-function add_attribution(state, opts, id, meta) {
+function add_attributions(state, opts, keys) {
   if (!state.env[opts.ns]) {
     state.env[opts.ns] = {};
   }
+
   if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
+    state.env[opts.ns].refs = [];
   }
-  if (!state.env[opts.ns].refs[id]) {
-    state.env[opts.ns].refs[id] = {
+  for (const key_annot of keys) {
+    const [key, annot] = key_annot.split("|");
+    const data = opts.sources.find((source) => key === source.key);
+    if (!data) continue;
+    if (!state.env[opts.ns].refs.find(({ id }) => id === slugify(key))) {
+      state.env[opts.ns].refs.push({
+        id: slugify(key),
+        index: state.env[opts.ns].refs.length + 1,
+      });
+    }
+  }
+
+  if (!state.env[opts.ns].attributions) {
+    state.env[opts.ns].attributions = {};
+  }
+  const id = keys
+    .map((key) => key.split("|")[0])
+    .map((key) => slugify(key))
+    .join("_");
+  if (!state.env[opts.ns].attributions[id]) {
+    state.env[opts.ns].attributions[id] = {
       id,
-      ...meta,
-      index: Object.keys(state.env[opts.ns].refs).length + 1,
+      counter: 1,
     };
+  } else {
+    state.env[opts.ns].attributions[id].counter++;
   }
+
+  return id + "__" + state.env[opts.ns].attributions[id].counter;
+}
+
+function generate_attribution(keys, opts, { anchor = "", env }) {
+  const tokens = [];
+
+  token = new Token("paragraph_open", "p", 1);
+  token.block = true;
+  tokens.push(token);
+
+  let children = [];
+  if (opts.attribution.anchor.enable) {
+    children.push(...generate_link(`#${anchor}`, opts.attribution.anchor.class, opts.attribution.anchor.content));
+  }
+
+  token = new Token("text", "", 0);
+  token.content = "[";
+  children.push(token);
+
+  for (const key_annot of keys) {
+    const [key, annot] = key_annot.split("|");
+    const index = env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
+    children.push(
+      ...generate_link(`#${slugify(key)}`, opts.attribution.label.class, annot ? `${index} ${annot}` : index)
+    );
+
+    if (key_annot !== keys[keys.length - 1]) {
+      token = new Token("text", "", 0);
+      token.content = ", ";
+      children.push(token);
+    }
+  }
+
+  token = new Token("text", "", 0);
+  token.content = "]";
+  children.push(token);
+
+  token = new Token("inline", "", 0);
+  token.children = children;
+  tokens.push(token);
+
+  token = new Token("paragraph_close", "p", -1);
+  tokens.push(token);
+
+  return tokens;
+}
+
+function generate_attribution_list_entry(opts, source) {
+  const tokens = [];
+  if (!opts.list.item.template) return [];
+  source = opts.sources.find(({ key }) => slugify(key) === source.id);
+
+  const tags = "<title>|<author>|<license>";
+  const r = new RegExp("(" + tags + "|^)(.*?)(?=" + tags + "|$)", "gm");
+  let m, token;
+  while ((m = r.exec(opts.list.item.template))) {
+    let [_, type, text] = m;
+
+    if (type) {
+      type = type.substring(1, type.length - 1);
+      const [label, href] = source[type];
+      if (href) {
+        tokens.push(...generate_link(href, type, label));
+      } else {
+        token = new Token("text", "", 0);
+        token.content = label;
+        tokens.push(token);
+      }
+    }
+
+    if (text) {
+      token = new Token("text", "", 0);
+      token.content = text;
+      tokens.push(token);
+    }
+  }
+
+  return tokens;
 }
 
 function generate_link(href, className, content) {
@@ -204,74 +298,8 @@ function generate_link(href, className, content) {
   return tokens;
 }
 
-function insert_title(tokens, text, meta, opts) {
-  const tags = "<title>|<author>|<license>";
-  const r = new RegExp("(" + tags + "|^)(.*?)(?=" + tags + "|$)", "gm");
-  let m, token;
-  while ((m = r.exec(text))) {
-    const [_, type, text] = m;
-
-    if (type) {
-      if (type === "<author>") {
-        tokens.push(...generate_link(meta.authorUrl, "", meta.author));
-      } else if (type === "<title>") {
-        tokens.push(...generate_link(meta.titleUrl, "", meta.title));
-      } else if (type === "<license>") {
-        tokens.push(
-          ...generate_link(
-            typeof meta.license === "string" ? "" : meta.license.url.deeds,
-            "",
-            typeof meta.license === "string" ? meta.license : `${meta.license.name} ${meta.license.version}`
-          )
-        );
-      }
-    }
-
-    if (text) {
-      token = new Token("text", "", 0);
-      token.content = text;
-      tokens.push(token);
-    }
-  }
-}
-
-function insert_attribution(state, id, meta, opts) {
-  const tokens = state.tokens;
-  let token = new Token("paragraph_open", "p", 1);
-  token.block = true;
-  tokens.push(token);
-
-  let children = [];
-  if (opts.anchor.enable) {
-    children.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
-  }
-
-  if (opts.label.enable) {
-    const index = state.env[opts.ns].refs[id].index;
-    children.push(...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index)));
-  }
-
-  if (opts.attribution.text) {
-    token = new state.Token("attribution_text_open", "span", 1);
-    children.push(token);
-
-    insert_title(children, opts.attribution.text, meta, opts);
-
-    token = new state.Token("attribution_text_close", "span", -1);
-    children.push(token);
-  }
-
-  token = new state.Token("inline", "", 0);
-  token.children = children;
-  tokens.push(token);
-
-  token = new state.Token("paragraph_close", "p", -1);
-  token.block = true;
-  tokens.push(token);
-}
-
 function slugify(text) {
-  return text.replace(/[^\w]/g, "-").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
+  return text.replace(/[^\w]/g, "_").replace(/\-+/g, "-").replace(/\-$/, "").toLowerCase();
 }
 
 function loadOptions(options) {
@@ -279,29 +307,51 @@ function loadOptions(options) {
     ? {
         after: typeof options.after === "string" ? options.after : attribution_references.defaults.after,
         ns: options.ns || attribution_references.defaults.ns,
-        wrap: {
-          parent: Object.assign(
+        attribution: {
+          top:
+            options.attribution && typeof options.attribution.top === "boolean"
+              ? options.attribution.top
+              : attribution_references.defaults.attribution.top,
+          wrap: {
+            parent: Object.assign(
+              {},
+              attribution_references.defaults.attribution.wrap.parent,
+              options.attribution && options.attribution.wrap && options.attribution.wrap.parent
+                ? options.attribution.wrap.parent
+                : {}
+            ),
+            child: Object.assign(
+              {},
+              attribution_references.defaults.attribution.wrap.child,
+              options.attribution && options.attribution.wrap && options.attribution.wrap.child
+                ? options.attribution.wrap.child
+                : {}
+            ),
+          },
+          anchor: Object.assign(
             {},
-            attribution_references.defaults.wrap.parent,
-            options.wrap && options.wrap.parent ? options.wrap.parent : {}
+            attribution_references.defaults.attribution.anchor,
+            options.attribution && options.attribution.anchor ? options.attribution.anchor : {}
           ),
-          child: Object.assign(
+          label: Object.assign(
             {},
-            attribution_references.defaults.wrap.child,
-            options.wrap && options.wrap.child ? options.wrap.child : {}
+            attribution_references.defaults.attribution.label,
+            options.attribution && options.attribution.label ? options.attribution.label : {}
           ),
+          terminatorStart:
+            options.attribution && options.attribution.terminatorStart
+              ? options.attribution.terminatorStart
+              : attribution_references.defaults.attribution.terminatorStart,
+          terminatorEnd:
+            options.attribution && options.attribution.terminatorEnd
+              ? options.attribution.terminatorEnd
+              : attribution_references.defaults.attribution.terminatorEnd,
         },
-        anchor: Object.assign({}, attribution_references.defaults.anchor, options.anchor || {}),
-        label: Object.assign({}, attribution_references.defaults.label, options.label || {}),
         list: {
           enable:
             options.list && typeof options.list.enable === "boolean"
               ? options.list.enable
               : attribution_references.defaults.list.enable,
-          class:
-            options.list && typeof options.list.class === "string"
-              ? options.list.class
-              : attribution_references.defaults.list.class,
           title:
             options.list && typeof options.list.title === "string"
               ? options.list.title
@@ -310,34 +360,18 @@ function loadOptions(options) {
             options.list && typeof options.list.tag === "string"
               ? options.list.tag
               : attribution_references.defaults.list.tag,
+          class:
+            options.list && typeof options.list.class === "string"
+              ? options.list.class
+              : attribution_references.defaults.list.class,
           item: Object.assign(
             {},
             attribution_references.defaults.list.item,
             options.list && options.list.item ? options.list.item : {}
           ),
         },
-        attribution: {
-          top:
-            options.attribution && typeof options.attribution.top === "boolean"
-              ? options.attribution.top
-              : attribution_references.defaults.attribution.top,
-          terminator:
-            options.attribution && typeof options.attribution.terminator === "string"
-              ? options.attribution.terminator
-              : attribution_references.defaults.attribution.terminator,
-          label:
-            options.attribution && typeof options.attribution.label === "string"
-              ? options.attribution.label
-              : attribution_references.defaults.attribution.label,
-          text:
-            options.attribution && typeof options.attribution.text === "string"
-              ? options.attribution.text
-              : attribution_references.defaults.attribution.text,
-          licenses:
-            options.attribution && Array.isArray(options.attribution.licenses)
-              ? options.attribution.licenses
-              : attribution_references.defaults.attribution.licenses,
-        },
+        sources:
+          options.sources && Array.isArray(options.sources) ? options.sources : attribution_references.defaults.sources,
       }
     : attribution_references.defaults;
 }
@@ -345,109 +379,42 @@ function loadOptions(options) {
 attribution_references.defaults = {
   after: false,
   ns: "attributions",
-  wrap: {
-    parent: {
-      tag: "div",
-      class: "parent",
+  attribution: {
+    top: false,
+    terminatorStart: "::: attribution",
+    terminatorEnd: ":::",
+    wrap: {
+      parent: {
+        tag: "div",
+        class: "parent",
+      },
+      child: {
+        enable: true,
+        tag: "div",
+        class: "child",
+      },
     },
-    child: {
+    anchor: {
       enable: true,
-      tag: "div",
-      class: "child",
+      class: "anchor",
+      content: "§",
     },
-  },
-  anchor: {
-    enable: true,
-    content: "§",
-    class: "anchor",
-  },
-  label: {
-    enable: true,
-    text: "Attribution #",
-    placeholder: "#",
-    class: "label",
+    label: {
+      class: "label",
+    },
   },
   list: {
     enable: true,
-    class: "list",
     title: "List of Attributions",
     tag: "ol",
+    class: "list",
     item: {
       tag: "li",
-      href: true,
       class: "item",
-      label: true,
-      text: "<title> (By: <author>, <license>)",
+      template: "<title> (By: <author>, <license>)",
     },
   },
-  attribution: {
-    top: false,
-    terminator: ":::",
-    label: "attribution",
-    text: "Based on: <title> by <author>, License: <license>",
-    licenses: [
-      {
-        id: "cc-by",
-        short: "CC BY",
-        name: "Creative Commons: Attribution",
-        version: "4.0",
-        url: {
-          deeds: "https://creativecommons.org/licenses/by/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by/4.0/legalcode",
-        },
-      },
-      {
-        id: "cc-by-sa",
-        short: "CC BY-SA",
-        name: "Creative Commons: Attribution-ShareAlike",
-        version: "4.0",
-        url: {
-          deeds: "https://creativecommons.org/licenses/by-sa/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
-        },
-      },
-      {
-        id: "cc-by-nd",
-        short: "CC BY-ND",
-        name: "Creative Commons: Attribution-NoDerivs",
-        version: "4.0",
-        url: {
-          deeds: "https://creativecommons.org/licenses/by-nd/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by-nd/4.0/legalcode",
-        },
-      },
-      {
-        id: "cc-by-nc",
-        short: "CC BY-NC",
-        name: "Creative Commons: Attribution-NonCommercial",
-        version: "4.0",
-        url: {
-          deeds: "https://creativecommons.org/licenses/by-nc/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by-nc/4.0/legalcode",
-        },
-      },
-      {
-        id: "cc-by-nc-sa",
-        short: "CC BY-NC-SA",
-        name: "Creative Commons: Attriubtion-NonCommercial-ShareAlike",
-        version: "4.0",
-        url: {
-          deeds: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode",
-        },
-      },
-      {
-        id: "cc-by-nc-nd",
-        short: "CC BY-NC-ND",
-        name: "Creative Commons: Attribution-NonCommercial-NoDerivs",
-        version: "4.0",
-        url: {
-          licsenseDeeds: "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-          legalCode: "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
-        },
-      },
-    ],
-  },
+  sources: [],
 };
 
 module.exports = attribution_references;
