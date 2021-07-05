@@ -177,7 +177,7 @@ The `attribution` object can contain:
 | `terminator` | Terminator for attribution open/close.                        | `":::"`                                               |
 | `label`      | Terminator followed by attribution open.                      | `"attribution"`                                       |
 | `text`       | Attribution title pattern.                                    | `"Based on: <title> by <author>, License: <license>"` |
-| `licenses`   | Array of licsense objects.                                    | `[ see below ]`                                       |
+| `licenses`   | Array of license objects.                                     | `[ see below ]`                                       |
 
 <br/>
 
