@@ -17,8 +17,15 @@ describe("option: labels", () => {
       list: { title: "List of Spreadsheets" },
     });
     md.use(require("markdown-it-attribution-references"), {
-      label: { text: "Reference #" },
       list: { title: "List of References" },
+      sources: [
+        {
+          key: "wiki:markdown",
+          author: ["Wikipedia Authors", "https://en.wikipedia.org/w/index.php?title=Markdown&action=history"],
+          title: ["Markdown", "https://en.wikipedia.org/w/index.php?title=Markdown&oldid=975764292"],
+          license: ["Creative Commons: Attribution-ShareAlike 4.0", "https://creativecommons.org/licenses/by-sa/4.0/"],
+        },
+      ],
     });
     md.use(MarkdownItPluginReferences, {
       labels: [
@@ -61,14 +68,14 @@ describe("option: labels", () => {
           <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Spreadsheet 1</a>: Client overview
         </figcaption>
       </figure>
-      <div id="wikipedia-authors-markdown" class="parent">
+      <div id="wiki_markdown__1" class="parent">
         <div class="child">
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
-        <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Reference 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
+        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
-      <p>The example contains following references: <a href="#the-stormtroopocat" class="figure-reference">Image 1</a>, <a href="#client-overview" class="table-reference">Spreadsheet 1</a>, <a href="#wikipedia-authors-markdown" class="attribution-reference">Reference 1</a>.</p>
+      <p>The example contains following references: <a href="#the-stormtroopocat" class="figure-reference">Image 1</a>, <a href="#client-overview" class="table-reference">Spreadsheet 1</a>, [<a href="#wiki_markdown" class="attribution-reference">Reference 1</a>].</p>
       <h2 id="list-of-figures" class="list">List of Images</h2>
       <ol class="list">
         <li class="item"><a href="#the-stormtroopocat" class="label">Image 1</a>: The Stormtroopocat</li>
@@ -79,7 +86,7 @@ describe("option: labels", () => {
       </ol>
       <h2 id="list-of-attributions" class="list">List of References</h2>
       <ol class="list">
-        <li class="item"><a href="#wikipedia-authors-markdown" class="label">Reference 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
+        <li id="wiki_markdown" class="item"><span class="label">[1]</span>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292" class="title">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history" class="author">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
       </ol>
     `);
   });
@@ -96,14 +103,21 @@ describe("option: labels", () => {
       list: { title: "List of Spreadsheets" },
     });
     md.use(require("markdown-it-attribution-references"), {
-      label: { text: "Reference #" },
       list: { title: "List of References" },
+      sources: [
+        {
+          key: "wiki:markdown",
+          author: ["Wikipedia Authors", "https://en.wikipedia.org/w/index.php?title=Markdown&action=history"],
+          title: ["Markdown", "https://en.wikipedia.org/w/index.php?title=Markdown&oldid=975764292"],
+          license: ["Creative Commons: Attribution-ShareAlike 4.0", "https://creativecommons.org/licenses/by-sa/4.0/"],
+        },
+      ],
     });
     md.use(MarkdownItPluginReferences, {
       labels: [
         { ns: "figures", text: "Figure #", placeholder: "#", class: "reference" },
         { ns: "tables", text: "Table #", placeholder: "#", class: "reference" },
-        { ns: "attributions", text: "Attribution #", placeholder: "#", class: "reference" },
+        { ns: "attributions", text: "#", placeholder: "#", class: "reference" },
       ],
     });
     const result = md.render(text);
@@ -140,14 +154,14 @@ describe("option: labels", () => {
           <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Spreadsheet 1</a>: Client overview
         </figcaption>
       </figure>
-      <div id="wikipedia-authors-markdown" class="parent">
+      <div id="wiki_markdown__1" class="parent">
         <div class="child">
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
-        <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Reference 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
+        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
-      <p>The example contains following references: <a href="#the-stormtroopocat" class="reference">Figure 1</a>, <a href="#client-overview" class="reference">Table 1</a>, <a href="#wikipedia-authors-markdown" class="reference">Attribution 1</a>.</p>
+      <p>The example contains following references: <a href="#the-stormtroopocat" class="reference">Figure 1</a>, <a href="#client-overview" class="reference">Table 1</a>, [<a href="#wiki_markdown" class="reference">1</a>].</p>
       <h2 id="list-of-figures" class="list">List of Images</h2>
       <ol class="list">
         <li class="item"><a href="#the-stormtroopocat" class="label">Image 1</a>: The Stormtroopocat</li>
@@ -158,7 +172,7 @@ describe("option: labels", () => {
       </ol>
       <h2 id="list-of-attributions" class="list">List of References</h2>
       <ol class="list">
-        <li class="item"><a href="#wikipedia-authors-markdown" class="label">Reference 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
+        <li id="wiki_markdown" class="item"><span class="label">[1]</span>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292" class="title">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history" class="author">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
       </ol>
     `);
   });
@@ -175,8 +189,15 @@ describe("option: labels", () => {
       list: { title: "List of Spreadsheets" },
     });
     md.use(require("markdown-it-attribution-references"), {
-      label: { text: "Reference #" },
       list: { title: "List of References" },
+      sources: [
+        {
+          key: "wiki:markdown",
+          author: ["Wikipedia Authors", "https://en.wikipedia.org/w/index.php?title=Markdown&action=history"],
+          title: ["Markdown", "https://en.wikipedia.org/w/index.php?title=Markdown&oldid=975764292"],
+          license: ["Creative Commons: Attribution-ShareAlike 4.0", "https://creativecommons.org/licenses/by-sa/4.0/"],
+        },
+      ],
     });
     md.use(MarkdownItPluginReferences, {
       labels: [
@@ -199,7 +220,7 @@ describe("option: labels", () => {
           text: "Attribution #",
           placeholder: "#",
           class: "attribution-reference",
-          renderer: (id, className, text, placeholder, index) => `[<a ${id ? `href="#${id}"` : ""}>${index}</a>]`,
+          renderer: (id, className, text, placeholder, index) => `<a ${id ? `href="#${id}"` : ""}>${index}</a>`,
         },
       ],
     });
@@ -237,14 +258,14 @@ describe("option: labels", () => {
           <a href="#client-overview" class="anchor">§</a><a href="#client-overview" class="label">Spreadsheet 1</a>: Client overview
         </figcaption>
       </figure>
-      <div id="wikipedia-authors-markdown" class="parent">
+      <div id="wiki_markdown__1" class="parent">
         <div class="child">
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
-        <p><a href="#wikipedia-authors-markdown" class="anchor">§</a><a href="#wikipedia-authors-markdown" class="label">Reference 1</a><span>Based on: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> by <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a></span></p>
+        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
-      <p>The example contains following references: [<a href="#the-stormtroopocat">1</a>], [<a href="#client-overview">1</a>], [<a href="#wikipedia-authors-markdown">1</a>].</p>
+      <p>The example contains following references: [<a href="#the-stormtroopocat">1</a>], [<a href="#client-overview">1</a>], [<a href="#wiki_markdown">1</a>].</p>
       <h2 id="list-of-figures" class="list">List of Images</h2>
       <ol class="list">
         <li class="item"><a href="#the-stormtroopocat" class="label">Image 1</a>: The Stormtroopocat</li>
@@ -255,7 +276,7 @@ describe("option: labels", () => {
       </ol>
       <h2 id="list-of-attributions" class="list">List of References</h2>
       <ol class="list">
-        <li class="item"><a href="#wikipedia-authors-markdown" class="label">Reference 1</a>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
+        <li id="wiki_markdown" class="item"><span class="label">[1]</span>: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=975764292" class="title">Markdown</a> (By: <a href="https://en.wikipedia.org/w/index.php?title=Markdown&amp;action=history" class="author">Wikipedia Authors</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Attribution-ShareAlike 4.0</a>)</li>
       </ol>
     `);
   });
