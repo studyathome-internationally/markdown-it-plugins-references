@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-attribution-references",
-  "version": "1.0.0-alpha.12",
+  "version": "2.0.0-alpha.0",
   "description": "MarkdownIt Plugin for attributions, attribution references and list",
   "keywords": [
     "markdown",
