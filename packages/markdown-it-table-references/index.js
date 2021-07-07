@@ -38,8 +38,8 @@ function table_reference_rule(opts) {
               const start = content.substring(0, match.index);
               const end = content.substring(match.index + match[0].length);
 
-              const index = state.env[opts.ns].refs[id].index;
-              const caption = state.env[opts.ns].refs[id].caption;
+              const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
+              const caption = state.env[opts.ns].refs.find((ref) => ref.id === id)?.caption;
               const anchor = render_anchor(id, opts);
               const label = render_label(id, index, opts);
               const newFigure = match[0].replace(
@@ -63,8 +63,8 @@ function table_reference_rule(opts) {
               const start = content.substring(0, match.index);
               const end = content.substring(match.index + match[0].length);
 
-              const index = state.env[opts.ns].refs[id].index;
-              const caption = state.env[opts.ns].refs[id].caption;
+              const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
+              const caption = state.env[opts.ns].refs.find((ref) => ref.id === id)?.caption;
               const anchor = render_anchor(id, opts);
               const label = render_label(id, index, opts);
               const newTable = match[0].replace(
@@ -107,7 +107,7 @@ function table_reference_rule(opts) {
         }
 
         add_table(state, opts, id, caption);
-        const index = state.env[opts.ns].refs[id].index;
+        const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
 
         if (opts.wrap) {
           const pre = tokens.slice(0, tableOpenPos);
@@ -205,8 +205,7 @@ function table_reference_list_rule(opts) {
     token.block = true;
     tokens.push(token);
 
-    for (const id in state.env[opts.ns].refs) {
-      const entry = state.env[opts.ns].refs[id];
+    for (const entry of state.env[opts.ns].refs) {
       token = new Token("table_reference_list_item_open", opts.list.item.tag, 1);
       token.attrSet("class", opts.list.item.class);
       token.meta = { ...entry };
@@ -216,7 +215,7 @@ function table_reference_list_rule(opts) {
       if (opts.list.item.label) {
         children.push(
           ...generate_link(
-            opts.list.item.href ? `#${id}` : "",
+            opts.list.item.href ? `#${entry.id}` : "",
             opts.label.class,
             opts.label.text.replace(opts.label.placeholder, entry.index)
           )
@@ -289,14 +288,15 @@ function add_table(state, opts, id, caption) {
     state.env[opts.ns] = {};
   }
   if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
+    state.env[opts.ns].refs = [];
   }
-  const refs = state.env[opts.ns].refs;
-  refs[id] = {
-    id,
-    caption,
-    index: Object.keys(refs).length + 1,
-  };
+  if (!state.env[opts.ns].refs.find((ref) => ref.id === id)) {
+    state.env[opts.ns].refs.push({
+      id,
+      caption,
+      index: state.env[opts.ns].refs.length + 1,
+    });
+  }
 }
 
 function slugify(text) {
