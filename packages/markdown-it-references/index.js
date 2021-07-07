@@ -66,8 +66,8 @@ function reference_renderer(opts) {
     if (id && Array.isArray(opts.labels)) {
       for (const labelCfg of opts.labels) {
         const { ns, text, placeholder, class: className, renderer: customRenderer } = labelCfg;
-        if (ns && env[ns] && env[ns].refs && env[ns].refs[id]) {
-          const { index } = env[ns].refs[id];
+        if (ns && env[ns] && env[ns].refs && env[ns].refs.find((ref) => ref.id === id)) {
+          const { index } = env[ns].refs.find((ref) => ref.id === id);
           const renderer = customRenderer ? customRenderer : references.defaults.renderer;
           return renderer(id, className, text, placeholder, index);
         }
@@ -102,7 +102,7 @@ references.defaults = {
     },
     {
       ns: "attributions",
-      text: "Attribution #",
+      text: "#",
       placeholder: "#",
       class: "attribution-reference",
     },
