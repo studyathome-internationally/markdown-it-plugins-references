@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>300/300</span>
+                <span class='fraction'>305/309</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">97.98% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>93/93</span>
+                <span class='fraction'>97/99</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>300/300</span>
+                <span class='fraction'>305/309</span>
             </div>
         
             
@@ -357,9 +357,25 @@
 <a name='L298'></a><a href='#L298'>298</a>
 <a name='L299'></a><a href='#L299'>299</a>
 <a name='L300'></a><a href='#L300'>300</a>
-<a name='L301'></a><a href='#L301'>301</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -477,7 +493,7 @@
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">209x</span>
-<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">209x</span>
 <span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -510,7 +526,6 @@
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
@@ -581,6 +596,7 @@
 <span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-yes">37x</span>
@@ -625,7 +641,9 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -662,8 +680,15 @@
 const figure_references = (md, opts) =&gt; {
   opts = loadOptions(opts);
 &nbsp;
-  md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
-  md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
+  if (typeof opts.after === "string") <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    if (md.core.ruler.getRules("").find(({ name }) =&gt; name === opts.after)) {</span>
+<span class="cstat-no" title="statement not covered" >      md.core.ruler.after(opts.after, "figure_reference", figure_reference_rule(opts), [""]);</span>
+<span class="cstat-no" title="statement not covered" >      md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+  } else {
+    md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
+    md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
+  }
 };
 &nbsp;
 function figure_reference_rule(opts) {
@@ -690,8 +715,8 @@ function figure_reference_rule(opts) {
               const start = content.substring(0, match.index);
               const end = content.substring(match.index + match[0].length);
 &nbsp;
-              const index = state.env[opts.ns].refs[id].index;
-              const title = state.env[opts.ns].refs[id].title;
+              const index = state.env[opts.ns].refs.find((ref) =&gt; ref.id === id)?.index;
+              const title = state.env[opts.ns].refs.find((ref) =&gt; ref.id === id)?.title;
               const anchor = render_anchor(id, opts);
               const label = render_label(id, index, opts);
               const newFigure = match[0].replace(
@@ -732,7 +757,7 @@ function figure_reference_rule(opts) {
 &nbsp;
           if (opts.wrap) {
             const pre = children.slice(0, j);
-            let child = new state.Token("figure_open", "figure", 1);
+            let child = new state.Token("figure_image_open", "figure", 1);
             child.attrSet("id", id);
             child.block = true;
             pre.push(child);
@@ -741,7 +766,7 @@ function figure_reference_rule(opts) {
             token.meta = { targetId: id };
             pre.push(token);
 &nbsp;
-            child = new state.Token("figure_caption_open", "figcaption", 1);
+            child = new state.Token("figure_image_caption_open", "figcaption", 1);
             child.block = opts.anchor.enable || opts.label.enable;
             pre.push(child);
 &nbsp;
@@ -749,7 +774,7 @@ function figure_reference_rule(opts) {
               pre.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
             }
             if (opts.label.enable) {
-              const index = state.env[opts.ns].refs[id].index;
+              const index = state.env[opts.ns].refs.find((ref) =&gt; ref.id === id)?.index;
               pre.push(
                 ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
               );
@@ -760,11 +785,11 @@ function figure_reference_rule(opts) {
               pre.push(child);
             }
 &nbsp;
-            child = new state.Token("figure_caption_close", "figcaption", -1);
+            child = new state.Token("figure_image_caption_close", "figcaption", -1);
             child.block = true;
             pre.push(child);
 &nbsp;
-            child = new state.Token("figure_close", "figure", -1);
+            child = new state.Token("figure_image_close", "figure", -1);
             child.block = true;
             pre.push(child);
 &nbsp;
@@ -810,8 +835,7 @@ function figure_reference_list_rule(opts) {
     token.block = true;
     tokens.push(token);
 &nbsp;
-    for (const id in state.env[opts.ns].refs) {
-      const entry = state.env[opts.ns].refs[id];
+    for (const entry of state.env[opts.ns].refs) {
       token = new state.Token("figure_reference_list_item_open", opts.list.item.tag, 1);
       token.attrSet("class", opts.list.item.class);
       token.meta = { ...entry };
@@ -821,7 +845,7 @@ function figure_reference_list_rule(opts) {
       if (opts.list.item.label) {
         children.push(
           ...generate_link(
-            opts.list.item.href ? `#${id}` : "",
+            opts.list.item.href ? `#${entry.id}` : "",
             opts.label.class,
             opts.label.text.replace(opts.label.placeholder, entry.index)
           )
@@ -879,14 +903,15 @@ function add_image(state, opts, id, title) {
     state.env[opts.ns] = {};
   }
   if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
+    state.env[opts.ns].refs = [];
   }
-  const refs = state.env[opts.ns].refs;
-  refs[id] = {
-    id,
-    title,
-    index: Object.keys(refs).length + 1,
-  };
+  if (!state.env[opts.ns].refs.find((ref) =&gt; id === ref.id)) {
+    state.env[opts.ns].refs.push({
+      id,
+      title,
+      index: state.env[opts.ns].refs.length + 1,
+    });
+  }
 }
 &nbsp;
 function slugify(text) {
@@ -896,6 +921,7 @@ function slugify(text) {
 function loadOptions(options) {
   return options
     ? {
+        after: <span class="branch-0 cbranch-no" title="branch not covered" >typeof options.after === "string" ? options.after : f</span>igure_references.defaults.after,
         ns: typeof options.ns === "string" &amp;&amp; options.ns ? options.ns : figure_references.defaults.ns,
         wrap: typeof options.wrap === "boolean" ? options.wrap : figure_references.defaults.wrap,
         anchor: Object.assign({}, figure_references.defaults.anchor, options.anchor ? options.anchor : {}),
@@ -928,6 +954,7 @@ function loadOptions(options) {
 }
 &nbsp;
 figure_references.defaults = {
+  after: false,
   ns: "figures",
   wrap: true,
   anchor: {
@@ -964,7 +991,7 @@ module.exports = figure_references;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Sep 12 2020 18:35:00 GMT+0200 (Central European Summer Time)
+                at Wed Jul 07 2021 16:49:49 GMT+0200 (Central European Summer Time)
             </div>
         </div>
         <script src="prettify.js"></script>
