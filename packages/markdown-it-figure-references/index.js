@@ -38,8 +38,8 @@ function figure_reference_rule(opts) {
               const start = content.substring(0, match.index);
               const end = content.substring(match.index + match[0].length);
 
-              const index = state.env[opts.ns].refs[id].index;
-              const title = state.env[opts.ns].refs[id].title;
+              const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
+              const title = state.env[opts.ns].refs.find((ref) => ref.id === id)?.title;
               const anchor = render_anchor(id, opts);
               const label = render_label(id, index, opts);
               const newFigure = match[0].replace(
@@ -97,7 +97,7 @@ function figure_reference_rule(opts) {
               pre.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
             }
             if (opts.label.enable) {
-              const index = state.env[opts.ns].refs[id].index;
+              const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
               pre.push(
                 ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
               );
@@ -158,8 +158,7 @@ function figure_reference_list_rule(opts) {
     token.block = true;
     tokens.push(token);
 
-    for (const id in state.env[opts.ns].refs) {
-      const entry = state.env[opts.ns].refs[id];
+    for (const entry of state.env[opts.ns].refs) {
       token = new state.Token("figure_reference_list_item_open", opts.list.item.tag, 1);
       token.attrSet("class", opts.list.item.class);
       token.meta = { ...entry };
@@ -169,7 +168,7 @@ function figure_reference_list_rule(opts) {
       if (opts.list.item.label) {
         children.push(
           ...generate_link(
-            opts.list.item.href ? `#${id}` : "",
+            opts.list.item.href ? `#${entry.id}` : "",
             opts.label.class,
             opts.label.text.replace(opts.label.placeholder, entry.index)
           )
@@ -227,14 +226,15 @@ function add_image(state, opts, id, title) {
     state.env[opts.ns] = {};
   }
   if (!state.env[opts.ns].refs) {
-    state.env[opts.ns].refs = {};
+    state.env[opts.ns].refs = [];
   }
-  const refs = state.env[opts.ns].refs;
-  refs[id] = {
-    id,
-    title,
-    index: Object.keys(refs).length + 1,
-  };
+  if (!state.env[opts.ns].refs.find((ref) => id === ref.id)) {
+    state.env[opts.ns].refs.push({
+      id,
+      title,
+      index: state.env[opts.ns].refs.length + 1,
+    });
+  }
 }
 
 function slugify(text) {
