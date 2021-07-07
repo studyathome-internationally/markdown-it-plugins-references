@@ -4,13 +4,15 @@ const { readFileSync } = require("fs");
 const MarkdownIt = require("markdown-it");
 const MarkdownItPluginAttributeReferences = require("./../index.js");
 
-describe("option: attribution", () => {
+describe("option: attribution anchor", () => {
   it("null", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences,
       {
-        attribution: null,
+        attribution: {
+          anchor: null
+        },
         sources: [
           {
             key: "wiki:markdown",
@@ -38,12 +40,14 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("top", () => {
+  it("enable", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences,
       {
-        attribution: { top: true },
+        attribution: {
+          anchor: { enable: false }
+        },
         sources: [
           {
             key: "wiki:markdown",
@@ -58,11 +62,11 @@ describe("option: attribution", () => {
     expect(result).toMatchInlineSnapshot(`
       <h1>Markdown</h1>
       <div id="wiki_markdown__1" class="parent">
-        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
         <div class="child">
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
+        <p>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
       <h2 id="list-of-attributions" class="list">List of Attributions</h2>
       <ol class="list">
@@ -71,12 +75,14 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("terminatorStart", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "option.1.md"), "utf8");
+  it("content", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences,
       {
-        attribution: { terminatorStart: "=== attribution" },
+        attribution: {
+          anchor: { content: "#" }
+        },
         sources: [
           {
             key: "wiki:markdown",
@@ -95,7 +101,7 @@ describe("option: attribution", () => {
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
-        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
+        <p><a href="#wiki_markdown__1" class="anchor">#</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
       <h2 id="list-of-attributions" class="list">List of Attributions</h2>
       <ol class="list">
@@ -104,12 +110,14 @@ describe("option: attribution", () => {
     `);
   });
 
-  it("terminatorEnd", () => {
-    const text = readFileSync(join(__dirname, "__cases__", "option.2.md"), "utf8");
+  it("class", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });
     md.use(MarkdownItPluginAttributeReferences,
       {
-        attribution: { terminatorEnd: "===" },
+        attribution: {
+          anchor: { class: "reference-anchor" }
+        },
         sources: [
           {
             key: "wiki:markdown",
@@ -128,7 +136,7 @@ describe("option: attribution", () => {
           <p>Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
             Markdown is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.</p>
         </div>
-        <p><a href="#wiki_markdown__1" class="anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
+        <p><a href="#wiki_markdown__1" class="reference-anchor">§</a>[<a href="#wiki_markdown" class="label">1</a>]</p>
       </div>
       <h2 id="list-of-attributions" class="list">List of Attributions</h2>
       <ol class="list">
