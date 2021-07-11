@@ -245,10 +245,19 @@ function table_reference_list_rule(opts) {
 
 function generate_caption(tokens, id, index, caption, opts) {
   if (opts.anchor.enable) {
-    tokens.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
+    if (opts.anchor.href) {
+      tokens.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
+    } else {
+      tokens.push(...generate_span(opts.anchor.class, opts.anchor.content));
+    }
   }
   if (opts.label.enable) {
-    tokens.push(...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index)));
+    const labelText = opts.label.text.replace(opts.label.placeholder, index);
+    if (opts.label.href) {
+      tokens.push(...generate_link(`#${id}`, opts.label.class, labelText));
+    } else {
+      tokens.push(...generate_span(opts.label.class, labelText));
+    }
   }
   if (caption) {
     token = new Token("text", "", 0);
@@ -269,6 +278,22 @@ function generate_link(href, className, content) {
   tokens.push(token);
 
   token = new Token("link_close", "a", -1);
+  tokens.push(token);
+
+  return tokens;
+}
+
+function generate_span(className, content) {
+  const tokens = [];
+  let token = new Token("label_open", "span", 1);
+  if (className) token.attrSet("class", className);
+  tokens.push(token);
+
+  token = new Token("text", "", 0);
+  token.content = content;
+  tokens.push(token);
+
+  token = new Token("label_close", "span", -1);
   tokens.push(token);
 
   return tokens;
@@ -344,11 +369,13 @@ table_references.defaults = {
   wrap: true,
   anchor: {
     enable: true,
+    href: true,
     content: "§",
     class: "anchor",
   },
   label: {
     enable: true,
+    href: true,
     text: "Table #",
     placeholder: "#",
     class: "label",
