@@ -49,6 +49,28 @@ describe("option: label", () => {
     `);
   });
 
+  it("href", () => {
+    const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
+    const md = new MarkdownIt({ xhtmlOut: true, html: true });
+    md.use(MarkdownItPluginFigureReferences, { label: { href: false } });
+    const result = md.render(text);
+    expect(result).toMatchInlineSnapshot(`
+      <h1>Hello World</h1>
+      <p>
+      <figure id="the-stormtroopocat">
+        <img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat" />
+        <figcaption>
+          <a href="#the-stormtroopocat" class="anchor">§</a><span class="label">Figure 1</span>: The Stormtroopocat
+        </figcaption>
+      </figure>
+      </p>
+      <h2 id="list-of-figures" class="list">List of Figures</h2>
+      <ol class="list">
+        <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
+      </ol>
+    `);
+  });
+
   it("text", () => {
     const text = readFileSync(join(__dirname, "__cases__", "basic.1.md"), "utf8");
     const md = new MarkdownIt({ xhtmlOut: true, html: true });

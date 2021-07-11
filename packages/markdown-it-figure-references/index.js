@@ -94,13 +94,20 @@ function figure_reference_rule(opts) {
             pre.push(child);
 
             if (opts.anchor.enable) {
-              pre.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
+              if (opts.anchor.href) {
+                pre.push(...generate_link(`#${id}`, opts.anchor.class, opts.anchor.content));
+              } else {
+                pre.push(...generate_span(opts.anchor.class, opts.anchor.content));
+              }
             }
             if (opts.label.enable) {
               const index = state.env[opts.ns].refs.find((ref) => ref.id === id)?.index;
-              pre.push(
-                ...generate_link(`#${id}`, opts.label.class, opts.label.text.replace(opts.label.placeholder, index))
-              );
+              const labelText = opts.label.text.replace(opts.label.placeholder, index);
+              if (opts.label.href) {
+                pre.push(...generate_link(`#${id}`, opts.label.class, labelText));
+              } else {
+                pre.push(...generate_span(opts.label.class, labelText));
+              }
             }
             if (title) {
               child = new state.Token("text", "", 0);
@@ -212,6 +219,22 @@ function generate_link(href, className, content) {
   return tokens;
 }
 
+function generate_span(className, content) {
+  const tokens = [];
+  let token = new Token("label_open", "span", 1);
+  if (className) token.attrSet("class", className);
+  tokens.push(token);
+
+  token = new Token("text", "", 0);
+  token.content = content;
+  tokens.push(token);
+
+  token = new Token("label_close", "span", -1);
+  tokens.push(token);
+
+  return tokens;
+}
+
 function render_anchor(id, opts) {
   return opts.anchor.enable ? `<a href="#${id}" class="${opts.anchor.class}">${opts.anchor.content}</a>` : "";
 }
@@ -282,11 +305,13 @@ figure_references.defaults = {
   wrap: true,
   anchor: {
     enable: true,
+    href: true,
     content: "§",
     class: "anchor",
   },
   label: {
     enable: true,
+    href: true,
     text: "Figure #",
     placeholder: "#",
     class: "label",
