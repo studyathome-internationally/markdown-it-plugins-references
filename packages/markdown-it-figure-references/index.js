@@ -154,9 +154,12 @@ function figure_reference_list_rule(opts) {
       tokenChild = new state.Token("text", "", 0);
       tokenChild.content = opts.list.title;
       token.children = [tokenChild];
+      token.content = opts.list.title;
       tokens.push(token);
 
       token = new state.Token("heading_close", "h2", -1);
+      token.markup = "##";
+      token.block = true;
       tokens.push(token);
     }
 

@@ -112,9 +112,12 @@ function attribution_list_rule(opts) {
       tokenChild = new Token("text", "", 0);
       tokenChild.content = opts.list.title;
       token.children = [tokenChild];
+      token.content = opts.list.title;
       tokens.push(token);
 
       token = new Token("heading_close", "h2", -1);
+      token.markup = "##";
+      token.block = true;
       tokens.push(token);
     }
 
