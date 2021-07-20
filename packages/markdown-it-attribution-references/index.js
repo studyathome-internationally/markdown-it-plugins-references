@@ -5,9 +5,13 @@ const attribution_references = (md, opts) => {
 
   if (typeof opts.after === "string") {
     if (md.core.ruler.getRules("").find(({ name }) => name === opts.after)) {
-      md.core.ruler.after(opts.after, "attribution_list", attribution_list_rule(opts));
+      md.core.ruler.after(opts.after, "attribution_figure", attribution_figure_rule(opts));
+      md.core.ruler.after("attribution_figure", "attribution_tables", attribution_table_rule(opts));
+      md.core.ruler.after("attribution_tables", "attribution_list", attribution_list_rule(opts));
     }
   } else {
+    md.core.ruler.push("attribution_figure", attribution_figure_rule(opts));
+    md.core.ruler.push("attribution_tables", attribution_table_rule(opts));
     md.core.ruler.push("attribution_list", attribution_list_rule(opts));
   }
   md.block.ruler.before("paragraph", "attribution", attribution_rule(opts));
@@ -168,6 +172,78 @@ function attribution_list_rule(opts) {
   return attribution_list;
 }
 
+function attribution_figure_rule(opts) {
+  const attribution_figure = (state) => {
+    const tokens = state.tokens;
+
+    if (!opts.attribution.figures.enable) return;
+
+    for (let i = 0; i < tokens.length; i++) {
+      let { children, type, content } = tokens[i];
+
+      if (type !== "inline") continue;
+
+      for (let j = 0; j < children.length; j++) {
+        if (children[j].type !== "figure_image_open") continue;
+        if (children[j + 1].type !== "image") continue;
+        if (children[j + 2].type !== "figure_image_caption_open") continue;
+
+        const id = children[j].attrGet("id");
+
+        const titleContent = children[j + 1].attrGet("title");
+        if (!titleContent) continue;
+
+        // https://regex101.com/r/CMuDcZ/1
+        const m = /\<\<(.*?)(?:\|(.*?))?\>\>/gm.exec(titleContent);
+        if (!m) continue;
+
+        const [match, key, annot] = m;
+
+        add_figure_attribution(state, opts, key);
+
+        // Update token stream
+        children[j + 1].attrSet("title", titleContent.replace(match, ""));
+        for (let k = j + 2; k < children.length; k++) {
+          let tok = children[k];
+          if (tok.type !== "text") continue;
+          if (!tok.content.includes(match)) continue;
+
+          const [pre, post] = tok.content.split(match);
+          tok.content = pre;
+          k++;
+
+          // // update_figure_list_title();
+          // const figureListTokenBegin = tokens.find(({ type }) => "figure_reference_list_open" === type);
+          // if (figureListTokenBegin) {
+          //   const idx = state.env[opts.attribution.figure.ns];
+          // }
+
+          const index = state.env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
+          if (!index) continue;
+
+          children.splice(
+            k,
+            0,
+            ...generate_link(`#${slugify(key)}`, opts.attribution.label.class, annot ? `${index} ${annot}` : index)
+          );
+
+          k += 3;
+          if (!post) continue;
+          let token = new Token("text", "", 0);
+          token.content = post;
+          children.splice(k, 0, token);
+        }
+      }
+    }
+  };
+  return attribution_figure;
+}
+
+function attribution_table_rule(opts) {
+  const attribution_table = (state) => {};
+  return attribution_table;
+}
+
 function add_attributions(state, opts, keys) {
   if (!state.env[opts.ns]) {
     state.env[opts.ns] = {};
@@ -205,6 +281,23 @@ function add_attributions(state, opts, keys) {
   }
 
   return id + "__" + state.env[opts.ns].attributions[id].counter;
+}
+
+function add_figure_attribution(state, opts, key) {
+  if (!state.env[opts.ns]) {
+    state.env[opts.ns] = {};
+  }
+  if (!state.env[opts.ns].refs) {
+    state.env[opts.ns].refs = [];
+  }
+  const data = opts.sources.find((source) => key === source.key);
+  if (!data) return;
+  if (!state.env[opts.ns].refs.find(({ id }) => id === slugify(key))) {
+    state.env[opts.ns].refs.push({
+      id: slugify(key),
+      index: state.env[opts.ns].refs.length + 1,
+    });
+  }
 }
 
 function generate_attribution(keys, opts, { anchor = "", env }) {
@@ -292,7 +385,7 @@ function generate_link(href, className, content) {
   tokens.push(token);
 
   token = new Token("text", "", 0);
-  token.content = content;
+  token.content = String(content);
   tokens.push(token);
 
   token = new Token("link_close", "a", -1);
@@ -315,6 +408,11 @@ function loadOptions(options) {
             options.attribution && typeof options.attribution.top === "boolean"
               ? options.attribution.top
               : attribution_references.defaults.attribution.top,
+          figures: Object.assign(
+            {},
+            attribution_references.defaults.attribution.figures,
+            options.attribution && options.attribution.figures ? options.attribution.figures : {}
+          ),
           wrap: {
             parent: Object.assign(
               {},
@@ -386,6 +484,10 @@ attribution_references.defaults = {
     top: false,
     terminatorStart: "::: attribution",
     terminatorEnd: ":::",
+    figures: {
+      enable: true,
+      ns: "figures",
+    },
     wrap: {
       parent: {
         tag: "div",
