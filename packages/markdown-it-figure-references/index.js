@@ -5,11 +5,11 @@ const figure_references = (md, opts) => {
 
   if (typeof opts.after === "string") {
     if (md.core.ruler.getRules("").find(({ name }) => name === opts.after)) {
-      md.core.ruler.after(opts.after, "figure_reference", figure_reference_rule(opts), [""]);
+      md.core.ruler.after(opts.after, "figure_reference", figure_reference_rule(opts));
       md.core.ruler.after("figure_reference", "figure_reference_list", figure_reference_list_rule(opts));
     }
   } else {
-    md.core.ruler.push("figure_reference", figure_reference_rule(opts), [""]);
+    md.core.ruler.push("figure_reference", figure_reference_rule(opts));
     md.core.ruler.push("figure_reference_list", figure_reference_list_rule(opts));
   }
 };
@@ -90,6 +90,7 @@ function figure_reference_rule(opts) {
             pre.push(token);
 
             child = new state.Token("figure_image_caption_open", "figcaption", 1);
+            child.content = titleContent;
             child.block = opts.anchor.enable || opts.label.enable;
             pre.push(child);
 
