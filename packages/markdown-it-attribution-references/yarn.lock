@@ -2449,6 +2449,13 @@ markdown-it-anchor@^5.3.0:
   resolved "https://registry.yarnpkg.com/markdown-it-anchor/-/markdown-it-anchor-5.3.0.tgz#d549acd64856a8ecd1bea58365ef385effbac744"
   integrity sha512-/V1MnLL/rgJ3jkMWo84UR+K+jF1cxNG1a+KwqeXqTIJ+jtA8aWSHuigx8lTzauiIjBDbwF3NcWQMotd0Dm39jA==
 
+markdown-it-figure-references@^2.1.0-alpha.1:
+  version "2.1.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/markdown-it-figure-references/-/markdown-it-figure-references-2.1.0-alpha.1.tgz#b6b3a947f1dbb07f8679a7ddd01645276736c9b2"
+  integrity sha512-ZNj+pcEjSae0UvIknDiMU/YSChsqqnqb1S8usK39gThMgPhv/OgufW7nyqEbZyi6T7ZdSqPVEMYj8mW4R1LtQQ==
+  dependencies:
+    markdown-it "^11.0.0"
+
 markdown-it@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-11.0.0.tgz#dbfc30363e43d756ebc52c38586b91b90046b876"
