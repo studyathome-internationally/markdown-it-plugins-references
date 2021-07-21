@@ -180,7 +180,7 @@ function attribution_figure_rule(opts) {
     if (!opts.attribution.figures.enable) return;
 
     for (let i = 0; i < tokens.length; i++) {
-      let { children, type, content } = tokens[i];
+      let { children, type } = tokens[i];
 
       if (type !== "inline") continue;
 
@@ -193,81 +193,89 @@ function attribution_figure_rule(opts) {
         if (!titleContent) continue;
 
         // https://regex101.com/r/wRdO8u/1
-        const m = rAttributions.exec(titleContent);
-        if (!m) continue;
+        let m,
+          title = titleContent;
+        while ((m = rAttributions.exec(titleContent))) {
+          const [match, content] = m;
+          const keys = content.split(",");
+          title = title.replace(match, match.substring(2, match.length - 2));
 
-        const [match, content] = m;
-        const keys = content.split(",");
-        titleContent = titleContent.replace(match, match.substring(2, match.length - 2));
+          const captionIdx = children.findIndex((child) => "text" === child.type && child.content.includes(match));
+          const captionToken = children[captionIdx];
+          const [pre, post] = captionToken.content.split(match);
+          captionToken.content = pre;
 
-        const captionIdx = children.findIndex((child) => "text" === child.type && child.content.includes(match));
-        const captionToken = children[captionIdx];
-        const [pre, post] = captionToken.content.split(match);
-        captionToken.content = pre;
+          for (const [i, key_annot] of keys.entries()) {
+            let [key, annot] = key_annot.trimStart().split("|");
+            key = key ? key.trim() : key;
+            annot = annot ? annot.trim() : annot;
 
-        for (const [i, key_annot] of keys.entries()) {
-          let [key, annot] = key_annot.trimStart().split("|");
-          key = key ? key.trim() : key;
-          annot = annot ? annot.trim() : annot;
+            add_figure_attribution(state, opts, key);
 
-          add_figure_attribution(state, opts, key);
+            const index = state.env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
+            if (!index) continue;
+            title = title.replace(key_annot.trimStart(), annot ? `${index} ${annot}` : index);
 
-          const index = state.env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
-          if (!index) continue;
-          titleContent = titleContent.replace(key_annot.trimStart(), annot ? `${index} ${annot}` : index);
-
-          const pos = captionIdx + 1 + i * 4;
-          const link = generate_link(
-            `#${slugify(key)}`,
-            opts.attribution.label.class,
-            annot ? `${index} ${annot}` : String(index)
-          );
-          let token = new Token("text", "", 0);
-          token.content = i === keys.length - 1 ? post : ", ";
-          const content = [...link, token];
-          children.splice(pos, 0, ...content);
+            const pos = captionIdx + 1 + i * 4;
+            const link = generate_link(
+              `#${slugify(key)}`,
+              opts.attribution.label.class,
+              annot ? `${index} ${annot}` : String(index)
+            );
+            let token = new Token("text", "", 0);
+            token.content = i === keys.length - 1 ? post : ", ";
+            const content = [...link, token];
+            children.splice(pos, 0, ...content);
+          }
         }
 
-        children[j + 1].attrSet("title", titleContent);
+        children[j + 1].attrSet("title", title);
       }
 
       if (i >= 1 && tokens[i - 1].type === "figure_reference_list_item_open") {
         const children = tokens[i].children;
-        let match, content;
-        const captionIdx = children.findIndex((child) => {
-          if ("text" !== child.type) return false;
-          const m = rAttributions.exec(child.content);
-          if (!m) return false;
-          [match, content] = m;
-          return true;
-        });
+        let captionIdx = children.findIndex((child) => "text" === child.type && rAttributions.exec(child.content));
         if (captionIdx < 0) break;
+        let captionToken = children[captionIdx];
+        rAttributions.lastIndex = 0;
 
-        const keys = content.split(",");
-        const captionToken = children[captionIdx];
-        // rAttributions.lastIndex = 0;
-        // const [match, content] = rAttributions.exec(captionToken.content);
-        const [pre, post] = captionToken.content.split(match);
-        captionToken.content = pre;
+        while ((m = rAttributions.exec(captionToken.content))) {
+          let [match, content] = m;
+          const keys = content.split(",");
+          // rAttributions.lastIndex = 0;
+          // const [match, content] = rAttributions.exec(captionToken.content);
+          const [pre, post] = captionToken.content.split(match);
+          captionToken.content = pre;
 
-        for (const [i, key_annot] of keys.entries()) {
-          let [key, annot] = key_annot.trimStart().split("|");
-          key = key ? key.trim() : key;
-          annot = annot ? annot.trim() : annot;
+          for (const [i, key_annot] of keys.entries()) {
+            let [key, annot] = key_annot.trimStart().split("|");
+            key = key ? key.trim() : key;
+            annot = annot ? annot.trim() : annot;
 
-          const index = state.env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
-          if (!index) continue;
+            const index = state.env[opts.ns].refs.find(({ id }) => id === slugify(key))?.index;
+            if (!index) continue;
 
-          const pos = captionIdx + 1 + i * 4;
-          const link = generate_link(
-            `#${slugify(key)}`,
-            opts.attribution.label.class,
-            annot ? `${index} ${annot}` : String(index)
+            const pos = captionIdx + 1 + i * 4;
+            const link = generate_link(
+              `#${slugify(key)}`,
+              opts.attribution.label.class,
+              annot ? `${index} ${annot}` : String(index)
+            );
+            let token = new Token("text", "", 0);
+            token.content = i === keys.length - 1 ? post : ", ";
+            const content = [...link, token];
+            children.splice(pos, 0, ...content);
+          }
+
+          rAttributions.lastIndex = 0;
+          let nextCaptionIdx = children.findIndex(
+            (child) => "text" === child.type && rAttributions.exec(child.content)
           );
-          let token = new Token("text", "", 0);
-          token.content = i === keys.length - 1 ? post : ", ";
-          const content = [...link, token];
-          children.splice(pos, 0, ...content);
+          if (nextCaptionIdx > captionIdx) {
+            captionIdx = nextCaptionIdx;
+            captionToken = children[captionIdx];
+            rAttributions.lastIndex = 0;
+          }
         }
       }
     }
