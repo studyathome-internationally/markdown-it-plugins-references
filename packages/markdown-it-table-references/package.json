@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-table-references",
-  "version": "2.1.0-alpha.2",
+  "version": "2.1.0-alpha.3",
   "description": "MarkdownIt Plugin for table references and list",
   "keywords": [
     "markdown",
