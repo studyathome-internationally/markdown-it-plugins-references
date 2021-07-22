@@ -6,7 +6,7 @@ const references = (md, opts) => {
 };
 
 function references_rule(opts) {
-  const references = (state) => {
+  const references = (state, silent) => {
     const tokens = state.tokens;
 
     const start = state.pos;
@@ -41,19 +41,21 @@ function references_rule(opts) {
       return false;
     }
 
-    if (state.pending) {
-      state.pushPending();
+    if (!silent) {
+      if (state.pending) {
+        state.pushPending();
+      }
+
+      const targetId = state.src.slice(start + 2, pos);
+      token = new state.Token("reference", "", 0);
+      token.content = targetId;
+      token.meta = { targetId };
+      tokens.push(token);
+
+      state.pos = pos + 2;
+      state.posMax = max;
+      return true;
     }
-
-    const targetId = state.src.slice(start + 2, pos);
-    token = new state.Token("reference", "", 0);
-    token.content = targetId;
-    token.meta = { targetId };
-    tokens.push(token);
-
-    state.pos = pos + 2;
-    state.posMax = max;
-    return true;
   };
   return references;
 }
