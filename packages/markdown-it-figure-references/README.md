@@ -26,7 +26,12 @@ or
 npm install markdown-it-figure-references
 ```
 
-## Example
+## Introduction
+
+`markdown-it-figure-references` helps you to keep track of the figures in your markdown file.
+
+
+### Example
 
 ```md
 # Hello World
@@ -50,6 +55,15 @@ npm install markdown-it-figure-references
   <li class="item"><a href="#the-stormtroopocat" class="label">Figure 1</a>: The Stormtroopocat</li>
 </ol>
 ```
+
+`markdown-it-figure-references` wraps an `img` in a `figure` element and adds the _title_ of the image as `figcaption` element.
+By default, `markdown-it-figure-references` inserts an `anchor` (_§_) and a `label` with a _figure counter_ (_Figure 1_).
+
+Per default, `markdown-it-figure-references` adds a `list` of figures at the end of a document, listing all figures with and _label_ (link to the image) and the _title_ of the image.
+
+The generated `HTML` code can be configured in various ways, according to one's needs.
+
+---
 
 Plain HTML figures and images are supported too.
 
@@ -91,14 +105,21 @@ table { width: 100%;} td:first-child {width: 15%;} td:last-child {width: 45%;}
 
 The `opts` object can contain:
 
+**Basic configuration**
+
 | Name     | Description                                     | Default     |
 | -------- | ----------------------------------------------- | ----------- |
-| `after`  | Rule name to insert new rules after.            | `false`     |
-| `ns`     | Namespace for saving registered images (`env`). | `"figures"` |
 | `wrap`   | Wrap `<image>` in a `<figure>` element.         | `true`      |
 | `anchor` | Anchor options.                                 | see below   |
 | `label`  | Label options.                                  | see below   |
 | `list`   | List options.                                   | see below   |
+
+**Advanced configuration**
+
+| Name     | Description                                     | Default     |
+| -------- | ----------------------------------------------- | ----------- |
+| `after`  | Rule name to insert new rules after.            | `false`     |
+| `ns`     | Namespace for saving registered images (`env`). | `"figures"` |
 
 <br/>
 
@@ -118,20 +139,21 @@ The `label` object can contain:
 | ------------- | ------------------------------------------ | ------------ |
 | `enable`      | Insert figure label before figure caption. | `true`       |
 | `text`        | Figure label text.                         | `"Figure #"` |
-| `placeholder` | Figure number placeholder.                 | `"#"`        |
+| `placeholder` | Figure counter placeholder.                 | `"#"`        |
 | `class`       | Figure label class.                        | `"label"`    |
 
 <br/>
 
 The `list` object can contain:
 
-| Name     | Description             | Default             |
-| -------- | ----------------------- | ------------------- |
-| `enable` | Append list of figures. | `true`              |
-| `class`  | List of figures class.  | `"list"`            |
-| `title`  | List title.             | `"List of Figures"` |
-| `tag`    | HTML tag for list.      | `"ol"`              |
-| `item`   | List item options       | see below           |
+| Name       | Description              | Default             |
+| ---------- | ------------------------ | ------------------- |
+| `enable`   | Append list of figures.  | `true`              |
+| `class`    | List of figures class.   | `"list"`            |
+| `title`    | List heading.            | `"List of Figures"` |
+| `tag`      | HTML tag for list.       | `"ol"`              |
+| `tagTitle` | HTML tag for the heading | `"h2"`              |
+| `item`     | List item options        | see below           |
 
 <br/>
 
